@@ -1,0 +1,44 @@
+
+.header-cntr {
+    border-bottom: 2px solid #47a87e;
+    width: 100%;
+    top: 0;
+    left: 0;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    background-color: #fff;
+}
+
+.img-logo {
+    height: 35px;
+}
+
+#upload-form {
+    margin: 10px;
+}
+
+#upload-submit-button {
+    margin-left: 10px;
+    margin-bottom: 0px;
+    vertical-align: center;
+}
+
+#result-container {
+    margin-top: 20px;
+    padding-right: 10%;
+    padding-left: 10%;
+}
+
+#pdf-container {
+    height: 83vh;
+}
+
+#progress-bar-container {
+    height: 100%;
+}
+
+#upload-progress-bar {
+    margin-left: 20px;
+    height: 35px;
+    width: 35px;
+}

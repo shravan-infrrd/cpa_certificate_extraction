@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Infrrd IDC</title>
+        <base href="/">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+                              charset="utf-8"/>
+        <link rel="shortcut icon" type="image/png" href="static/images/favicon.png"/>
+
+        <!-- Bootstrap core CSS -->
+        <link rel="stylesheet" href="https://unpkg.com/bootstrap-material-design@4.1.1/dist/css/bootstrap-material-design.min.css">
+
+        <!-- AngularJS -->
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.4/angular.min.js"></script>
+        <!-- JQuery -->
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <!-- Popper -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+        <!-- Bootstrap JS -->
+        <script src="https://unpkg.com/bootstrap-material-design@4.1.1/dist/js/bootstrap-material-design.js"></script>
+        <!-- PDFObject -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.1.1/pdfobject.min.js"></script>
+
+        <!-- Appliction files -->
+        <script type="text/javascript" src="static/js/app.js"></script>
+        <link rel="stylesheet" href="static/css/style.css">
+    </head>
+    <body>
+        <div ng-app="docketly-app" ng-controller="DocketlyHomeController">
+            <div class="container-fluid" style="padding-top: 10px;">
+                <div class="row">
+                    <div class="col-md-2 text-center">
+                        <a href="static/index.html">
+                            <img class="img-logo" src="static/images/infrrd-logo-main.png" alt="Infrrd.ai logo">
+                        </a>
+                    </div>
+                </div>
+                <div class="header-cntr"></div>
+            </div>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col"></div>
+                    <form id="upload-form" class="form-inline justify-content-center" ng-submit="extractData()">
+			    <!-- <input required name="file" type="file" id="file-input" accept="application/pdf"> -->
+                        <input required name="file" type="file" id="file-input">
+                        <input id="upload-submit-button"class="btn btn-raised btn-primary" type="submit" value="Upload">
+                    </form>
+                    <div class="col">
+                        <div id="progress-bar-container" class="row align-items-center">
+                            <img  id="upload-progress-bar" class="align-items-center" src="static/images/md-circular-progress.svg" alt="Loading indicator" ng-show="isUploading"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="result-container" class="container-fluid">
+                <div class="row">
+                    <div id="pdf-container" class="col-7">
+                    </div>
+                    <div id="table-container" class="col">
+                        <table class="table table-bordered" ng-show="court_info">
+                            <tbody>
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th>Field</th>
+                                        <th>Extracted value</th>
+                                    </tr>
+                                </thead>
+
+                                <tr>
+                                    <td>Text Layout</td>
+                                    <td><a href="{{court_info['excel_file_path']}}" target="_blank">Text</td>
+                                </tr>
+
+                                <tr>
+                                    <td>Name</td>
+                                    <td>{{court_info['name']}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Field Of Study</td>
+                                    <td>{{court_info['field_of_study']}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Credit</td>
+                                    <td>{{court_info['credits']}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Date</td>
+                                    <td>{{court_info['date']}}</td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+        </div>
+    </body>
+</html>
