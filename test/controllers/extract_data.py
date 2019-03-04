@@ -23,6 +23,8 @@ from lib.helpers.parse_name import ParseName
 from lib.helpers.parse_credits import ParseCredits
 from lib.helpers.parse_field_of_study import ParseFieldOfStudy
 from lib.helpers.parse_date import ParseDate
+from lib.helpers.parse_delivery_methods import ParseDeliveryMethod
+from lib.helpers.parse_sponsors import ParseSponsors
 
 
 import uuid
@@ -69,11 +71,19 @@ class ExtractData(Resource):
 
             pd  = ParseDate(contents)
             pd.extract()
-      
+  
+            pm = ParseDeliveryMethod(contents)
+            pm.extract()     
+
+            ps = ParseSponsors(contents)
+            ps.extract()
+ 
             result['name'] = pn.name
             result['field_of_study'] = pf.field_of_study
             result['credits'] = pc.credits
             result['date'] = pd.date
+            result['delivery_method'] = pm.delivery_method
+            result['sponsor'] = ps.sponsor
             return jsonify( {"data": result} )
             #return formulate_response(result, 200, "Successfully Extracted")
 
