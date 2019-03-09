@@ -4,7 +4,7 @@ from lib.common_methods import remove_extra_spaces, validate_line, hasNumbers
 
 pre_keywords = [] 
 post_keywords = []
-line_keywords = []
+line_keywords = ['iS registered', 'is registeres', 'is registered']
 
 
 class ParseSponsors():
@@ -13,6 +13,11 @@ class ParseSponsors():
         self.contents = contents
         self.sponsor = ""
 
+
+    def fetch_valid_sponsor(self, words):
+        for wrd in words:
+            if len(wrd) > 3:
+                return wrd
 
     def parse_between_lines(self):
         for index, content in enumerate( self.contents ):
@@ -36,10 +41,16 @@ class ParseSponsors():
     def parse_within_lines(self): 
         for index, content in enumerate(self.contents):
             for kw in line_keywords:
-                valid_words = validate_line(content, kw)
-                if valid_words is None:
-                    continue
-                self.sponsor = valid_words[0]
+                if kw in content:
+                    valid_words = remove_extra_spaces( content.split(kw)[0].strip() )
+                    if valid_words is None:
+                        continue
+                    elif len(valid_words) == 0:
+                        continue
+                    
+                    #self.sponsor = valid_words[0]
+                    self.sponsor = self.fetch_valid_sponsor(valid_words)
+
                 
     def extract(self):
         self.parse_within_lines()

@@ -27,21 +27,39 @@ class ParseDate():
             for kw in post_keywords:
                 if kw in content:
                     values = remove_extra_spaces( self.contents[index+1].strip() )
+                    print("POST--->", values)
+
+                    for val in values:
+                        if hasNumbers(val) and len(val)>4:
+                            self.date = val
+                            return
+
+                    """
                     try:
                         if not hasNumbers(values[0]):
                             self.date = values[2]
                             return
                     except:
                         continue
+                    """
         
         if self.date == "":
             for index, content in enumerate(self.contents):
                 for kw in pre_keywords:
                     if kw in content:
                         values = remove_extra_spaces( self.contents[index-1].strip())
-                        if len(values) == 0:
+                        if len(values) == 0 :
                             values = remove_extra_spaces( self.contents[index-2].strip())
                         print(f"Date--->{values}")
+                        
+                        for val in values:
+                            if hasNumbers(val) and len(val) > 4:
+                                self.date = val.strip()
+                                return
+
+
+
+                        """
                         self.date = values[1].strip()
                         if hasNumbers(self.date):
                             if len(self.date) > 4:
@@ -55,7 +73,7 @@ class ParseDate():
                             except:
                                 self.date = values[0].strip()
                         return
-
+                        """
 
     def extract(self):
         self.parse_within_lines()

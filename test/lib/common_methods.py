@@ -5,7 +5,7 @@ def hasNumbers(inputString):
 def remove_extra_spaces( line ):
     words = line.split('  ')
     valid_words = list( filter( None, words ) )
-    print("RemoveExtraSpaces---->", valid_words)
+    #print("RemoveExtraSpaces---->", valid_words)
     return valid_words
 
 def validate_line(content, keyword):

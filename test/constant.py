@@ -6,6 +6,7 @@ DE_APPLICATION_NAME = "cpa"
 """ Constants module which defines all status/error code
     and messages at global level
 """
+MONGO_DB_CLIENT = 'mongodb://localhost:27017/cpa_database'
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 PDF_UPLOAD_DIRECTORY = os.path.join(PROJECT_ROOT, "uploads")
 FILE_ERRORS = 404

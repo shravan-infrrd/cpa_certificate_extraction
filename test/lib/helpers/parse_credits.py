@@ -20,7 +20,7 @@ class ParseCredits():
         for content in self.contents:
             for kw in line_keywords:
                 if kw in content:
-                    valid_words = validate_line(content, kw)
+                    valid_words = validate_line(content.strip(), kw) #remove_extra_spaces( content.split(kw)[0].strip() )
                     if valid_words is None:
                         continue
                     if ':' not in valid_words[0]:
@@ -50,9 +50,16 @@ class ParseCredits():
         for index, content in enumerate(self.contents):
             for kw in keywords:
                 if kw in content:
+                    values = remove_extra_spaces( self.contents[ index -1 ].strip() )
+                    for val in values:
+                        if hasNumbers( val ):
+                            self.credits = val
+                            return
+                    """
                     self.credits = remove_extra_spaces( self.contents[ index -1 ].strip() )[0]
                     if not hasNumbers( self.credits ):
                         self.credits = remove_extra_spaces( self.contents[ index -1 ].strip() )[1]
+                    """
 
         for index, content in enumerate(self.contents):
             for kw in post_keywords:

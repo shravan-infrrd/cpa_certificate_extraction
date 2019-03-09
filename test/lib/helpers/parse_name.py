@@ -20,6 +20,8 @@ class ParseName():
                     values = remove_extra_spaces( self.contents[index + 1].strip() )
                     if len(values) == 0:
                         values = remove_extra_spaces(self.contents[index + 2].strip() )
+                        if len(values) == 0:
+                            continue
 
                     self.name = values[0]
 
