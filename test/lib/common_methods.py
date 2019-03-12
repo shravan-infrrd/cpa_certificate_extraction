@@ -1,3 +1,12 @@
+import re
+
+def find_pattern(kw, content):
+    match = re.compile(r'\b({0})\b'.format(kw), flags=re.IGNORECASE).search(content)
+    if match is None:
+        return False
+    else:
+        return True
+    #return re.compile(r'\b({0})\b'.format(w), flags=re.IGNORECASE).search
 
 def hasNumbers(inputString):
     return any(char.isdigit() for char in inputString)

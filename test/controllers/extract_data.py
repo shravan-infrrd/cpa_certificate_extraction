@@ -7,29 +7,16 @@ from flask_restful import Resource
 from controllers.scanned_to_machined import read_scanned_pdf, read_scanned_image
 from exceptions.exceptions_handler import *
 from utils import formulate_response, is_machine_generated
-from constant import PDF_UPLOAD_DIRECTORY, PROJECT_ROOT
+from constant import PDF_UPLOAD_DIRECTORY, PROJECT_ROOT, REFERENCE_FILE
 from os import path
 import os
 from service.abby_data_extractor import extract_to_docx
 import subprocess
 
 
-"""
-from lib.parse_name import identify_name, identify_name_same_line
-from lib.parse_field_of_study import identify_field_of_study, same_line
-from lib.parse_credits import identify_credits, line_credits, pre_credit_extraction, post_credit_extraction
-from lib.parse_date import identify_date, post_date_identify
-"""
-from lib.helpers.parse_name import ParseName
-from lib.helpers.parse_credits import ParseCredits
-from lib.helpers.parse_field_of_study import ParseFieldOfStudy
-from lib.helpers.parse_date import ParseDate
-from lib.helpers.parse_delivery_methods import ParseDeliveryMethod
-from lib.helpers.parse_sponsors import ParseSponsors
-from lib.helpers.parse_sponsor_id import ParseSponsorId
-from lib.helpers.parse_program_name import ParseProgramName
-from lib.helpers.parse_qas_number import ParseQasNumber
-
+from lib.parse_data import parse_all_fields
+from openpyxl import Workbook
+import openpyxl
 import uuid
 
 import spacy
@@ -50,6 +37,25 @@ mongo = PyMongo(app)
 
 class ExtractData(Resource):
 
+    def update_excel_sheet(self, result, name):
+        if os.path.exists(REFERENCE_FILE):
+            wb = openpyxl.load_workbook( REFERENCE_FILE )
+        else:
+            wb = Workbook()
+        try:
+            sheet = wb[name]
+        except:
+            sheet = wb.create_sheet(name)
+       
+        for index, (key, value) in enumerate(result.items()):
+            if index < 4:
+                continue
+            sheet.cell(row=1+index, column=1).value = str(key)
+            sheet.cell(row=1+index, column=2).value = str(value)
+       
+        wb.save(REFERENCE_FILE)
+        wb.close
+
     def save_in_db(self, data):
         certificate_data = copy.deepcopy(data)
         mongo.db.certificates.insert(certificate_data)
@@ -63,48 +69,6 @@ class ExtractData(Resource):
 
     def get(self):
         return jsonify({"hello":"wassup!!"})
-
-    def parse_data(self, contents, result):
-            pn = ParseName(contents)
-            pn.extract()
-
-            pc = ParseCredits(contents)
-            pc.extract()
-  
-            pf = ParseFieldOfStudy(contents)
-            pf.extract()
-
-            pd  = ParseDate(contents)
-            pd.extract()
-  
-            pm = ParseDeliveryMethod(contents)
-            pm.extract()     
-
-            ps = ParseSponsors(contents)
-            ps.extract()
- 
-            pi = ParseSponsorId(contents)
-            pi.extract()
-
-            pq = ParseQasNumber(contents)
-            pq.extract()
-
-            pp = ParseProgramName(contents)
-            pp.extract()
-
-            result['name'] = pn.name
-            result['program_name'] = pp.program_name
-            result['field_of_study'] = pf.field_of_study
-            result['credits'] = pc.credits
-            result['date'] = pd.date
-            result['delivery_method'] = pm.delivery_method
-            result['sponsor'] = ps.sponsor
-            result['sponsor_id'] = pi.sponsor_id
-            result['qas_number'] = pq.qas_number
-    
-            print("RESULT====>", result) 
-            return result
-
 
     def post(self):
         try:
@@ -130,12 +94,15 @@ class ExtractData(Resource):
             result['excel_file_path'] = 'text_file/' + file_name_without_ext
 
             text_file_path = os.path.join(PDF_UPLOAD_DIRECTORY, file_name_without_ext, 'texts', 'stitched.txt')
+            #text_file_path = os.path.join(PDF_UPLOAD_DIRECTORY, file_name_without_ext, 'texts', 'page-1.txt')
             print("text_file_path--->", text_file_path)
             with open( text_file_path ) as fp:
                 contents = fp.readlines() 
 
-            self.parse_data(contents, result)
+            #self.parse_data(contents, result)
+            parse_all_fields(contents, result) 
             self.save_in_db(result)
+            self.update_excel_sheet(result, file.filename.replace(' ', '_'))
             return jsonify( {"data": result} )
             #return formulate_response(result, 200, "Successfully Extracted")
 

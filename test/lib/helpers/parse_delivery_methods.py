@@ -4,8 +4,8 @@ from lib.common_methods import remove_extra_spaces, validate_line, hasNumbers
 
 pre_keywords = ['Delivery method:'] 
 post_keywords = ['Delivery Method']
-line_keywords = ['Program Location:', 'Format:', 'Delivery Method:', 'Instructional Delivery Method -', 'Method Used:', 'Delivery Method']
-delivery_method_lists = ['Group live', 'Group Internet based', 'QAS Self study', 'Blended learning', 'Nano learning', 'Group Internet-Based']
+line_keywords = ['Program Location:', 'Format:', 'Delivery Method:', 'Instructional Delivery Method -', 'Method Used:', 'Delivery Method', 'Delivery Method Used:', 'Instructional Delivery Method:', 'Program Oelivery Mode']
+delivery_method_lists = ['Group live', 'Group Internet based', 'QAS Self study', 'Blended learning', 'Nano learning', 'Group Internet-Based', 'Self-Study', 'Self Study', 'Group-Intemet Based', 'Group-live', 'Group - Internet-Based', 'Group-Live', 'Group Internet', 'Webcast']
 
 invalid_keywords = ['CPE']
 
@@ -32,20 +32,13 @@ class ParseDeliveryMethod():
         return False
 
 
-    def get_high_score_value(self, values):
-        #print("Value====>", values)
-        for val in values:
-            if 'CPE' not in val:
-                #print("Value====>", val)
-                return val
-  
     def get_valid_value(self, index):
         for i in range(index+1, index+2):
-            if ':' not in self.contents[i].strip():
-                values = remove_extra_spaces( self.contents[ i ].strip())
-                #self.delivery_method = self.get_high_score_value(values)
-                #self.delivery_method = remove_extra_spaces( self.contents[ i ].strip())[0]
-                #print("1-Before-get_valid_value")
+            #if ':' not in self.contents[i].strip():
+            values = remove_extra_spaces( self.contents[ i ].strip())
+            print("1-Before-get_valid_value", values)
+            for val in values:
+                self.delivery_method = val
                 if self.delivery_method is None:
                     continue
                 if self.validate_delivery_method():
@@ -57,11 +50,11 @@ class ParseDeliveryMethod():
         for index, content in enumerate( self.contents ):
             for kw in pre_keywords:
                 if kw in content.strip():
-                    #print("*****START*****", content)
-                    #print("DeliveryMethod**>", kw)
+                    print("*****START*****", content)
+                    print("DeliveryMethod**>", kw)
                     self.get_valid_value(index)
-                    #print("*****END*******", kw)
-                    #print("2-Before-get_valid_value")
+                    print("*****END*******", kw)
+                    print("2-Before-get_valid_value")
                     if self.validate_delivery_method():
                         return
                     
@@ -102,10 +95,19 @@ class ParseDeliveryMethod():
                     if self.validate_delivery_method():
                         return
                 
+    def extract_from_list(self):
+        for dm in delivery_method_lists:
+            for content in self.contents:
+                  if dm.lower() in content.lower():
+                      self.delivery_method = dm
+                      return
+
     def extract(self):
         self.parse_within_lines()
         if self.delivery_method == "":
             self.parse_between_lines()
+        if self.delivery_method == "":
+            self.extract_from_list()
         return True
 
 

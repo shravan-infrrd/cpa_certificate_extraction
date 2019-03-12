@@ -1,12 +1,21 @@
 import logging
 import subprocess as sp
+from os import listdir
+from os.path import isfile, join
+
 
 from exceptions.exceptions_handler import InternalServerErrorException
 
 MIN_CHARS_FOR_MACHINE_GENERATED = 50
 
+def list_all_files(path):
+    onlyfiles = [f for f in listdir(path) if isfile(join(path, f))]
+    print(onlyfiles)
+    return onlyfiles
+
 
 def is_machine_generated(pdf_path: str) -> bool:
+    #return True
     return False
     #return len(_get_text_from_pdf(pdf_path)) >= MIN_CHARS_FOR_MACHINE_GENERATED
 
