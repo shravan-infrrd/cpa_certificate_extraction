@@ -3,7 +3,7 @@ from lib.common_methods import remove_extra_spaces, validate_line, hasNumbers
 
 field_of_studies = ['Administrative Practice', 'Business Management & Organization', 'Communications', 'Computer Science', 'Economics', 'Ethics - Behavioral', 'Ethics - Regulatory', 'Finance', 'Marketing', 'Mathematics', 'Personal Development', 'Personnel/Human Resources', 'Production', 'Specialized Knowledge & Applications', 'Social Environment of Business', 'Statistics', 'Accounting', 'Accounting - Governmental', 'Auditing', 'Auditing - Governmental', 'Business Law', 'Management Advisory Services', 'Taxes', 'Communications and Marketing', 'Specialized Knowledge', 'Information Technology', 'Computer Software & Applications', 'Audit', 'Business Management and Organization']
 
-related_studies = ['Computer Software and Applications', 'Accounting & Auditing / Tax', 'Personnel/Human Resource', 'Personnel/HR', 'Regulatory Ethics']
+related_studies = ['Computer Software and Applications', 'Accounting & Auditing / Tax', 'Personnel/Human Resource', 'Personnel/HR', 'Regulatory Ethics', 'Professional Development']
 
 field_of_studies = field_of_studies + related_studies
 

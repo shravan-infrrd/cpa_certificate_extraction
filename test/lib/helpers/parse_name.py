@@ -104,12 +104,21 @@ class ParseName():
                         print("4.5***************NAMECOMPLETED********")
                         return
                     """
-            print("5*****************NAME*****************")
+            #print("5*****************NAME*****************")
             if self.name == "":
                 #Note: Parse Previous Line
                 for kw in following_keywords:
                     if kw == content.strip():
                         values = remove_extra_spaces(self.contents[index - 1].strip())
+                        print("values---->", values)
+                        for val in values:
+                            print("NAME---val", val)
+                            if ':' in val:
+                                continue
+                            self.name = val
+                            if self.validate_name():
+                                return
+                        values = remove_extra_spaces(self.contents[index - 2].strip())
                         print("values---->", values)
                         for val in values:
                             print("NAME---val", val)
