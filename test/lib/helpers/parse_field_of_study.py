@@ -3,13 +3,13 @@ from lib.common_methods import remove_extra_spaces, validate_line, hasNumbers
 
 field_of_studies = ['Administrative Practice', 'Business Management & Organization', 'Communications', 'Computer Science', 'Economics', 'Ethics - Behavioral', 'Ethics - Regulatory', 'Finance', 'Marketing', 'Mathematics', 'Personal Development', 'Personnel/Human Resources', 'Production', 'Specialized Knowledge & Applications', 'Social Environment of Business', 'Statistics', 'Accounting', 'Accounting - Governmental', 'Auditing', 'Auditing - Governmental', 'Business Law', 'Management Advisory Services', 'Taxes', 'Communications and Marketing', 'Specialized Knowledge', 'Information Technology', 'Computer Software & Applications', 'Audit', 'Business Management and Organization']
 
-related_studies = ['Computer Software and Applications', 'Accounting & Auditing / Tax', 'Personnel/Human Resource', 'Personnel/HR', 'Regulatory Ethics', 'Professional Development']
+related_studies = ['Computer Software and Applications', 'Accounting & Auditing / Tax', 'Personnel/Human Resource', 'Personnel/HR', 'Regulatory Ethics', 'Professional Development', 'Spectahzed Knowledge']
 
 field_of_studies = field_of_studies + related_studies
 
 pre_keywords = [ 'field of study:', 'For the successful completion of', 'sponsored by YH Advisors, Inc.', 'FOR THE PROGRAM ENTITLED', 'Field of Study', 'for successfully completing', 'bicld of Study', 'Course', 'CPE Fueid of Study.']
-post_keywords = ['bicld of Study', 'bield of Study', 'Field of Study', 'Subject Area', 'Field ofStudy']
-line_keywords = ['Field of Study:', 'Best Practices in', 'FieldofStudy:', 'Course Field of Study:', 'for successfully completing', 'Fieldof Study:', 'Recommended Field of Study:', 'in the subject area of', 'RecommendedField of Study:']
+post_keywords = ['bicld of Study', 'bield of Study', 'Field of Study', 'Subject Area', 'Field ofStudy', 'NASBA Field of Study:']
+line_keywords = ['Field of Study:', 'Best Practices in', 'FieldofStudy:', 'Course Field of Study:', 'for successfully completing', 'Fieldof Study:', 'Recommended Field of Study:', 'in the subject area of', 'RecommendedField of Study:', 'hicld of Niudy:']
 
 
 class ParseFieldOfStudy():
@@ -44,7 +44,7 @@ class ParseFieldOfStudy():
                         #print(f"values-->{values}, -->{len(values)}")
                         if len(values) > 0 and len(values) < 5:
                             self.field_of_study = values[0] 
-                            print("2. FieldOfStudy---->", values)
+                            #print("2. FieldOfStudy---->", values)
                             if self.validate_with_existing_list():
                                 return
 
@@ -58,7 +58,7 @@ class ParseFieldOfStudy():
                         if len(values) == 0:
                             continue
                         self.field_of_study = values[0]
-                        print("3. FieldOfStudy---->", values)
+                        #print("3. FieldOfStudy---->", values)
                         if self.validate_with_existing_list():
                             return
 
@@ -67,7 +67,7 @@ class ParseFieldOfStudy():
             for kw in line_keywords:
                 if kw in content:
                     valid_words = validate_line(content, kw)
-                    print("***START***", content, "***valid_words**", valid_words)
+                    #print("***START***", content, "***valid_words**", valid_words)
                     if valid_words is None:
                         continue
                     self.field_of_study = valid_words[0]

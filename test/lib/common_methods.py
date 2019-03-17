@@ -1,11 +1,51 @@
 import re
 
+import dateparser
+from dateutil.parser import parse
+import datefinder
+
+
+def format_date_with_input(date):
+    date = str(date)
+    print("===DATE_FORMATING===", date)
+    #Expected date is: 2017-10-18 00:00:00
+    #Modified format is: 10-18-2017 (mm/dd/yyyy)
+
+    date = date.split(' ')[0].split('-')
+    require_date = date[1] + '-' + date[2] + '-' + date[0]
+    return require_date
+
+def format_date(date):
+    print(f"FORMAT_DATE----->", date)
+    date = date.replace('.', ',')
+    print(f"FORMAT_DATE----->", date)
+    try:
+        if date != '':
+            dates = datefinder.find_dates(date)
+            print("date---FORMAT---->", dates)
+            for date in dates:
+                print("DateFinder--->", date)  
+                valid_date = date
+  
+            formated_date = format_date_with_input(valid_date)  
+            date = str(dateparser.parse(formated_date , settings={'DATE_ORDER': 'MDY'}))
+            date = format_date_with_input(date)
+            date = date.replace('-', '/')
+            return date
+    except:
+        return date
+
+
 def find_pattern(kw, content):
-    match = re.compile(r'\b({0})\b'.format(kw), flags=re.IGNORECASE).search(content)
-    if match is None:
+    try:
+        match = re.compile(r'\b({0})\b'.format(kw), flags=re.IGNORECASE).search(content)
+        if match is None:
+            return False
+        else:
+            return True
+    except:
+        print("FindPattern Error--->")
         return False
-    else:
-        return True
     #return re.compile(r'\b({0})\b'.format(w), flags=re.IGNORECASE).search
 
 def hasNumbers(inputString):

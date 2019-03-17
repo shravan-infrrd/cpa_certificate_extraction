@@ -114,7 +114,9 @@ def read_scanned_image(filename, doc_dir_location):
 
         img = cv.imread( filename, 0 )
         img = cv.medianBlur(img, 5)
-        ret, th1 = cv.threshold(img,127,255,cv.THRESH_BINARY)
+        #ret, th1 = cv.threshold(img,127,255,cv.THRESH_BINARY)
+        #ret, th1 = cv.adaptiveThreshold(img,255,cv.ADAPTIVE_THRESH_MEAN_C, cv.THRESH_BINARY,11,2)
+        ret, th1 = cv.adaptiveThreshold(img,255,cv.ADAPTIVE_THRESH_GAUSSIAN_C, cv.THRESH_BINARY,11,2)
         cv.imwrite( filename, th1)
 
         pdf_page_name_without_ext = os.path.basename(filename).split('.')[0] + ".pdf"

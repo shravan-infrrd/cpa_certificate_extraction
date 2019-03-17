@@ -2,9 +2,9 @@
 from lib.common_methods import remove_extra_spaces, validate_line, hasNumbers
 
 
-line_keywords = ['ofContinuing ProfessionalEducation Credits:', 'CPE credit1', 'CPE Hours', 'Credit']
+line_keywords = ['ofContinuing ProfessionalEducation Credits:', 'CPE credit1', 'CPE Hours', 'Credit', 'hours of CPE']
 #line_keywords = ['ofContinuing ProfessionalEducation Credits:', 'CPE credit1', 'CPE Hours', 'Interactive Credit in CPE Hours:', 'For a total of', 'Total CPF. Hours:', 'Total CPE Hours:', 'Total CPF. Hours:', 'Has Successfully Completed', 'Hours of Recommended CPE Credit:', 'CPE Credit Hours:', 'CPE Hours:', 'Number of CPE Credits', 'Total Credit Earned:', 'Duration:', 'CPE Credits:' ]
-post_line_keywords = ['Interactive Credit in CPE Hours:', 'For a total of', 'Total CPF. Hours:', 'Total CPE Hours:', 'Total CPF. Hours:', 'Has Successfully Completed', 'Hours of Recommended CPE Credit:', 'CPE Credit Hours:', 'CPE Hours:', 'Number of CPE Credits', 'Total Credit Earned:', 'Duration:', 'CPE Credits:', 'Credit Hours:']
+post_line_keywords = ['Interactive Credit in CPE Hours:', 'For a total of', 'Total CPF. Hours:', 'Total CPE Hours:', 'Total CPF. Hours:', 'Has Successfully Completed', 'Hours of Recommended CPE Credit:', 'CPE Credit Hours:', 'CPE Hours:', 'Number of CPE Credits', 'Total Credit Earned:', 'Duration:', 'CPE Credits:', 'Credit Hours:', 'CPE credit:', 'Credits:', 'CPE Credit Hours.']
 keywords = ['Numberof CPE Credits', 'Earned CPE credit(s)', 'Awarded CPE Credit Hours', 'Earned CPE Credit(s)', 'Number of CPE Credits', 'Earned CPE credit(s)']
 post_keywords = ['Recommended for:', 'CPE CREDIT EARNED', 'CPECredits', 'Credas']
 
@@ -14,7 +14,11 @@ class ParseCredits():
         self.contents = contents
         self.credits = ""
 
-
+    def validate_credits(self):
+        if len(self.credits) > 4:
+            self.credits = ""
+            return False
+        return True
 
     def parse_first_part_of_line(self):
         for content in self.contents:
@@ -31,17 +35,6 @@ class ParseCredits():
                             if hasNumbers( val ):
                                 self.credits = val
                                 return
-
-                    """
-                    if valid_words is None or len(valid_words) == 0:
-                        continue
-                    if ':' not in valid_words[0]:
-                        self.credits = valid_words[0]
-                        if not hasNumbers(self.credits):
-                            self.credits = ""
-                            continue
-                        return
-                    """
 
     def parse_second_part_of_line(self):
         for content in self.contents:
@@ -78,11 +71,6 @@ class ParseCredits():
                         if hasNumbers( val ):
                             self.credits = val
                             return
-                    """
-                    self.credits = remove_extra_spaces( self.contents[ index -1 ].strip() )[0]
-                    if not hasNumbers( self.credits ):
-                        self.credits = remove_extra_spaces( self.contents[ index -1 ].strip() )[1]
-                    """
 
         #print("6*************PARSING*CREDITS*****************")
         for index, content in enumerate(self.contents):
@@ -93,21 +81,16 @@ class ParseCredits():
                         if hasNumbers(val):
                             self.credits = val
                             return
+                try: 
+                    values = remove_extra_spaces( self.contents[ index + 2 ].strip() )
+                    for val in values:
+                        if hasNumbers(val):
+                            self.credits = val
+                            if self.validate_credits():
+                                return
+                except:
+                    continue
 
-                    """
-                    #for index, val in enumerate(values):
-                    self.credits = values[0]
-                    try:
-                        if not hasNumbers( self.credits ):
-                            try:
-                                self.credits = values[2]
-                                return
-                            except:
-                                self.credits = values[1]
-                                return
-                    except:
-                        self.credits = ""
-                    """
                         
     def extract(self):
         self.parse_between_lines()
