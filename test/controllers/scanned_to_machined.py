@@ -138,6 +138,37 @@ def read_scanned_image(filename, doc_dir_location):
     except:
         pass
 
+def get_string(img_path):
+    print("=======START=======")
+    # Read image using opencv
+    img = cv.imread(img_path)
+    file_name = os.path.basename(img_path).split('.')[0]
+    file_name = file_name.split()[0]
+
+    """
+    output_path = os.path.join(output_dir, file_name)
+    if not os.path.exists(output_path):
+        os.makedirs(output_path)
+    """
+
+    # Crop the areas where provision number is more likely present
+    #img = crop_image(img, pnr_area[0], pnr_area[1], pnr_area[2], pnr_area[3])
+    img = cv.resize(img, None, fx=1.2, fy=1.2, interpolation=cv.INTER_CUBIC)
+
+    # Convert to gray
+    img = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
+
+    # Apply dilation and erosion to remove some noise
+    kernel = np.ones((1, 1), np.uint8)
+    img = cv.dilate(img, kernel, iterations=1)
+    img = cv.erode(img, kernel, iterations=1)
+
+    #  Apply threshold to get image with only black and white
+    #img = apply_threshold(img, method)
+    img = cv.adaptiveThreshold(cv.GaussianBlur(img, (5, 5), 0), 255, cv.ADAPTIVE_THRESH_GAUSSIAN_C, cv.THRESH_BINARY, 31, 2)
+    #save_path = os.path.join(output_path, file_name + "_filter_" + str(method) + ".jpg")
+    cv.imwrite(img_path, img)
+    print("=======END=======")
 
 def read_scanned_pdf(pdf_path, output_dir_location):
     try:
@@ -171,10 +202,14 @@ def read_scanned_pdf(pdf_path, output_dir_location):
                     #print("Imag: ->", os.path.join(image_dir_location, page_name_without_ext))
                     image_path = os.path.join(image_dir_location, page_name_without_ext)
                     pdf_page_to_image(page, os.path.join(image_dir_location, page_name_without_ext))
+
                     img = cv.imread( image_path, 0 )
                     img = cv.medianBlur(img, 5)
-                    ret, th1 = cv.threshold(img,127,255,cv.THRESH_BINARY)
+                    #ret, th1 = cv.threshold(img,127,255,cv.THRESH_BINARY)
+                    ret, th1 = cv.threshold(img,180,255,cv.THRESH_BINARY)
+                    #th1 = cv2.adaptiveThreshold(cv2.GaussianBlur(img, (5, 5), 0), 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 31, 2)
                     cv.imwrite(image_path, th1)
+                    #get_string(image_path)
 
                     #print("is_machine_generated-->", is_machine_generated(page))
                     if is_machine_generated(page):

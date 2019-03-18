@@ -61,6 +61,7 @@ def parse_all_fields( contents, result):
     result['delivery_method'] = pm.delivery_method
     result['sponsor']         = ps.sponsor
     result['sponsor_id']      = pi.sponsor_id
+    #result['sponsor_id']      = pi.ids
     result['qas_number']      = pq.qas_number
     #result['fos']             = pfos.field_of_study
     result['fos']             = pc.field_of_study

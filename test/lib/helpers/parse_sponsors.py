@@ -25,6 +25,8 @@ class ParseSponsors():
     def validate_sponsor(self):
         for sponsor in sponsor_list:
             if find_pattern(sponsor.lower(), self.sponsor.lower()):
+                sp = self.sponsor[ self.sponsor.find(sponsor) : (self.sponsor.find(sponsor) + len(self.sponsor))]
+                self.sponsor = sp 
                 return True
         return False
 

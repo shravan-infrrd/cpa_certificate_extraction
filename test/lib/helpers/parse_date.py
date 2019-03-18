@@ -3,11 +3,11 @@
 from lib.common_methods import remove_extra_spaces, validate_line, hasNumbers, format_date, find_pattern
 #from dateutil.parser import parse
 import datefinder
-
+import datetime
 
 line_keywords = ['Date:', 'Dated', 'Date Completed:', 'Presentation Date:', 'Date Attended:', 'Completion Date:', 'Event Date:', 'Session End Date', 'Oate Attended:', 'Completion Date', 'Session End Date', 'awarded this certificate on', 'Date(s) Completed:', 'PROGRAM DATES:', 'Program Date:', 'Date.', 'Date Issued:']
 post_keywords = ['Date Attended', 'Date of Completion', 'event on']
-pre_keywords  = ['Date Certified', 'Date', 'Date of Course', 'Dace of Course', 'Program Date(s)', 'Course Date']
+pre_keywords  = ['Date Certified', 'Date', 'Date of Course', 'Dace of Course', 'Program Date(s)', 'Course Date', 'pate']
 
 
 class ParseDate():
@@ -24,6 +24,7 @@ class ParseDate():
     def make_corrections(self, date):
         date = date.lower().split(' to ')[-1]
         date = date.lower().split(' at ')[0]
+        date = date.replace('virtue of the', '')
         """
         date = date.lower().replace('october', 'octaber')
         date = date.lower().replace('to', 'to a')
@@ -74,24 +75,32 @@ class ParseDate():
     def extract_without_keywords(self):
         parse = False
         for content in self.contents:
-            #print(f"Name:------>{self.program_name.lower().strip()}") #===Content:-->{content.lower().strip()}")
-            #print(f"Content:--->{content.lower().strip()}")
-            #print(f"TRUE/FALSE---DATE--->{find_pattern(self.program_name.lower().strip(), content.lower().strip())}")
-            #print(f"TRUE/FALSE->{find_pattern(content.lower().strip(), self.program_name.lower().strip())}")
+            print(f"Date:------>{self.program_name.lower().strip()}") #===Content:-->{content.lower().strip()}")
+            print(f"Content:--->{content.lower().strip()}")
+            print(f"TRUE/FALSE---DATE--->{find_pattern(self.program_name.lower().strip(), content.lower().strip())}")
+            print(f"TRUE/FALSE->{find_pattern(content.lower().strip(), self.program_name.lower().strip())}")
             #if find_pattern(self.program_name.lower().strip(), content.lower().strip()):
+            if self.program_name == "":
+                parse = True
             if find_pattern(content.lower().strip(), self.program_name.lower().strip()):
             #if self.name.lower() in content.lower().strip():
                 parse = True
             if parse:
                 #if hasNumbers(content):
-                #print("FINDING-DATE----->", content)
+                print("FINDING-DATE----->1", content)
                 content = self.make_corrections(content)
+                print("FINDING-DATE----->2", content)
                 dates = list(datefinder.find_dates(content))
-                #print("Dates------------>", dates)
+                print("Dates------------>3", dates)
                 if len(dates) > 0:
-               
+                    if dates[-1].year > datetime.datetime.now().year or dates[-1].year < 2000:
+                        continue
                     self.date = str(dates[-1])
-                    #print("DateExtracted---->", self.date)
+                    print(f"CASE_ONE----->{dates[-1].year}")
+                    print(f"CASE_ONE----->{datetime.datetime.now().year}---type-->{type(datetime.datetime.now().year)}")
+                    print(f"CASE_ONE----->{dates[-1].year > datetime.datetime.now().year}")
+                    print(f"CASE_ONE----->{dates[-1].year < 2000}")
+                    print("DateExtracted---->4", self.date)
                     return
 
 
@@ -104,12 +113,12 @@ class ParseDate():
         
         if self.date == "":
             self.extract_without_keywords()
-        print("Date Extraction Complete===>", self.date) 
+        print("Date Extraction Complete===>1", self.date) 
 
         if self.date != "":
             self.date = self.make_corrections(self.date)
-            print("Date Extraction Complete===>", self.date)
+            print("Date Extraction Complete===>2", self.date)
             self.date = format_date(self.date)
-            print("Date Extraction Complete===>", self.date)
+            print("Date Extraction Complete===>3", self.date)
 
 

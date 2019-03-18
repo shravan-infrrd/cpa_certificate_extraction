@@ -3,16 +3,16 @@ import re
 from lib.common_methods import remove_extra_spaces, validate_line, find_pattern
 
 
-preceding_keywords = ['has successfully completed', 'CERTIFICATE OF ATTENDANCE', 'has successfully completed the online course', 'Online Certification training:', 'Certificate of Attendance', 'Certificate of Completion', 'for participation in', 'for participation in', 'successfully completed', 'completion ot the course', 'entitled', 'for successfully completing', 'completed', 'For Successfully Completing', 'has successfully completed:', 'Has Successfully Completed the Course:', 'Has Successfully Completed the Course:', 'For successful completion of', 'for the successful completion of', 'has completed', 'has completed the group Internet-based course']
+preceding_keywords = ['has successfully completed', 'CERTIFICATE OF ATTENDANCE', 'has successfully completed the online course', 'Online Certification training:', 'Certificate of Attendance', 'Certificate of Completion', 'for participation in', 'for participation in', 'successfully completed', 'completion ot the course', 'entitled', 'for successfully completing', 'completed', 'For Successfully Completing', 'has successfully completed:', 'Has Successfully Completed the Course:', 'Has Successfully Completed the Course:', 'For successful completion of', 'for the successful completion of', 'has completed', 'has completed the group Internet-based course', 'nas success*u ly comoleted:', 'Forattending', 'For attending']
 
 """
 Is hereby awardedto (the institute of internal)
 """
 following_keywords = ['Course Name'] #, 'Is hereby awardedto', 'Is hereby awarded to']
-line_keywords = ['Course Title:', 'for successfully completing:', 'for successfully completing', 'Program Title:', 'PROGRAM TITLE:', 'For successful completion of', 'Title.', 'Title:']
+line_keywords = ['Course Title:', 'for successfully completing:', 'for successfully completing', 'Program Title:', 'PROGRAM TITLE:', 'For successful completion of', 'Title.', 'Title:', 'for success‘ully comp et ng']
 
-invalid_keywords = ['presented to', 'Awarded to', 'Date', 'Freserted to', 'successful', 'granted', 'Association of Cortificd', 'Association of Certified', 'Field of Study', 'Please', 'Program Location', 'CPE', 'Credits', 'CTEC']
-possible_keywords = ['Conference', 'Event', 'Webcast', 'Seminar', 'Review Course']
+invalid_keywords = ['presented to', 'Awarded to', 'Date', 'Freserted to', 'successful', 'granted', 'Association of Cortificd', 'Association of Certified', 'Field of Study', 'Please', 'Program Location', 'CPE', 'Credits', 'CTEC', 'Participant', 'Sent', 'This is to ceruty that', 'This is to certify that', 'This is to', 'awardedthis', 'awarded this', 'preserted to', 'success‘ully']
+possible_keywords = ['Conference', 'Event', 'Webcast', 'Seminar', 'Review Course', 'Ethics:']
 
 priority_keywords = ['(Part |)', 'Part |', 'PART 1', 'Module 1', 'Module |']
 
@@ -24,15 +24,15 @@ class ParseProgramName():
         self.program_name = ""
 
     def validate_program_name(self):
-        print("ValidateProgramName**")
+        print("ValidateProgramName**", self.program_name)
         if self.program_name.strip() == "":
             return False
-        print(f"InvalidKEYWORDS---->{invalid_keywords}--->program_name---->{self.program_name}")
+        #print(f"InvalidKEYWORDS---->{invalid_keywords}--->program_name---->{self.program_name}")
         for kw in invalid_keywords:
-            print(f"===>INKW-->{kw}=====>pn==>{self.program_name}")
+            #print(f"===>INKW-->{kw}=====>pn==>{self.program_name}")
             if find_pattern(kw, self.program_name.lower()):
             #if kw.lower() in self.program_name.lower():
-                print("Error--->", kw, "pn", self.program_name)
+                print("Error--->1", kw, "pn", self.program_name)
                 self.program_name = ""
                 return False
         if self.name.lower() != "":
@@ -42,20 +42,24 @@ class ParseProgramName():
                     self.program_name = ""
                     return False
 
+        if len(self.program_name.strip()) <= 4:
+            self.program_name = ""
+            return False
         return True 
 
     def check_for_invalid_keywords(self, word):
         for kw in invalid_keywords:
             if find_pattern(kw.lower(), word.lower()):
                 print("****CAUTION****")
-                print(f"Keyword-->{kw}, word-->{word}")
+                #print(f"Keyword-->{kw}, word-->{word}")
                 return ""
         return word
 
     def check_invalid_keywords(self, word):
         for kw in invalid_keywords:
+            #print(f"keyword--->{kw}--")
             if find_pattern(kw.lower(), word.lower()):
-                print("VALIDATION----->", kw, "Content--->", word)
+                print("VALIDATION----->", kw, "Content--->", word, "---end")
                 return False
         return True
 
