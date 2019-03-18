@@ -24,6 +24,7 @@ from spacy import displacy
 import en_core_web_sm
 
 
+"""
 import json
 from flask_pymongo import PyMongo
 import copy
@@ -34,7 +35,7 @@ app.config['MONGO_DBNAME'] = 'cpa_database'
 app.config['MONGO_URI'] = 'mongodb://localhost:27017/cpa_database'
 
 mongo = PyMongo(app)
-
+"""
 class ExtractData(Resource):
 
     def update_excel_sheet(self, result, name):
@@ -101,7 +102,7 @@ class ExtractData(Resource):
 
             #self.parse_data(contents, result)
             parse_all_fields(contents, result) 
-            self.save_in_db(result)
+            #self.save_in_db(result)
             self.update_excel_sheet(result, file.filename.replace(' ', '_'))
             return jsonify( {"data": result} )
             #return formulate_response(result, 200, "Successfully Extracted")

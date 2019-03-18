@@ -20,11 +20,16 @@ def parse_all_fields( contents, result):
     pd  = ParseDate(contents, pn.name, pp.program_name)
     pd.extract()
 
-    pc = ParseCredits(contents)
-    pc.extract()
-
+    """
     pf = ParseFieldOfStudy(contents)
     pf.extract()
+    """
+
+    pfos = ParseFos(contents)
+    pfos.extract()
+
+    pc = ParseCredits(contents, pfos.field_of_study)
+    pc.extract()
 
 
 
@@ -45,12 +50,11 @@ def parse_all_fields( contents, result):
 
 
 
-    pfos = ParseFos(contents)
-    pfos.extract()
+
 
     result['name']            = pn.name
     result['program_name']    = pp.program_name
-    result['field_of_study']  = pf.field_of_study
+    #result['field_of_study']  = pf.field_of_study
     result['credits']         = pc.credits
     result['date']            = pd.date
     #result['completion_date'] = pd.date
@@ -58,7 +62,8 @@ def parse_all_fields( contents, result):
     result['sponsor']         = ps.sponsor
     result['sponsor_id']      = pi.sponsor_id
     result['qas_number']      = pq.qas_number
-    result['fos']             = pfos.field_of_study
+    #result['fos']             = pfos.field_of_study
+    result['fos']             = pc.field_of_study
 
     print("RESULT====>", result)
     return result

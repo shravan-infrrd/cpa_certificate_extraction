@@ -1,4 +1,4 @@
-
+import re
 from lib.common_methods import remove_extra_spaces, validate_line, hasNumbers
 
 
@@ -10,15 +10,28 @@ post_keywords = ['Recommended for:', 'CPE CREDIT EARNED', 'CPECredits', 'Credas'
 
 class ParseCredits():
 
-    def __init__(self, contents):
+    def __init__(self, contents, fos):
         self.contents = contents
         self.credits = ""
+        self.fos = fos
+        self.field_of_study = []
 
     def validate_credits(self):
         if len(self.credits) > 4:
             self.credits = ""
             return False
         return True
+
+
+    def parse_with_fos_keyword(self, fos):
+        for content in self.contents:
+            content = content.lower().strip()
+            if fos in content:
+                cred = re.findall('\d*\.?\d+', content)
+                if cred:
+                    self.credits = cred[0]
+                    return
+            
 
     def parse_first_part_of_line(self):
         for content in self.contents:
@@ -91,12 +104,82 @@ class ParseCredits():
                 except:
                     continue
 
-                        
-    def extract(self):
+
+    def extract_credits(self, fos):
+        for content in self.contents:
+            content = content.lower().strip()
+            if fos.lower() in content:
+                print(f"Content--->{content}, fos---->{fos}")
+                print("Credits*******>", content.split(fos.lower()))
+                if '(' in content:
+                    credit = content.split(fos.lower())[1]
+                else:
+                    credit = content.split(fos.lower())[0]
+
+                extracted_credit = re.findall('\d*\.?\d+', credit)
+                if extracted_credit:
+                    return extracted_credit[0]
+                else:
+                    return credit
+                """
+                credit = re.findall("\d+\.\d+", credit)
+                if not credit:
+                    credit = re.findall("\d+", credit)
+
+                return credit
+                """
+  
+                #return content.split(fos)
+
+    def find_credits(self, fos):
+        print("*****FIND_CREDITS*****", fos.lower())
+        for content in self.contents:
+            content = content.lower().strip()
+            if fos.lower() in content:
+                print(f"Content--->{content}, fos--->{fos}")
+                credit = re.findall('\d*\.?\d+', content)
+                print("Found Credits---->", credit)
+                if credit:
+                    return credit[0]
+
         self.parse_between_lines()
         if self.credits != "":
-            return True
-        self.parse_within_lines()
-        return True
+            cred = re.findall('\d*\.?\d+', self.credits)
+            return cred[0]
 
+        self.parse_within_lines()
+        if self.credits != "":
+            cred = re.findall('\d*\.?\d+', self.credits)
+            return cred[0]
+        return ""
+
+    def build_field_of_study(self):
+        if len(self.fos) == 1:
+            #self.find_credits(self.fos[0])
+            self.field_of_study.append({"name": self.fos[0], "credits": self.find_credits(self.fos[0]), "score": ""})
+        else:
+            for fos in self.fos:
+                credits = self.extract_credits(fos)
+                if credits != "":
+                    try:
+                        if int(credits) < 20:
+                            self.field_of_study.append({"name": fos, "credits": self.extract_credits(fos), "score":""})
+                    except:
+                        #self.field_of_study.append({"name": fos, "credits": self.extract_credits(fos), "score":""})
+                        pass
+
+                        
+    def extract(self):
+        self.build_field_of_study()
+        """
+        if len(self.fos) == 1:
+            self.parse_between_lines()
+            if self.credits != "":
+                return True
+            self.parse_within_lines()
+            fos = self.fos[0]
+            fod['credits'] = self.credits
+            self.fos = [fos]
+            return True
+        """
 

@@ -9,10 +9,10 @@ preceding_keywords = ['has successfully completed', 'CERTIFICATE OF ATTENDANCE',
 Is hereby awardedto (the institute of internal)
 """
 following_keywords = ['Course Name'] #, 'Is hereby awardedto', 'Is hereby awarded to']
-line_keywords = ['Course Title:', 'for successfully completing', 'for successfully completing:', 'Program Title:', 'PROGRAM TITLE:', 'For successful completion of', 'Title.', 'Title:']
+line_keywords = ['Course Title:', 'for successfully completing:', 'for successfully completing', 'Program Title:', 'PROGRAM TITLE:', 'For successful completion of', 'Title.', 'Title:']
 
 invalid_keywords = ['presented to', 'Awarded to', 'Date', 'Freserted to', 'successful', 'granted', 'Association of Cortificd', 'Association of Certified', 'Field of Study', 'Please', 'Program Location', 'CPE', 'Credits', 'CTEC']
-possible_keywords = ['Conference', 'Event', 'Webcast', 'Seminar']
+possible_keywords = ['Conference', 'Event', 'Webcast', 'Seminar', 'Review Course']
 
 priority_keywords = ['(Part |)', 'Part |', 'PART 1', 'Module 1', 'Module |']
 
@@ -231,6 +231,12 @@ class ParseProgramName():
                     self.program_name = content
                     return
 
+    def refine_program_name(self):
+        for kw in line_keywords:
+            if kw in self.program_name:
+                print("REFINING--PROGRAM_NAME=================*********************", self.program_name, "KW--->", kw)
+                self.program_name = self.program_name.replace(kw, '')
+
     #def identify_program_name(self):
     def extract(self):
         self.find_from_priority_keywords()
@@ -241,5 +247,8 @@ class ParseProgramName():
             self.parse_within_line()
         if self.program_name == '':
             self.find_key_words()
+        if self.program_name != "":
+            self.refine_program_name()
+            return True
         return True
 
