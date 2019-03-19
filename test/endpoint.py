@@ -9,6 +9,7 @@ from flask_cors import CORS
 from flask_restful import Api
 from healthcheck import HealthCheck
 
+import timeit
 import constant
 from constant import DE_APPLICATION_NAME, PDF_UPLOAD_DIRECTORY
 from controllers.extract_data import ExtractData

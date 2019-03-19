@@ -1,5 +1,5 @@
 import logging
-
+import time
 from flask import Flask, request
 from flask import jsonify
 from flask_restful import Resource
@@ -72,8 +72,11 @@ class ExtractData(Resource):
     def get(self):
         return jsonify({"hello":"wassup!!"})
 
+
+
     def post(self):
         try:
+            ts = time.time()
             save_path = PDF_UPLOAD_DIRECTORY
             file = request.files['file']
 
@@ -105,6 +108,9 @@ class ExtractData(Resource):
             parse_all_fields(contents, result) 
             #self.save_in_db(result)
             #self.update_excel_sheet(result, file.filename.replace(' ', '_'))
+            te = time.time()
+            logging.info('%r %2.2f sec' % ("Time---->", te - ts))
+            print(f"TimeTake=====>{te - ts}")
             return jsonify( {"data": result} )
             #return formulate_response(result, 200, "Successfully Extracted")
 
