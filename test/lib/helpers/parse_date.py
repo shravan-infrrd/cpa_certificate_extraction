@@ -75,10 +75,10 @@ class ParseDate():
     def extract_without_keywords(self):
         parse = False
         for content in self.contents:
-            print(f"Date:------>{self.program_name.lower().strip()}") #===Content:-->{content.lower().strip()}")
-            print(f"Content:--->{content.lower().strip()}")
-            print(f"TRUE/FALSE---DATE--->{find_pattern(self.program_name.lower().strip(), content.lower().strip())}")
-            print(f"TRUE/FALSE->{find_pattern(content.lower().strip(), self.program_name.lower().strip())}")
+            #print(f"Date:------>{self.program_name.lower().strip()}") #===Content:-->{content.lower().strip()}")
+            #print(f"Content:--->{content.lower().strip()}")
+            #print(f"TRUE/FALSE---DATE--->{find_pattern(self.program_name.lower().strip(), content.lower().strip())}")
+            #print(f"TRUE/FALSE->{find_pattern(content.lower().strip(), self.program_name.lower().strip())}")
             #if find_pattern(self.program_name.lower().strip(), content.lower().strip()):
             if self.program_name == "":
                 parse = True
@@ -87,20 +87,20 @@ class ParseDate():
                 parse = True
             if parse:
                 #if hasNumbers(content):
-                print("FINDING-DATE----->1", content)
+                #print("FINDING-DATE----->1", content)
                 content = self.make_corrections(content)
-                print("FINDING-DATE----->2", content)
+                #print("FINDING-DATE----->2", content)
                 dates = list(datefinder.find_dates(content))
-                print("Dates------------>3", dates)
+                #print("Dates------------>3", dates)
                 if len(dates) > 0:
                     if dates[-1].year > datetime.datetime.now().year or dates[-1].year < 2000:
                         continue
                     self.date = str(dates[-1])
-                    print(f"CASE_ONE----->{dates[-1].year}")
-                    print(f"CASE_ONE----->{datetime.datetime.now().year}---type-->{type(datetime.datetime.now().year)}")
-                    print(f"CASE_ONE----->{dates[-1].year > datetime.datetime.now().year}")
-                    print(f"CASE_ONE----->{dates[-1].year < 2000}")
-                    print("DateExtracted---->4", self.date)
+                    #print(f"CASE_ONE----->{dates[-1].year}")
+                    #print(f"CASE_ONE----->{datetime.datetime.now().year}---type-->{type(datetime.datetime.now().year)}")
+                    #print(f"CASE_ONE----->{dates[-1].year > datetime.datetime.now().year}")
+                    #print(f"CASE_ONE----->{dates[-1].year < 2000}")
+                    #print("DateExtracted---->4", self.date)
                     return
 
 

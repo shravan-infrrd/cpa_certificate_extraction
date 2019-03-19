@@ -1,19 +1,20 @@
 #text_file = "./text_files/22.txt"
 from lib.common_methods import remove_extra_spaces, validate_line, hasNumbers, find_pattern
 
-field_of_studies = ['Accounting and Auditing', 'Administrative Practice', 'Business Management & Organization', 'Communications', 'Computer Science', 'Economics', 'Ethics - Behavioral', 'Ethics - Regulatory', 'Finance', 'Marketing', 'Mathematics', 'Personal Development', 'Personnel/Human Resources', 'Production', 'Specialized Knowledge and Applications', 'Specialized Knowledge & Applications', 'Social Environment of Business', 'Statistics', 'Accounting - Governmental', 'Auditing', 'Auditing - Governmental', 'Business Law', 'Management Advisory Services', 'Taxes', 'Communications and Marketing', 'Specialized Knowledge', 'Information Technology', 'Computer Software & Applications', 'Audit', 'Business Management and Organization', 'Accounting']
+field_of_studies = ['Accounting and Auditing', 'Administrativei Practice', 'Business Management & Organization', 'Communications', 'Computer Science', 'Economics', 'Ethics - Behavioral', 'Ethics - Regulatory', 'Finance', 'Marketing', 'Mathematics', 'Personal Development', 'Personnel/Human Resources', 'Production', 'Specialized Knowledge and Applications', 'Specialized Knowledge & Applications', 'Social Environment of Business', 'Statistics', 'Accounting - Governmental', 'Auditing', 'Auditing - Governmental', 'Business Law', 'Management Advisory Services', 'Taxes', 'Communications and Marketing', 'Information Technology', 'Computer Software & Applications', 'Audit', 'Business Management and Organization']
 
 special_list = ['Auditing', 'Accounting', 'Specialized Knowledge']
+check_list   = ['Accounting and Auditing', 'Accounting - Governmental', 'Auditing - Governmental', 'Specialized Knowledge and Applications', 'Specialized Knowledge & Applications' ] 
 
+related_studies = ['Computer Software and Applications', 'Accounting & Auditing / Tax', 'Personnel/Human Resource', 'Personnel/HR', 'Regulatory Ethics', 'Professional Development', 'Behavioral Ethics', 'Management Services', 'A&A', 'Yellow Book', 'Professional Ethics', 'Fraud', 'Accounting Governmental', 'Auditing Governmental', 'Behavioral Ethics']
 
-related_studies = ['Computer Software and Applications', 'Accounting & Auditing / Tax', 'Personnel/Human Resource', 'Personnel/HR', 'Regulatory Ethics', 'Professional Development', 'Behavioral Ethics', 'Management Services', 'A&A', 'Yellow Book', 'Professional Ethics', 'Fraud']
 
 field_of_studies = field_of_studies + special_list + related_studies
 field_of_studies = list(set(field_of_studies))
 
 pre_keywords = [ 'field of study:', 'For the successful completion of', 'sponsored by YH Advisors, Inc.', 'FOR THE PROGRAM ENTITLED', 'Field of Study', 'for successfully completing', 'bicld of Study', 'Course', 'CPE Fueid of Study.']
-post_keywords = ['bicld of Study', 'bield of Study', 'Field of Study', 'Subject Area', 'Field ofStudy', 'NASBA Field of Study:']
-line_keywords = ['Field of Study:', 'Best Practices in', 'FieldofStudy:', 'Course Field of Study:', 'for successfully completing', 'Fieldof Study:', 'Recommended Field of Study:', 'in the subject area of', 'RecommendedField of Study:', 'Field ofStudy:']
+post_keywords = ['bicld of Study', 'bield of Study', 'Field of Study', 'Subject Area', 'Field ofStudy', 'NASBA Field of Study:', 'Curriculum:']
+line_keywords = ['Field of Study:', 'Best Practices in', 'FieldofStudy:', 'Course Field of Study:', 'for successfully completing', 'Fieldof Study:', 'Recommended Field of Study:', 'in the subject area of', 'RecommendedField of Study:', 'Field ofStudy:', 'Ficld of Study:']
 
 
 class ParseFos():
@@ -48,8 +49,9 @@ class ParseFos():
                         if self.validate_with_existing_list(values[0]):
                             #self.field_of_study.append({"name": values[0] } )
                             if not self.check_if_present(values[0]):
-                                self.field_of_study.append(values[0] )
-                                continue
+                                if values[0] in special_list:
+                                    self.field_of_study.append(values[0] )
+                                    continue
                             #return
                         #print(f"1----KW->{kw}----")
                     #if not found:
@@ -74,7 +76,7 @@ class ParseFos():
                         if len(values) == 0:
                             continue
                         #self.field_of_study = values[0]
-                        #print("FOS3. FieldOfStudy---->", values)
+                        print("FOS3. FieldOfStudy---->", values)
                         if self.validate_with_existing_list(values[0]):
                             if not self.check_if_present(values[0]):
                                 self.field_of_study.append(values[0])
@@ -89,10 +91,19 @@ class ParseFos():
                     if valid_words is None:
                         continue
                     #self.field_of_study = valid_words[0]
+                    fos = valid_words[0]
+                    if '/' in fos:
+                        valid_words = fos.split('/')
+                    for val in valid_words:
+                        if self.validate_with_existing_list(val):
+                            if not self.check_if_present(valid_words[0]):  
+                                self.field_of_study.append(valid_words[0])
+                    """
                     if self.validate_with_existing_list(valid_words[0]):
                         if not self.check_if_present(valid_words[0]):  
                             self.field_of_study.append(valid_words[0])
                         #return
+                    """
                
     def extract_from_list(self):
         for fos in field_of_studies:
@@ -101,9 +112,17 @@ class ParseFos():
                   if find_pattern(fos.lower(), content.lower() ):
                       #print(f"FOS**FIELF_OF_STUDY--->{fos}, --->CONTENT-->{content}")
                       #self.field_of_study.append({"name": fos })
+                      if fos in ['Accounting', 'accounting', 'Auditing', 'auditing']:
+                          if content in ['Accounting and Auditing', 'Accounting & Auditing / Tax', 'Accounting Governmental', 'Auditing Governmental', 'Accounting & Auditing']:
+                              continue
+                      if fos in ['Specialized Knowledge']:
+                          if content in ['Specialized Knowledge and Applications', 'Specialized Knowledge & Applications', 'Specialized Knowledge and Applications', 'Specialized Knowledge & Applications']:
+                              continue
                       if not self.check_if_present(fos):
                           self.field_of_study.append(fos)
+                          continue
                       #return
+
 
     def extract(self):
         self.parse_within_lines()

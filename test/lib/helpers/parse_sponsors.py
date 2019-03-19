@@ -12,7 +12,7 @@ special_keywords  = ['sponsored by', 'CPE Sponsor Name']
 sponsor_list = ["AICPA", "Deloitte", "Becker Professional Education", "Intuit", "Optiv Security", "FICPA", "KPMG", "EY", "CPA Academy", "Becker", "Beene Garter LLP", "Checkpoint Learning", "PricewaterhouseCoopers LLP", "PWC", "Deloitte LLP", "MACPA", "CPAAcademy.org", "CPAwebengage, Inc.", "Wolters Kluwer", "Grant Thornton LLP", "The Institute of Internal Auditors", "Ernst & Young LLP", "Learning.net", "KPMG LLP", "SC&H Group", "Association of International Certified Professional Accountants", "Thomson Reuters", "RSM", "HoganTaylor LLP", "Western CPE", "MICPA", "Practising Law Institute", "TSCPA", "Plain-English Accounting", "Surgent McCoy CPE, LLC", "Ernst & Young", "Surgent", "OSCPA", "VSCPA", "PricewaterhouseCoopers", "RSM US LLP", "AuditSense", "Becker CPE", "Workiva", "DTTL", "BKD, LLP", "KPMG Executive Education", "Foundation for Accounting Education", "PLI", "ACFE", "Association of Certified Fraud Examiners", "Grant Thornton"]
 
 
-extra_list= ["ASSOCIATION OF CERTIFIED FRAUD EXAMINERS", 'Plaio-English Accounting', 'pliedu', 'the Institute of Internal Auditors', 'WAthe Institute of Internal Auditors', 'Institute of Internal Auditors', 'THOMSON REUTERS', 'The Virginia Society of CPAs', 'Wes:ern CPE']
+extra_list= ["ASSOCIATION OF CERTIFIED FRAUD EXAMINERS", 'Plaio-English Accounting', 'pliedu', 'the Institute of Internal Auditors', 'WAthe Institute of Internal Auditors', 'Institute of Internal Auditors', 'THOMSON REUTERS', 'The Virginia Society of CPAs', 'Wes:ern CPE', 'Plain-English Acooanting', 'Plain-English Accoanting']
 
 sponsor_list = sponsor_list + extra_list
 

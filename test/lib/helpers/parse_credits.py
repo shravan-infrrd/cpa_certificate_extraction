@@ -2,10 +2,11 @@ import re
 from lib.common_methods import remove_extra_spaces, validate_line, hasNumbers
 
 
-line_keywords = ['ofContinuing ProfessionalEducation Credits:', 'CPE credit1', 'CPE Hours', 'Credit', 'hours of CPE', 'hours of Continuing']
+#line_keywords = ['ofContinuing ProfessionalEducation Credits:', 'CPE credit1', 'CPE Hours', 'Credit', 'hours of CPE', 'hours of Continuing', 'CPE credits']
+pre_line_keywords = ['ofContinuing ProfessionalEducation Credits:', 'CPE credit1', 'CPE Hours', 'Credit', 'hours of CPE', 'hours of Continuing', 'CPE credits', 'CPE is awarded', 'CPE Hour']
 #line_keywords = ['ofContinuing ProfessionalEducation Credits:', 'CPE credit1', 'CPE Hours', 'Interactive Credit in CPE Hours:', 'For a total of', 'Total CPF. Hours:', 'Total CPE Hours:', 'Total CPF. Hours:', 'Has Successfully Completed', 'Hours of Recommended CPE Credit:', 'CPE Credit Hours:', 'CPE Hours:', 'Number of CPE Credits', 'Total Credit Earned:', 'Duration:', 'CPE Credits:' ]
 
-post_line_keywords = ['Interactive Credit in CPE Hours:', 'For a total of', 'Total CPF. Hours:', 'Total CPE Hours:', 'Total CPF. Hours:', 'Has Successfully Completed', 'Hours of Recommended CPE Credit:', 'CPE Credit Hours:', 'CPE Hours:', 'Number of CPE Credits', 'Total Credit Earned:', 'Duration:', 'CPE Credits:', 'Credit Hours:', 'CPE credit:', 'Credits:', 'CPE Credit Hours.', 'CPE Credits earned:']
+post_line_keywords = ['Interactive Credit in CPE Hours:', 'For a total of', 'Total CPF. Hours:', 'Total CPE Hours:', 'Total CPF. Hours:', 'Has Successfully Completed', 'Hours of Recommended CPE Credit:', 'CPE Credit Hours:', 'CPE Hours:', 'Number of CPE Credits', 'Total Credit Earned:', 'Duration:', 'CPE Credits:', 'Credit Hours:', 'CPE credit:', 'Credits:', 'CPE Credit Hours.', 'CPE Credits earned:', 'Recommendedfor', 'Recommended for', 'CPE credits:', 'Course Credit:', 'TSCPA Sponsor ID #', 'CPE:']
 
 keywords = ['Numberof CPE Credits', 'Earned CPE credit(s)', 'Awarded CPE Credit Hours', 'Earned CPE Credit(s)', 'Number of CPE Credits', 'Earned CPE credit(s)']
 
@@ -51,7 +52,7 @@ class ParseCredits():
 
     def parse_first_part_of_line(self):
         for content in self.contents:
-            for kw in line_keywords:
+            for kw in pre_line_keywords:
                 if kw in content:
                     print("***CREDITS***====>", content, "***KW***", kw)
                     #valid_words = validate_line(content.strip(), kw) #remove_extra_spaces( content.split(kw)[0].strip() )
@@ -62,25 +63,48 @@ class ParseCredits():
                     print("valid_words-->", valid_words)
                     print("***END***")
                     for val in valid_words:
-                        if ':' not in val:
-                            if hasNumbers( val ):
-                                print("***CREDITS***", val)
-                                self.credits = val
-                                self.credits = self.get_credits()
-                                return
+                        if hasNumbers( val ):
+                            print("***CREDITS***", val)
+                            self.credits = val
+                            self.credits = self.get_credits()
+                            try:
+                                if float(self.credits) < float(20):
+                                    return
+                            except:
+                                pass
+
 
     def parse_second_part_of_line(self):
         for content in self.contents:
             for kw  in post_line_keywords:
-                if kw in content:
+                #print("KEYWORDS------------***********>", kw, "Content****", content.strip())
+                if kw in content.strip():
+                    print("content-->", content)
+                    print("keyword-->", kw)
                     valid_words = validate_line(content.strip(), kw)
                     #print("content-->", content)
-                    #print("ParseSecondPartOfLine------>", kw, valid_words)
+                    print("ParseSecondPartOfLine------>1", kw, valid_words)
                     if valid_words is None:
                         continue
+                    for val in valid_words:
+                        print("ParseSecondPartOfLine------>1.5",  val)
+                        if hasNumbers( val ):
+                            print("ParseSecondPartOfLine------>2", val)
+                            self.credits = val
+                            self.credits = self.get_credits()
+                            print("ParseSecondPartOfLine------>3", self.credits)
+                            try:
+                                if float(self.credits) < float(20):
+                                    print("ParseSecondPartOfLine------>4", self.credits)
+                                    return
+                            except:
+                                pass
+                    """
+                    print("ParseSecondPartOfLine------>2", content)
                     self.credits = valid_words[0]
                     self.credits = self.get_credits()
-
+                    print("ParseSecondPartOfLine------>3", self.credits)
+                    """
         if not hasNumbers(self.credits):
             self.credits = ""
         
@@ -183,26 +207,36 @@ class ParseCredits():
         for content in self.contents:
             content = content.lower().strip()
             if fos.lower() in content:
-                print(f"Content--->{content}, fos--->{fos}")
                 credit = re.findall('\d*\.?\d+', content)
                 print("Found Credits---->", credit)
-                if credit:
-                    return credit[0]
+                try:
+                    if credit:
+                        if float(credit[0]) < float(20):
+                            return credit[0]
+                except:
+                    continue
 
         print("2*****FIND_CREDITS*****1", fos.lower())
         self.parse_between_lines()
         if self.credits != "":
             cred = re.findall('\d*\.?\d+', self.credits)
-            return cred[0]
+            try:
+                if float(cred[0]) < float(20):
+                    return cred[0]
+            except:
+                pass
 
         print("3*****FIND_CREDITS*****1", fos.lower())
         self.parse_within_lines()
         if self.credits != "":
-
             cred = re.findall('\d*\.?\d+', self.credits)
-            #print("****CREDITS*****EXTRACTION***", cred)
-            return cred[0]
-        print("4*****FIND_CREDITS*****1", fos.lower())
+            print("****CREDITS*****EXTRACTION***", cred)
+            try:
+                if float(cred[0]) < float(20):
+                    return cred[0]
+            except:
+                pass
+        print("5*****FIND_CREDITS*****1", fos.lower())
         return ""
 
     def build_field_of_study(self):

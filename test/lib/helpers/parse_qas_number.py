@@ -1,4 +1,5 @@
 #text_file = "./text_files/22.txt"
+import re
 from lib.common_methods import remove_extra_spaces, validate_line, hasNumbers
 
 
@@ -13,6 +14,12 @@ class ParseQasNumber():
         self.contents = contents
         self.qas_number = ""
 
+    def get_qas_id(self):
+        qn = re.findall('\d+', self.qas_number)
+        if qn:
+            return qn[0]
+        else: 
+            return self.qas_number
 
     def parse_between_lines(self):
         for index, content in enumerate( self.contents ):
@@ -23,6 +30,8 @@ class ParseQasNumber():
                     if self.qas_number == "":
                         if ':' not in contents[index+2].strip():
                             self.qas_number = remove_extra_spaces( self.contents[index+2].strip() )[0]
+                            self.qas_number = self.get_qas_id()
+                            return
 
         if self.qas_number == "":
             for content in self.contents:
@@ -31,6 +40,8 @@ class ParseQasNumber():
                         values = remove_extra_spaces( self.contents[index-1].strip() )
                         if ':' not in values[0]:
                             self.qas_number = values[0]
+                            self.qas_number = self.get_qas_id()
+                            return
 
 
     def parse_within_lines(self): 
@@ -46,6 +57,8 @@ class ParseQasNumber():
                     elif len(valid_words) == 0:
                         continue
                     self.qas_number = valid_words[0]
+                    self.qas_number = self.get_qas_id()
+                    return
 
                 
     def extract(self):

@@ -1,10 +1,11 @@
 #text_file = "./text_files/22.txt"
+import re
 from lib.common_methods import remove_extra_spaces, validate_line, hasNumbers
 
 
 pre_keywords = [] 
 post_keywords = ['National Registry of CPE Sponsors Number']
-line_keywords = ['NASBA Sponsor registry number', 'NASBA Sponsor', 'NASBA -', 'National Registry of Sponsors If) Number -', 'Sponsor Id#', 'National Registry of CPE Sponsors ID#', 'National Registry of CPE Sponsors ID Number:', 'National Registry of CPE Sponsors 1D Number:', 'Natonal Registy', 'CPF Spongors ID Number', 'National Registry Sponsor No.', 'NASBA Sponsor ID', 'National Registry of CPE Sponsors ID:', 'National Registry Sponsor Number', 'Spenser License Numher', 'NASBA SPONSOR #', 'National Registry:', 'National Registry of CPE Sponsors ID Number', 'Natora Reg sty of CPE Socrac:s D8', 'CPE Credits earned:', 'NASBA Sponsor Registry Number', 'National Registry of CPE Sponsors 1D:', 'National Registry of CPE Sponsors [D:', 'Natona Reg stry of CPF Sponsors ID Number', 'Sponsors ID Number', 'Sponsors 1D Number:', 'Sponsors 1D Number', 'NASBA #', "NASBA's National Registry of CPE Sponsors - ID", 'Registry ID Nuanber:', 'NASBAsponsor#', 'NY Sponsor |O Number', 'CPE Sponsor ID #', 'NASBA Registry Provider #:', 'NASBA-', 'NASBA CPE SPONSOR REGISTRY NUMBER', 'NASBA SPONSOR', 'Nat cral Registry of CPE Sporsors ID#', 'CPE Sporsors ID#']
+line_keywords = ['NASBA Sponsor registry number', 'NASBA Sponsor', 'NASBA -', 'National Registry of Sponsors If) Number -', 'Sponsor Id#', 'National Registry of CPE Sponsors ID#', 'National Registry of CPE Sponsors ID Number:', 'National Registry of CPE Sponsors 1D Number:', 'Natonal Registy', 'CPF Spongors ID Number', 'National Registry Sponsor No.', 'NASBA Sponsor ID', 'National Registry of CPE Sponsors ID:', 'National Registry Sponsor Number', 'Spenser License Numher', 'NASBA SPONSOR #', 'National Registry:', 'National Registry of CPE Sponsors ID Number', 'Natora Reg sty of CPE Socrac:s D8', 'CPE Credits earned:', 'NASBA Sponsor Registry Number', 'National Registry of CPE Sponsors 1D:', 'National Registry of CPE Sponsors [D:', 'Natona Reg stry of CPF Sponsors ID Number', 'Sponsors ID Number', 'Sponsors 1D Number:', 'Sponsors 1D Number', 'NASBA #', "NASBA's National Registry of CPE Sponsors - ID", 'Registry ID Nuanber:', 'NASBAsponsor#', 'NY Sponsor |O Number', 'CPE Sponsor ID #', 'NASBA Registry Provider #:', 'NASBA-', 'NASBA CPE SPONSOR REGISTRY NUMBER', 'NASBA SPONSOR', 'Nat cral Registry of CPE Sporsors ID#', 'CPE Sporsors ID#', 'Sponsor IO Number', 'NASBA National Registry of CPE Sponsors - Sponsor IO Number', 'NASBA National Registry of CPE Sponsors - Sponsor ID Number', 'Sponsor ID Number', 'Sponsor IO Number', 'ID Nnver', 'National Registry Sponsor Number:', 'FICPA Etrecs Provicer Number', 'Provider Number', 'Study C Numbe-', 'NASBASponsor Registry Number', 'QASSelf-Study:', 'NASBA:', 'Sponsor ID', 'NASBARegistry Sponsor Number', 'NASBA Registry ID:', 'Registry Identification Number:']
 
 
 class ParseSponsorId():
@@ -24,6 +25,14 @@ class ParseSponsorId():
             return False
         return True
 
+    def get_sponsor_id(self):
+        s_ids = re.findall('\d+', self.sponsor_id)
+        print("s_ids====>", s_ids)
+        if s_ids:
+            return s_ids[0]
+        else:
+            return self.sponsor_id
+
     def parse_between_lines(self):
         for index, content in enumerate( self.contents ):
             for kw in pre_keywords:
@@ -36,6 +45,7 @@ class ParseSponsorId():
                                 self.sponsor_id = val
                                 if self.validate_sponsor_id():
                                     #self.ids.append(self.sponsor_id)
+                                    self.sponsor_id = self.get_sponsor_id()
                                     self.ids.append( {'name': 'NASBA', 'id': self.sponsor_id, 'score': ''} )
                                     return
                                     #continue
@@ -46,6 +56,7 @@ class ParseSponsorId():
                                 if ':' not in val:
                                     self.sponsor_id = val
                                     if self.validate_sponsor_id():
+                                        self.sponsor_id = self.get_sponsor_id()
                                         #self.ids.append(self.sponsor_id)
                                         self.ids.append( {'name': 'NASBA', 'id': self.sponsor_id, 'score': '' } )
                                         return
@@ -68,6 +79,7 @@ class ParseSponsorId():
                                 self.sponsor_id = val
                                 if self.validate_sponsor_id():
                                     #self.ids.append(self.sponsor_id)
+                                    self.sponsor_id = self.get_sponsor_id()
                                     self.ids.append( {'name': 'NASBA', 'id': self.sponsor_id, 'score': '' } )
                                     return
                         #if ':' not in values[0]:
@@ -93,7 +105,10 @@ class ParseSponsorId():
                     self.sponsor_id = words[0].split(')')[0]
                     if self.validate_sponsor_id():
                         print("***SPONSOR_id***4")
+                        print("***SPONSOR_id***4.5")
+                        self.sponsor_id = self.get_sponsor_id()
                         #self.ids.append(self.sponsor_id)
+
                         self.ids.append( {'name': 'NASBA', 'id': self.sponsor_id, 'score': '' } )
                         return
 
