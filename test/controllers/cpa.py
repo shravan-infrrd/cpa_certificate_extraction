@@ -24,10 +24,11 @@ from lib.helpers.parse_sponsors import ParseSponsors
 
 import uuid
 
+"""
 import spacy
 from spacy import displacy
 import en_core_web_sm
-
+"""
 
 class Cpa(Resource):
 

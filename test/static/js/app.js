@@ -1,6 +1,7 @@
 var app=angular.module('docketly-app', []);
 //var UI_URL = "http:///54.245.29.69:6789/extract";
 //var UI_URL = "http:///localhost:6789/extract";
+//var UI_URL ="https://cpa-certificates.infrrdapis.com/extract";
 var UI_URL = "http:///localhost:6790/extract";
 
 app.controller('DocketlyHomeController', ['$scope','$http',function($scope, $http){

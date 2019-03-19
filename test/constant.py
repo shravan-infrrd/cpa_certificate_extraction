@@ -60,7 +60,7 @@ ERR_HOCR_PARSER_DESC = "Error while parsing the hocr string"
 RESPONSE_TEMPLATE_JSON = "response_template.json"
 EXTRACTED_WORD_JSON = "extracted_word.json"
 
-PORT_NUMBER = 6790
+PORT_NUMBER = 4000
 
 HOST = "0.0.0.0"
 

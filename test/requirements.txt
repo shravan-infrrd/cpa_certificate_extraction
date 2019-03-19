@@ -24,3 +24,10 @@ urllib3==1.22
 Wand==0.4.4
 Werkzeug==0.12.2
 natsort
+opencv-python
+pandas
+docx
+dateparser
+datefinder
+openpyxl
+spacy

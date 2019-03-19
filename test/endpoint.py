@@ -17,7 +17,6 @@ from controllers.cpa import Cpa
 # from log import configure_logger, DE_LOG_FILE_PATH
 
 import json
-from flask_pymongo import PyMongo
 import copy
 
 
@@ -40,9 +39,6 @@ app = Flask(DE_APPLICATION_NAME)
 app.config.from_object(DEConfig)
 CORS(app)
 
-app.config['MONGO_DBNAME'] = 'cpa_database'
-app.config['MONGO_URI'] = 'mongodb://localhost:27017/cpa_database'
-mongo = PyMongo(app)
 
 api = Api(app, catch_all_404s=True)
 

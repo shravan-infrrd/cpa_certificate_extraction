@@ -2,7 +2,7 @@ from service.AbbyyOnlineSdk import AbbyyOnlineSdk, ProcessingSettings
 #from AbbyyOnlineSdk import AbbyyOnlineSdk, ProcessingSettings
 import time
 import pandas as pd
-from docx import Document
+#from docx import Document
 from os import path
 
 
