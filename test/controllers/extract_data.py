@@ -103,7 +103,7 @@ class ExtractData(Resource):
             #self.parse_data(contents, result)
             parse_all_fields(contents, result) 
             #self.save_in_db(result)
-            self.update_excel_sheet(result, file.filename.replace(' ', '_'))
+            #self.update_excel_sheet(result, file.filename.replace(' ', '_'))
             return jsonify( {"data": result} )
             #return formulate_response(result, 200, "Successfully Extracted")
 
