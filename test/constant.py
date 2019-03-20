@@ -9,6 +9,7 @@ DE_APPLICATION_NAME = "cpa"
 MONGO_DB_CLIENT = 'mongodb://localhost:27017/cpa_database'
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 TEST_FILES   =  os.path.join(PROJECT_ROOT, 'test_files')
+TEMPORARY_DOWNLOAD_PATH = os.path.join(PROJECT_ROOT, 'temporary')
 REFERENCE_FILE = os.path.join(PROJECT_ROOT, 'reference_file.xlsx')
 TEST_PDF_PATH  = os.path.join(PROJECT_ROOT, 'test_pdf_paths' )
 
