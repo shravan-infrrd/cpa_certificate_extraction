@@ -10,7 +10,6 @@ from utils import formulate_response, is_machine_generated
 from constant import PDF_UPLOAD_DIRECTORY, PROJECT_ROOT, REFERENCE_FILE
 from os import path
 import os
-from service.abby_data_extractor import extract_to_docx
 import subprocess
 
 
