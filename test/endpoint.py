@@ -88,8 +88,8 @@ def list_data():
 
 
 
-api.add_resource(ExtractData, "/extract")
-api.add_resource( Cpa, "/find")
+api.add_resource(ExtractData, "/find")
+api.add_resource( Cpa, "/extract")
 
 
 

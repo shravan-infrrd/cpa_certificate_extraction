@@ -2,11 +2,32 @@ import logging
 import subprocess as sp
 from os import listdir
 from os.path import isfile, join
-
-
+from openpyxl import Workbook
+import openpyxl
+from os import path
+import os
+from constant import REFERENCE_FILE
 from exceptions.exceptions_handler import InternalServerErrorException
 
 MIN_CHARS_FOR_MACHINE_GENERATED = 50
+
+def update_excel_sheet( result, name):
+    if os.path.exists(REFERENCE_FILE):
+        wb = openpyxl.load_workbook( REFERENCE_FILE )
+    else:
+        wb = Workbook()
+    try:
+        sheet = wb[name]
+    except:
+        sheet = wb.create_sheet(name)
+    for index, (key, value) in enumerate(result.items()):
+        if index < 4:
+            continue
+        sheet.cell(row=1+index, column=1).value = str(key)
+        sheet.cell(row=1+index, column=2).value = str(value)
+
+    wb.save(REFERENCE_FILE)
+    wb.close
 
 def list_all_files(path):
     onlyfiles = [f for f in listdir(path) if isfile(join(path, f))]

@@ -26,6 +26,7 @@ wheels/
 MANIFEST
 uploads/
 test/uploads/
+test/test_pdf_paths/
 constant.py
 test/constant.py
 nohup.out

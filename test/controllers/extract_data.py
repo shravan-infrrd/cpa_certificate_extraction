@@ -6,7 +6,7 @@ from flask_restful import Resource
 
 from controllers.scanned_to_machined import read_scanned_pdf, read_scanned_image
 from exceptions.exceptions_handler import *
-from utils import formulate_response, is_machine_generated
+from utils import formulate_response, is_machine_generated, update_excel_sheet
 from constant import PDF_UPLOAD_DIRECTORY, PROJECT_ROOT, REFERENCE_FILE
 from os import path
 import os
@@ -14,8 +14,8 @@ import subprocess
 
 
 from lib.parse_data import parse_all_fields
-from openpyxl import Workbook
-import openpyxl
+#from openpyxl import Workbook
+#import openpyxl
 import uuid
 
 """
@@ -37,7 +37,7 @@ app.config['MONGO_URI'] = 'mongodb://localhost:27017/cpa_database'
 mongo = PyMongo(app)
 """
 class ExtractData(Resource):
-
+    """
     def update_excel_sheet(self, result, name):
         if os.path.exists(REFERENCE_FILE):
             wb = openpyxl.load_workbook( REFERENCE_FILE )
@@ -56,6 +56,7 @@ class ExtractData(Resource):
        
         wb.save(REFERENCE_FILE)
         wb.close
+    """
 
     def save_in_db(self, data):
         certificate_data = copy.deepcopy(data)
@@ -106,7 +107,7 @@ class ExtractData(Resource):
             #self.parse_data(contents, result)
             parse_all_fields(contents, result) 
             #self.save_in_db(result)
-            #self.update_excel_sheet(result, file.filename.replace(' ', '_'))
+            #update_excel_sheet(result, file.filename.replace(' ', '_'))
             te = time.time()
             logging.info('%r %2.2f sec' % ("Time---->", te - ts))
             print(f"TimeTake=====>{te - ts}")
