@@ -5,11 +5,11 @@ from lib.common_methods import remove_extra_spaces, validate_line, hasNumbers, f
 import datefinder
 import datetime
 
-line_keywords = ['Date:', 'Dated', 'Date Completed:', 'Presentation Date:', 'Date Attended:', 'Completion Date:', 'Event Date:', 'Session End Date', 'Oate Attended:', 'Completion Date', 'Session End Date', 'awarded this certificate on', 'Date(s) Completed:', 'PROGRAM DATES:', 'Program Date:', 'Date.', 'Date Issued:']
+line_keywords = ['End Date', 'End Date:', 'Date:', 'Dated', 'Date Completed:', 'Presentation Date:', 'Date Attended:', 'Completion Date:', 'Event Date:', 'Session End Date', 'Oate Attended:', 'Completion Date', 'Session End Date', 'awarded this certificate on', 'Date(s) Completed:', 'PROGRAM DATES:', 'Program Date:', 'Date.', 'Date Issued:', 'Date', 'Class End Date', 'DATE ATTENDED:']
 post_keywords = ['Date Attended', 'Date of Completion', 'event on']
-pre_keywords	= ['Date Certified', 'Date', 'Date of Course', 'Dace of Course', 'Program Date(s)', 'Course Date', 'pate']
+pre_keywords	= ['Date Certified', 'Date', 'Date of Course', 'Dace of Course', 'Program Date(s)', 'Course Date', 'pate', 'Date of Completion']
 
-invalid_keywords = ['cpe']
+invalid_keywords = ['cpe', 'CPE']
 
 class ParseDate():
 
@@ -23,8 +23,12 @@ class ParseDate():
 						self.program_name = "" #program_name
 
 		def validate_date(self):
+				print("DATE_VALIDATION________", self.date, "***")
+				if self.date == "":
+						return False
 				for kw in invalid_keywords:
 						if kw.lower() in self.date.lower():
+								self.date = ""
 								return False
 				return True
 
@@ -56,12 +60,16 @@ class ParseDate():
 				for index, content in enumerate(self.contents):
 						for kw in post_keywords:
 								if kw in content:
+										print("2DATE---->", kw, "content--->", content)
 										values = remove_extra_spaces( self.contents[index+1].strip() )
-										#print("POST--->", values)
+										print("POST--->", values)
 
 										for val in values:
+												print("val--->1", val)
 												if hasNumbers(val) and len(val)>4:
 														self.date = val
+														print("val--->2", self.date)
+														print("val--->3", self.validate_date())
 														if self.validate_date():
 																return
 
@@ -70,10 +78,12 @@ class ParseDate():
 						for index, content in enumerate(self.contents):
 								for kw in pre_keywords:
 										if kw in content:
+												print("1DATE---->", kw, "content--->", content)
 												values = remove_extra_spaces( self.contents[index-1].strip())
+												print(f"1.1Date--->{values}")
 												if len(values) == 0 :
 														values = remove_extra_spaces( self.contents[index-2].strip())
-												#print(f"Date--->{values}")
+												print(f"1.2Date--->{values}")
 												
 												for val in values:
 														if hasNumbers(val) and len(val) > 4:
