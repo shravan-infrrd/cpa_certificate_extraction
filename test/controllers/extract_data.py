@@ -37,104 +37,112 @@ app.config['MONGO_URI'] = 'mongodb://localhost:27017/cpa_database'
 mongo = PyMongo(app)
 """
 class ExtractData(Resource):
-    """
-    def update_excel_sheet(self, result, name):
-        if os.path.exists(REFERENCE_FILE):
-            wb = openpyxl.load_workbook( REFERENCE_FILE )
-        else:
-            wb = Workbook()
-        try:
-            sheet = wb[name]
-        except:
-            sheet = wb.create_sheet(name)
-       
-        for index, (key, value) in enumerate(result.items()):
-            if index < 4:
-                continue
-            sheet.cell(row=1+index, column=1).value = str(key)
-            sheet.cell(row=1+index, column=2).value = str(value)
-       
-        wb.save(REFERENCE_FILE)
-        wb.close
-    """
+		"""
+		def update_excel_sheet(self, result, name):
+				if os.path.exists(REFERENCE_FILE):
+						wb = openpyxl.load_workbook( REFERENCE_FILE )
+				else:
+						wb = Workbook()
+				try:
+						sheet = wb[name]
+				except:
+						sheet = wb.create_sheet(name)
+			 
+				for index, (key, value) in enumerate(result.items()):
+						if index < 4:
+								continue
+						sheet.cell(row=1+index, column=1).value = str(key)
+						sheet.cell(row=1+index, column=2).value = str(value)
+			 
+				wb.save(REFERENCE_FILE)
+				wb.close
+		"""
 
-    def save_in_db(self, data):
-        certificate_data = copy.deepcopy(data)
-        mongo.db.certificates.insert(certificate_data)
-        #mongo.db.certificates.insert(data)
+		def save_in_db(self, data):
+				certificate_data = copy.deepcopy(data)
+				mongo.db.certificates.insert(certificate_data)
+				#mongo.db.certificates.insert(data)
 
-    def post1(self):
-        data = {}
-        data = {"hello": "there"}
-        self.save_in_db(data)
-        return jsonify({"hello": "there"})
+		def post1(self):
+				data = {}
+				data = {"hello": "there"}
+				self.save_in_db(data)
+				return jsonify({"hello": "there"})
 
-    def get(self):
-        return jsonify({"hello":"wassup!!"})
-
-
-
-    def post(self):
-        try:
-            ts = time.time()
-            save_path = PDF_UPLOAD_DIRECTORY
-            file = request.files['file']
-
-            file_name = file.filename.replace(' ', '_')
-            file_name_without_ext = os.path.basename(file_name).split('.')[0]
-            file_name_without_ext = file_name_without_ext + "_" + str(uuid.uuid1())
-            file_name = file_name_without_ext + path.splitext(file_name)[1]
-            doc_dir_location = os.path.join(save_path, file_name_without_ext)
-            if not os.path.exists(doc_dir_location):
-                os.makedirs(doc_dir_location)
-            file_location = os.path.join(doc_dir_location, file_name)
-            file.save( file_location ) 
-            
-            result = read_scanned_pdf( file_location, doc_dir_location )
-            print(f"--->{file_location}--->")
-            #result = read_scanned_image( file_location, doc_dir_location)
+		def get(self):
+				return jsonify({"hello":"wassup!!"})
 
 
-            result['pdf_file_path'] = 'pdf_file/'   + file_name_without_ext
-            result['excel_file_path'] = 'text_file/' + file_name_without_ext
 
-            text_file_path = os.path.join(PDF_UPLOAD_DIRECTORY, file_name_without_ext, 'texts', 'stitched.txt')
-            #text_file_path = os.path.join(PDF_UPLOAD_DIRECTORY, file_name_without_ext, 'texts', 'page-1.txt')
-            print("text_file_path--->", text_file_path)
-            with open( text_file_path ) as fp:
-                contents = fp.readlines() 
+		def post(self):
+				try:
+						ts = time.time()
+						save_path = PDF_UPLOAD_DIRECTORY
+						file = request.files['file']
 
-            #self.parse_data(contents, result)
-            parse_all_fields(contents, result) 
-            #self.save_in_db(result)
-            #update_excel_sheet(result, file.filename.replace(' ', '_'))
-            te = time.time()
-            logging.info('%r %2.2f sec' % ("Time---->", te - ts))
-            print(f"TimeTake=====>{te - ts}")
-            return jsonify( {"data": result} )
-            #return formulate_response(result, 200, "Successfully Extracted")
+						file_name = file.filename.replace(' ', '_')
+						file_name_without_ext = os.path.basename(file_name).split('.')[0]
+						file_name_without_ext = file_name_without_ext + "_" + str(uuid.uuid1())
+						extension = path.splitext(file_name)[1]
+						file_name = file_name_without_ext + extension #path.splitext(file_name)[1]
+						doc_dir_location = os.path.join(save_path, file_name_without_ext)
+						if not os.path.exists(doc_dir_location):
+								os.makedirs(doc_dir_location)
+						file_location = os.path.join(doc_dir_location, file_name)
+						file.save( file_location ) 
 
-        except CustomClassifierException as e:
-            print("1***ERROR***", e)
-            logging.error("Error {} has occurred in controller".format(e))
-            return e.response, e.http_code
 
-        except Exception as e:
-            print("2***ERROR***", e)
-            logging.error("Error in service = {}".format(e), exc_info=True)
-            return InternalServerErrorException(error_code=500,
-                                                error_message="Data Extraction failed!").response, 500
+						print("Extension===>", extension)
+						if extension.lower() in ['.jpg', '.jpeg']:
+								print("1***HERE***")
+								result = read_scanned_image( file_location, doc_dir_location )
+						else:
+								print("2***HERE***")
+								result = read_scanned_pdf( file_location, doc_dir_location )
+						print(f"--->{file_location}--->")
+						#result = read_scanned_image( file_location, doc_dir_location)
 
-        finally:
-            logging.info("API Call Finished Successfully - 200")
 
-    def create_template(self, template_path):
-        sample_copy_path = "/Users/shravanc/flask/aditya_birla/ocr-pdf-aditya-malaysia/sample_copy/sample.xlsx"
-        
+						result['pdf_file_path'] = 'pdf_file/'		+ file_name_without_ext
+						result['excel_file_path'] = 'text_file/' + file_name_without_ext
 
-        a = ['cp', sample_copy_path, template_path]
-        template_file = os.path.join(template_path, 'sample.xlsx')
-        res = subprocess.check_output(a)
-        print(res)
-        return template_file
+						text_file_path = os.path.join(PDF_UPLOAD_DIRECTORY, file_name_without_ext, 'texts', 'stitched.txt')
+						#text_file_path = os.path.join(PDF_UPLOAD_DIRECTORY, file_name_without_ext, 'texts', 'page-1.txt')
+						print("text_file_path--->", text_file_path)
+						with open( text_file_path ) as fp:
+								contents = fp.readlines() 
+
+						#self.parse_data(contents, result)
+						parse_all_fields(contents, result) 
+						#self.save_in_db(result)
+						#update_excel_sheet(result, file.filename.replace(' ', '_'))
+						te = time.time()
+						logging.info('%r %2.2f sec' % ("Time---->", te - ts))
+						print(f"TimeTake=====>{te - ts}")
+						return jsonify( {"data": result} )
+						#return formulate_response(result, 200, "Successfully Extracted")
+
+				except CustomClassifierException as e:
+						print("1***ERROR***", e)
+						logging.error("Error {} has occurred in controller".format(e))
+						return e.response, e.http_code
+
+				except Exception as e:
+						print("2***ERROR***", e)
+						logging.error("Error in service = {}".format(e), exc_info=True)
+						return InternalServerErrorException(error_code=500,
+																								error_message="Data Extraction failed!").response, 500
+
+				finally:
+						logging.info("API Call Finished Successfully - 200")
+
+		def create_template(self, template_path):
+				sample_copy_path = "/Users/shravanc/flask/aditya_birla/ocr-pdf-aditya-malaysia/sample_copy/sample.xlsx"
+				
+
+				a = ['cp', sample_copy_path, template_path]
+				template_file = os.path.join(template_path, 'sample.xlsx')
+				res = subprocess.check_output(a)
+				print(res)
+				return template_file
 

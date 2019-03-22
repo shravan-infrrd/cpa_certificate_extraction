@@ -29,16 +29,16 @@ class Cpa(Resource):
 				name = url.split('/')[-1].split('?')[0]
 				r = requests.get(data['url'])
 				file_name = name.replace(' ', '_')
-				print("FILE_NAME--->", file_name)
+				extension = os.path.basename(file_name).split('.')[1]
+
 				file_name_without_ext = os.path.basename(file_name).split('.')[0]
 				file_name_without_ext = file_name_without_ext + "_" + str(uuid.uuid1())
-				file_name = file_name_without_ext + path.splitext(file_name)[1] + '.pdf'
+				file_name = file_name_without_ext + path.splitext(file_name)[1] #+ '.pdf'
+
 				doc_dir_location = os.path.join( PDF_UPLOAD_DIRECTORY, file_name_without_ext)
-				print("DOC_DIR_LOCATION---->", doc_dir_location)
 				if not os.path.exists(doc_dir_location):
 								os.makedirs(doc_dir_location)
 				file_location = os.path.join(doc_dir_location, file_name)
-				print("File_LOC----->", file_location)				
 
 
 
@@ -47,7 +47,10 @@ class Cpa(Resource):
 				with open(file_location, 'wb') as f:
 						f.write(r.content)
 
-				result = read_scanned_pdf( file_location, doc_dir_location )
+				if extension in ['jpg', 'jpeg', 'png']:
+						result = read_scanned_image( file_location, doc_dir_location )
+				else:
+						result = read_scanned_pdf( file_location, doc_dir_location )
 				text_file_path = os.path.join(PDF_UPLOAD_DIRECTORY, file_name_without_ext, 'texts', 'stitched.txt')
 
 				with open( text_file_path ) as fp:
