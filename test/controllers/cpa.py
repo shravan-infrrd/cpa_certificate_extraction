@@ -54,6 +54,7 @@ class Cpa(Resource):
 						contents = fp.readlines()
 				result = {}
 				parse_all_fields(contents, result)
+				result['id'] = data['id']
 				return result
 
 		def post(self):

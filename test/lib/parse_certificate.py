@@ -52,19 +52,19 @@ def parse_all_fields( contents, result):
 
 
 
-    result['name']            = {"value": pn.name, "score": ""}
-    result['program_name']    = {"value": pp.program_name, "score": ""}
-    #result['field_of_study']  = pf.field_of_study
-    result['credits']         = {"value": pc.credits, "score": ""}
-    result['date']            = {"value": pd.date, "score": ""}
-    #result['completion_date'] = pd.date
-    result['delivery_method'] = {"value": pm.delivery_method, "score": "" }
-    result['sponsor']         = [{"value": ps.sponsor, "score": "" }]
-    result['sponsor_id']      = [{"value": pi.sponsor_id, "score": "" }]
-    #result['sponsor_id']      = pi.ids
-    result['qas_number']      = {"value": pq.qas_number, "score": ""}
-    #result['fos']             = pfos.field_of_study
-    result['fos']             = {"value": pc.field_of_study, "score": ""}
+    result['username']            = {"value": pn.name, "score": ""}
+    result['program_name']    		= {"value": pp.program_name, "score": ""}
+    #result['field_of_study']  		= pf.field_of_study
+    result['credits']         		= {"value": pc.credits, "score": ""}
+    result['completion_date']     = {"value": pd.date, "score": ""}
+    #result['completion_date'] 		= pd.date
+    result['delivery_format'] 		= {"value": pm.delivery_method, "score": "" }
+    result['sponsor_name']        = [{"value": ps.sponsor, "score": "" }]
+    result['sponsor_number']      = [{"value": pi.sponsor_id, "score": "" }]
+    #result['sponsor_id']      		= pi.ids
+    result['qas_number']      		= {"value": pq.qas_number, "score": ""}
+    #result['fos']             		= pfos.field_of_study
+    result['field_of_study']      = pc.field_of_study #{"value": pc.field_of_study, "score": ""}
 
     print("RESULT====>", result)
     return result
