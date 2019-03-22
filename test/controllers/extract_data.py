@@ -93,7 +93,7 @@ class ExtractData(Resource):
 
 
 						print("Extension===>", extension)
-						if extension.lower() in ['.jpg', '.jpeg']:
+						if extension.lower() in ['.jpg', '.jpeg', '.png']:
 								print("1***HERE***")
 								result = read_scanned_image( file_location, doc_dir_location )
 						else:
