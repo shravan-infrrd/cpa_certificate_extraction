@@ -45,11 +45,14 @@ def format_date(date):
 
 
 def find_pattern(kw, content):
+		kw = kw.replace('|', '')
 		try:
 				match = re.compile(r'\b({0})\b'.format(kw), flags=re.IGNORECASE).search(content)
 				if match is None:
+						#print("FIND_PATTERN*****FALSE")
 						return False
 				else:
+						#print("FIND_PATTERN*****TRUE")
 						return True
 		except:
 				print("FindPattern Error--->")

@@ -118,7 +118,8 @@ def read_scanned_image(filename, doc_dir_location):
 				img = cv.imread( filename, 0 )
 				img = cv.medianBlur(img, 5)
 				#ret, th1 = cv.adaptiveThreshold(img,255,cv.ADAPTIVE_THRESH_GAUSSIAN_C, cv.THRESH_BINARY,11,2)
-				ret, th1 = cv.threshold(img,180,255,cv.THRESH_BINARY)
+				#ret, th1 = cv.threshold(img,180,255,cv.THRESH_BINARY)
+				ret, th1 = cv.threshold(img,150,255,cv.THRESH_BINARY)
 				cv.imwrite( filename, th1)
 				print("***4***", filename)
 
@@ -213,9 +214,10 @@ def read_scanned_pdf(pdf_path, output_dir_location):
 										pdf_page_to_image(page, os.path.join(image_dir_location, page_name_without_ext))
 
 										img = cv.imread( image_path, 0 )
+										img = cv.resize(img, None, fx=1.5, fy=1.3, interpolation=cv.INTER_CUBIC)
 										img = cv.medianBlur(img, 5)
 										#ret, th1 = cv.threshold(img,127,255,cv.THRESH_BINARY)
-										ret, th1 = cv.threshold(img,50,255,cv.THRESH_BINARY)
+										ret, th1 = cv.threshold(img,180,255,cv.THRESH_BINARY)
 										#th1 = cv2.adaptiveThreshold(cv2.GaussianBlur(img, (5, 5), 0), 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 31, 2)
 										cv.imwrite(image_path, th1)
 										#get_string(image_path)

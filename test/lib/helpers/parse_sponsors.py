@@ -1,18 +1,19 @@
 #text_file = "./text_files/22.txt"
 from lib.common_methods import remove_extra_spaces, validate_line, hasNumbers, find_pattern
-
+from lib.sponsor_list import sponsor_lists
 
 pre_keywords = [] 
 post_keywords = []
 line_keywords = ['iS registered', 'is registeres', 'is registered', '0 roguterod', 'is registeced', 'ts registered', 'SPONSOR:', "1's registered", '1s registered']
-special_keywords	= ['sponsored by', 'CPE Sponsor Name', "Program Sponsor's Name and Address"]
+special_keywords	= ['sponsored by', 'CPE Sponsor Name', "Program Sponsor's Name and Address", "Sponsor:"]
 
 #sponsor_list = ["AICPA","Deloitte", "Becker Professional Education", "Intuit", "Optiv Security", "FICPA", "KPMG", "EY", "CPA Academy", "Becker", "Beene Garter LLP", "Checkpoint Learning", "PricewaterhouseCoopers LLP", "PWC", "Deloitte LLP", "MACPA", "CPAAcademy.org", "CPAwebengage, Inc.", "Wolters Kluwer", "Grant Thornton LLP", "The Institute of Internal Auditors", "Ernst & Young LLP", "Learning.net", "KPMG LLP", "SC&H Group", "Association of International Certified Professional Accountants", "Thomson Reuters", "RSM", "HoganTaylor LLP", "Western CPE", "MICPA", "Practising Law Institute", "TSCPA", "Plain-English Accounting", "Surgent McCoy CPE, LLC", "Ernst & Young", "Surgent", "OSCPA", "VSCPA", "PricewaterhouseCoopers"]
 
-sponsor_list = ["AICPA", "Deloitte", "Becker Professional Education", "Intuit", "Optiv Security", "FICPA", "KPMG", "EY", "CPA Academy", "Becker", "Beene Garter LLP", "Checkpoint Learning", "PricewaterhouseCoopers LLP", "PWC", "Deloitte LLP", "MACPA", "CPAAcademy.org", "CPAwebengage, Inc.", "Wolters Kluwer", "Grant Thornton LLP", "The Institute of Internal Auditors", "Ernst & Young LLP", "Learning.net", "KPMG LLP", "SC&H Group", "Association of International Certified Professional Accountants", "Thomson Reuters", "RSM", "HoganTaylor LLP", "Western CPE", "MICPA", "Practising Law Institute", "TSCPA", "Plain-English Accounting", "Surgent McCoy CPE, LLC", "Ernst & Young", "Surgent", "OSCPA", "VSCPA", "PricewaterhouseCoopers", "RSM US LLP", "AuditSense", "Becker CPE", "Workiva", "DTTL", "BKD, LLP", "KPMG Executive Education", "Foundation for Accounting Education", "PLI", "ACFE", "Association of Certified Fraud Examiners", "Grant Thornton", "Learnlive Technologies", 'Robert Half', 'The Madray Group', 'The Madray Group, Inc.', 'CPE Solutions, LLC', 'Cliftor LarsonAller LLP', 'SourceMedia Inc.', 'SourceMedia Inc', 'Proformative', 'Perry Glen Moore', 'CPA Crossings', 'CPE DepotInc', 'Financial Accounting Foundation', 'FASB', 'Tennessee Valley Authority', 'Accountants Education Group']
+sponsor_list = ["AICPA", "Deloitte", "Becker Professional Education", "Intuit", "Optiv Security", "FICPA", "KPMG", "EY", "CPA Academy", "Becker", "Beene Garter LLP", "Checkpoint Learning", "PricewaterhouseCoopers LLP", "PWC", "Deloitte LLP", "MACPA", "CPAAcademy.org", "CPAwebengage, Inc.", "Wolters Kluwer", "Grant Thornton LLP", "The Institute of Internal Auditors", "Ernst & Young LLP", "Learning.net", "KPMG LLP", "SC&H Group", "Association of International Certified Professional Accountants", "Thomson Reuters", "RSM", "HoganTaylor LLP", "Western CPE", "MICPA", "Practising Law Institute", "TSCPA", "Plain-English Accounting", "Surgent McCoy CPE, LLC", "Ernst & Young", "Surgent", "OSCPA", "VSCPA", "PricewaterhouseCoopers", "RSM US LLP", "AuditSense", "Becker CPE", "Workiva", "DTTL", "BKD, LLP", "KPMG Executive Education", "Foundation for Accounting Education", "PLI", "ACFE", "Association of Certified Fraud Examiners", "Grant Thornton", "Learnlive Technologies", 'Robert Half', 'The Madray Group', 'The Madray Group, Inc.', 'CPE Solutions, LLC', 'Cliftor LarsonAller LLP', 'SourceMedia Inc.', 'SourceMedia Inc', 'Proformative', 'Perry Glen Moore', 'CPA Crossings', 'CPE DepotInc', 'Financial Accounting Foundation', 'FASB', 'Tennessee Valley Authority', 'Accountants Education Group', 'The CalCPA Education Foundation', 'Sisterson & Co. LLP', 'Sisterson & Co']
+sponsor_list = sponsor_list + sponsor_lists
+sponsor_list = list(set(sponsor_list))
 
-
-extra_list= ["ASSOCIATION OF CERTIFIED FRAUD EXAMINERS", 'Plaio-English Accounting', 'pliedu', 'the Institute of Internal Auditors', 'WAthe Institute of Internal Auditors', 'Institute of Internal Auditors', 'THOMSON REUTERS', 'The Virginia Society of CPAs', 'Wes:ern CPE', 'Plain-English Acooanting', 'Plain-English Accoanting']
+extra_list= ["ASSOCIATION OF CERTIFIED FRAUD EXAMINERS", 'Plaio-English Accounting', 'pliedu', 'the Institute of Internal Auditors', 'WAthe Institute of Internal Auditors', 'Institute of Internal Auditors', 'THOMSON REUTERS', 'The Virginia Society of CPAs', 'Wes:ern CPE', 'Plain-English Acooanting', 'Plain-English Accoanting', 'schoolefbookkeeping', 'The ASCPA CPE', 'Armanino LLP', "Accounting & Financial Women's Alliance"]
 
 sponsor_list = sponsor_list + extra_list
 
@@ -25,8 +26,11 @@ class ParseSponsors():
 		def validate_sponsor(self):
 				for sponsor in sponsor_list:
 						if find_pattern(sponsor.lower(), self.sponsor.lower()):
-								
+								print(f"sponsor-->{sponsor}, ===>{self.sponsor}")	
 								sp = self.sponsor[ self.sponsor.find(sponsor) : (self.sponsor.find(sponsor) + len(self.sponsor))]
+								print("SP===>", sp)
+								if sp == "":
+										continue
 								self.sponsor = sp 
 								return True
 				return False
@@ -67,7 +71,7 @@ class ParseSponsors():
 				for index, content in enumerate(self.contents):
 						for kw in line_keywords:
 								if kw in content:
-										print(f"***START***SPONSOR***", content, "***KW***", kw)
+										#print(f"***START***SPONSOR***", content, "***KW***", kw)
 										valid_words = remove_extra_spaces( content.split(kw)[0].strip() )
 										print("valid_words*****", valid_words) 
 										if valid_words is None:
@@ -112,7 +116,6 @@ class ParseSponsors():
 		def extract_from_list(self):
 				for content in self.contents:
 						for sp in sponsor_list:
-									#print("SPONSOR===>", sp)
 									if find_pattern(sp.lower(), content.lower()):
 											self.sponsor = sp
 											return
@@ -120,11 +123,16 @@ class ParseSponsors():
 
 								
 		def extract(self):
+				print("***SPONSORS***1")
 				self.parse_within_lines()
+				print("***SPONSORS***2")
 				if self.sponsor == "":
+						print("***SPONSORS***3")
 						self.parse_between_lines()
 				if self.sponsor == "":
+						print("***SPONSORS***4")
 						self.extract_from_list()
+				print("***SPONSORS***5")
 				return True
 
 

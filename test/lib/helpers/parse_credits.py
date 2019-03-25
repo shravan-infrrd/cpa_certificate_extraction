@@ -3,14 +3,14 @@ from lib.common_methods import remove_extra_spaces, validate_line, hasNumbers
 
 
 #line_keywords = ['ofContinuing ProfessionalEducation Credits:', 'CPE credit1', 'CPE Hours', 'Credit', 'hours of CPE', 'hours of Continuing', 'CPE credits']
-pre_line_keywords = ['ofContinuing ProfessionalEducation Credits:', 'CPE credit1', 'CPE Hours', 'Credit', 'hours of CPE', 'hours of Continuing', 'CPE credits', 'CPE is awarded', 'CPE Hour']
+pre_line_keywords = ['ofContinuing ProfessionalEducation Credits:', 'CPE credit1', 'CPE Hours', 'Credit', 'hours of CPE', 'hours of Continuing', 'CPE credits', 'CPE is awarded', 'CPE Hour', 'CPE credit hours']
 #line_keywords = ['ofContinuing ProfessionalEducation Credits:', 'CPE credit1', 'CPE Hours', 'Interactive Credit in CPE Hours:', 'For a total of', 'Total CPF. Hours:', 'Total CPE Hours:', 'Total CPF. Hours:', 'Has Successfully Completed', 'Hours of Recommended CPE Credit:', 'CPE Credit Hours:', 'CPE Hours:', 'Number of CPE Credits', 'Total Credit Earned:', 'Duration:', 'CPE Credits:' ]
 
 post_line_keywords = ['Interactive Credit in CPE Hours:', 'For a total of', 'Total CPF. Hours:', 'Total CPE Hours:', 'Total CPF. Hours:', 'Has Successfully Completed', 'Hours of Recommended CPE Credit:', 'CPE Credit Hours:', 'CPE Hours:', 'Number of CPE Credits', 'Total Credit Earned:', 'Duration:', 'CPE Credits:', 'Credit Hours:', 'CPE credit:', 'Credits:', 'CPE Credit Hours.', 'CPE Credits earned:', 'Recommendedfor', 'Recommended for', 'CPE credits:', 'Course Credit:', 'TSCPA Sponsor ID #', 'CPE:', 'Total Credits Earned:', 'Number of CPE credits', 'CPE Credit:', 'CPE Hours ']
 
 keywords = ['Numberof CPE Credits', 'Earned CPE credit(s)', 'Awarded CPE Credit Hours', 'Earned CPE Credit(s)', 'Number of CPE Credits', 'Earned CPE credit(s)']
 
-post_keywords = ['Recommended for:', 'CPE CREDIT EARNED', 'CPECredits', 'Credas']
+post_keywords = ['Recommended for:', 'CPE CREDIT EARNED', 'CPECredits', 'Credas'] 
 
 class ParseCredits():
 
@@ -54,14 +54,14 @@ class ParseCredits():
 				for content in self.contents:
 						for kw in pre_line_keywords:
 								if kw in content:
-										print("***CREDITS***====>", content, "***KW***", kw)
+										#print("***CREDITS***====>", content, "***KW***", kw)
 										#valid_words = validate_line(content.strip(), kw) #remove_extra_spaces( content.split(kw)[0].strip() )
 
 										#print(remove_extra_spaces( content.split(kw)[0].strip() ))
 
 										valid_words = remove_extra_spaces( content.split(kw)[0].strip() )
-										print("valid_words-->", valid_words)
-										print("***END***")
+										#print("valid_words-->", valid_words)
+										#print("***END***")
 										for val in valid_words:
 												if hasNumbers( val ):
 														print("***CREDITS***", val)
@@ -77,13 +77,13 @@ class ParseCredits():
 		def parse_second_part_of_line(self):
 				for content in self.contents:
 						for kw	in post_line_keywords:
-								#print("KEYWORDS------------***********>", kw, "Content****", content.strip())
+								#print("CREDITS_KEYWORDS------------***********>", kw, "Content****", content.strip())
 								if kw in content.strip():
-										print("content-->", content)
-										print("keyword-->", kw)
+										#print("content-->", content)
+										#print("keyword-->", kw)
 										valid_words = validate_line(content.strip(), kw)
 										#print("content-->", content)
-										print("ParseSecondPartOfLine------>1", kw, valid_words)
+										#print("ParseSecondPartOfLine------>1", kw, valid_words)
 										if valid_words is None:
 												continue
 										for val in valid_words:

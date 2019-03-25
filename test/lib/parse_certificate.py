@@ -14,7 +14,10 @@ def parse_all_fields( contents, result):
     pn = ParseName(contents)
     pn.extract()
 
-    pp = ParseProgramName(contents, pn.name)
+    ps = ParseSponsors(contents)
+    ps.extract()
+
+    pp = ParseProgramName(contents, pn.name, ps.sponsor)
     pp.extract()
 
     pd  = ParseDate(contents, pn.name, pp.program_name)
@@ -39,8 +42,7 @@ def parse_all_fields( contents, result):
     pm = ParseDeliveryMethod(contents)
     pm.extract()
 
-    ps = ParseSponsors(contents)
-    ps.extract()
+
 
     pi = ParseSponsorId(contents)
     pi.extract()

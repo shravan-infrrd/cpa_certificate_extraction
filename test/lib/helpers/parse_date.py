@@ -4,12 +4,12 @@ from lib.common_methods import remove_extra_spaces, validate_line, hasNumbers, f
 #from dateutil.parser import parse
 import datefinder
 import datetime
-
-line_keywords = ['End Date', 'End Date:', 'Date:', 'Dated', 'Date Completed:', 'Presentation Date:', 'Date Attended:', 'Completion Date:', 'Event Date:', 'Session End Date', 'Oate Attended:', 'Completion Date', 'Session End Date', 'awarded this certificate on', 'Date(s) Completed:', 'PROGRAM DATES:', 'Program Date:', 'Date.', 'Date Issued:', 'Date', 'Class End Date', 'DATE ATTENDED:']
-post_keywords = ['Date Attended', 'Date of Completion', 'event on']
+import re
+line_keywords = ['Date of Completion:', 'Date Issued:', 'End Date', 'End Date:', 'Date Completed:', 'Presentation Date:', 'Date Attended:', 'Completion Date:', 'Event Date:', 'Session End Date', 'Oate Attended:', 'Completion Date', 'Session End Date', 'awarded this certificate on', 'Date(s) Completed:', 'PROGRAM DATES:', 'Program Date:', 'Date Issued:', 'Class End Date', 'DATE ATTENDED:', 'Date:', 'Dated', 'Date.', 'Date']
+post_keywords = [ 'Completion Date:', 'Date Attended', 'Date of Completion', 'event on', 'awardedthis certificate on', 'awarded this certificate on']
 pre_keywords	= ['Date Certified', 'Date', 'Date of Course', 'Dace of Course', 'Program Date(s)', 'Course Date', 'pate', 'Date of Completion']
 
-invalid_keywords = ['cpe', 'CPE']
+invalid_keywords = ['cpe', 'CPE', 'Location', 'of course', 'tatas8']
 
 class ParseDate():
 
@@ -33,9 +33,18 @@ class ParseDate():
 				return True
 
 		def make_corrections(self, date):
+				print("DATE---make_corrections--->1", date)
 				date = date.lower().split(' to ')[-1]
 				date = date.lower().split(' at ')[0]
 				date = date.replace('virtue of the', '')
+				print("DATE---make_corrections--->2", date)
+				if 'Part'.lower() in date:
+						print("DATE---make_corrections--->3", date)
+						dates = re.findall(r"part \d+ on (.*)$", date.lower())
+						print("DATE---make_corrections--->4", dates)
+						if dates:
+								print("DATE---make_corrections--->5", date)
+								date = dates[0]
 				"""
 				date = date.lower().replace('october', 'octaber')
 				date = date.lower().replace('to', 'to a')
@@ -48,12 +57,17 @@ class ParseDate():
 				for content in self.contents:
 						for kw in line_keywords:
 								if kw in content:
+										print("WithINLINE----->", content, "---KEYWORD---", kw)
 										valid_words = validate_line(content, kw)
 										if valid_words is None:
 												continue
-										self.date = valid_words[0]
-										if self.validate_date():
-												return
+										for val in valid_words:
+												print("VALID_WORD----->", valid_words)
+												if hasNumbers(val):
+														val = val.replace('.', ',')
+														self.date = val #valid_words[0]
+														if self.validate_date():
+																return
 
 
 		def parse_between_lines(self): 
@@ -93,6 +107,7 @@ class ParseDate():
 
 
 		def extract_without_keywords(self):
+				print("****WITHOUT_KEYWORD_EXTRACTION***")
 				parse = False
 				for content in self.contents:
 						#print(f"Date:------>{self.program_name.lower().strip()}") #===Content:-->{content.lower().strip()}")
@@ -100,15 +115,22 @@ class ParseDate():
 						#print(f"TRUE/FALSE---DATE--->{find_pattern(self.program_name.lower().strip(), content.lower().strip())}")
 						#print(f"TRUE/FALSE->{find_pattern(content.lower().strip(), self.program_name.lower().strip())}")
 						#if find_pattern(self.program_name.lower().strip(), content.lower().strip()):
+						#print("1***PARSE***", str(parse))
 						if self.program_name == "":
 								parse = True
+						#print("2***PARSE_Pattern***", str(parse))
+						#print("content.lower().strip()======>", content.lower().strip())
+						#print("self.program_name.lower().strip()===>", self.program_name.lower().strip())
 						if find_pattern(content.lower().strip(), self.program_name.lower().strip()):
 						#if self.name.lower() in content.lower().strip():
 								parse = True
+						#print("3***PARSE***", str(parse))
 						if parse:
 								#if hasNumbers(content):
 								#print("FINDING-DATE----->1", content)
 								content = self.make_corrections(content)
+
+								content = content.replace('.', ',')
 								#print("FINDING-DATE----->2", content)
 								dates = list(datefinder.find_dates(content))
 								#print("Dates------------>3", dates)
