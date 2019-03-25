@@ -3,7 +3,8 @@ import re
 from lib.common_methods import remove_extra_spaces, validate_line, find_pattern, check_for_valid_string
 
 
-preceding_keywords = ['has successfully completed', 'CERTIFICATE OF ATTENDANCE', 'has successfully completed the online course', 'Online Certification training:', 'Certificate of Attendance', 'Certificate of Completion', 'for participation in', 'for participation in', 'successfully completed', 'completion ot the course', 'entitled', 'for successfully completing', 'completed', 'For Successfully Completing', 'has successfully completed:', 'Has Successfully Completed the Course:', 'Has Successfully Completed the Course:', 'For successful completion of', 'for the successful completion of', 'has completed', 'has completed the group Internet-based course', 'nas success*u ly comoleted:', 'Forattending', 'For attending', 'FOR THE PROGRAM ENTITLED', 'Congratulations on the successful completion of', 'for successful completion of the course', 'Has Successtully Completed the Course:', 'COMPLETION OF THE FOLLOWING ', 'for successful completion of', 'For successfully completing:', 'FOR THE COURSE ENTITLED', 'For completion of', 'FOR SUCCESSFUL COMPLETION OF', 'HAS COMPLETED THE TRAINING COURSETITLED', 'HAS COMPLETED THE TRAINING COURSE TITLED', 'For successfully completing', 'On Demand Video', 'FOR SUCCESSFUL COMPLETION', 'For successful completionof:', 'For successful completion of:', 'attended the course', 'Successful campletion of', 'HAS SUCCESSFULLY COMPLETED', 'For the successful completion of']
+
+preceding_keywords = ['has successfully completed', 'CERTIFICATE OF ATTENDANCE', 'has successfully completed the online course', 'Online Certification training:', 'Certificate of Attendance', 'Certificate of Completion', 'for participation in', 'for participation in', 'successfully completed', 'completion ot the course', 'entitled', 'for successfully completing', 'completed', 'For Successfully Completing', 'has successfully completed:', 'Has Successfully Completed the Course:', 'Has Successfully Completed the Course:', 'For successful completion of', 'for the successful completion of', 'has completed', 'has completed the group Internet-based course', 'nas success*u ly comoleted:', 'Forattending', 'For attending', 'FOR THE PROGRAM ENTITLED', 'Congratulations on the successful completion of', 'for successful completion of the course', 'Has Successtully Completed the Course:', 'COMPLETION OF THE FOLLOWING ', 'for successful completion of', 'For successfully completing:', 'FOR THE COURSE ENTITLED', 'For completion of', 'FOR SUCCESSFUL COMPLETION OF', 'HAS COMPLETED THE TRAINING COURSETITLED', 'HAS COMPLETED THE TRAINING COURSE TITLED', 'For successfully completing', 'On Demand Video', 'FOR SUCCESSFUL COMPLETION', 'For successful completionof:', 'For successful completion of:', 'attended the course', 'Successful campletion of', 'HAS SUCCESSFULLY COMPLETED', 'For the successful completion of', 'This certifies that']
 
 """
 Is hereby awardedto (the institute of internal)
@@ -12,7 +13,7 @@ following_keywords = ['Course Name', 'a seminar presented by'] #, 'Is hereby awa
 line_keywords = ['Course Title:', 'for successfully completing:', 'for successfully completing', 'Program Title:', 'PROGRAM TITLE:', 'For successful completion of', 'Title.', 'Title:', 'for success‘ully comp et ng', 'Course:', 'Event Title:', 'tor successfully completing', 'Course Title', 'Subject:', 'Event:', 'NAME OF COURSE:', 'Course', 'Title of Training:', 'For Attending', 'For successfully completing the', 'EVENT NAME:', 'has successfully completed:', 'TOPIC:' ]
 
 
-invalid_keywords = ['presented to', 'Awarded to', 'Date', 'Freserted to', 'successful', 'granted', 'Association of Cortificd', 'Association of Certified', 'Field of Study', 'Please', 'Program Location', 'CPE', 'Credits', 'CTEC', 'Participant', 'Sent', 'This is to ceruty that', 'This is to certify that', 'This is to', 'awardedthis', 'awarded this', 'preserted to', 'success‘ully', '@', 'certify that', 'Instructional Delivery Method', 'Attendee', 'Exam', 'Attendee Name:', 'SPONSOR', 'sponsor', 'PROGRAM TITLE:', 'program title', 'Successfully', 'successfully', 'ACKNOWLEDGES', 'THIS CERTIFIES THAT', 'this certifies that', 'for participation in', 'This certificate is presentedto', 'This certificate is presented to', 'Author', 'Congratulations', 'Self-Study Programs', 'CourseTitle', 'Course Title', 'DELIVERY METHOD', 'awardedto', 'awarded to', 'Location', 'CPEcredits', 'CPE credits', 'Event Dates', 'OBJECTIVE', 'Units', 'Has Successtully Completed the', 'Course Freld of Study', 'Course Field of Study', 'Course Number', 'Delivery Method Used', 'Type of InstructionalDelivery', 'Type of Instructional Delivery', 'Completion Certificate', 'Dates', 'Street', 'Pittsburgh', 'Sponsored by', 'Inc', 'Presenter', 'Fleld of Study', 'Field of Study']
+invalid_keywords = ['presented to', 'Awarded to', 'Date', 'Freserted to', 'successful', 'granted', 'Association of Cortificd', 'Association of Certified', 'Field of Study', 'Please', 'Program Location', 'CPE', 'Credits', 'CTEC', 'Participant', 'Sent', 'This is to ceruty that', 'This is to certify that', 'This is to', 'awardedthis', 'awarded this', 'preserted to', 'success‘ully', '@', 'certify that', 'Instructional Delivery Method', 'Attendee', 'Exam', 'Attendee Name:', 'SPONSOR', 'sponsor', 'PROGRAM TITLE:', 'program title', 'Successfully', 'successfully', 'ACKNOWLEDGES', 'THIS CERTIFIES THAT', 'this certifies that', 'for participation in', 'This certificate is presentedto', 'This certificate is presented to', 'Author', 'Congratulations', 'Self-Study Programs', 'CourseTitle', 'Course Title', 'DELIVERY METHOD', 'awardedto', 'awarded to', 'Location', 'CPEcredits', 'CPE credits', 'Event Dates', 'OBJECTIVE', 'Units', 'Has Successtully Completed the', 'Course Freld of Study', 'Course Field of Study', 'Course Number', 'Delivery Method Used', 'Type of InstructionalDelivery', 'Type of Instructional Delivery', 'Completion Certificate', 'Dates', 'Street', 'Pittsburgh', 'Sponsored by', 'Inc', 'Presenter', 'Fleld of Study', 'Field of Study', 'Fields of Study']
 
 possible_keywords = ['Conference', 'Event', 'Webcast', 'Seminar', 'Review Course', 'Ethics:', 'CPE DIRECT']
 
@@ -52,6 +53,15 @@ class ParseProgramName():
 								self.program_name = ""
 								return False
 				"""
+				if '(' in self.program_name:
+						if ')' not in self.program_name:
+								self.program_name = ""
+								return False
+				elif ')' in self.program_name:
+						self.program_name = ""
+						return False
+								
+
 
 				print("ValidateProgramName**2", len(self.program_name.strip()))
 				if len(self.program_name.strip()) <= 4:

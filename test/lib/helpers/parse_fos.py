@@ -6,7 +6,7 @@ field_of_studies = [ 'Accounting & Auditing', 'Accounting and Auditing', 'Admini
 
 special_list = ['Auditing', 'Accounting', 'Specialized Knowledge', 'ACCOUNTING', 'AUDITING', 'BUSINESS MAN AGEMENT', 'MAS', 'TAXES', 'Business Management']
 
-related_studies = ['Computer Software and Applications', 'Accounting & Auditing / Tax', 'Personnel/Human Resource', 'Personnel/HR', 'Regulatory Ethics', 'Professional Development', 'Behavioral Ethics', 'Management Services', 'A&A', 'Yellow Book', 'Professional Ethics', 'Fraud', 'Accounting Governmental', 'Auditing Governmental', 'Behavioral Ethics', 'Business Mgmt and Org', 'State Ethics', 'Cybersecurity Update', 'Taxation', 'Forensic Accounting', 'Forensic Accounting — Technical', 'Communications & Marketing', 'Group intemet-Gased', 'Management Advisory Services', 'Management Advisory Services Basic Level']
+related_studies = ['Computer Software and Applications', 'Accounting & Auditing / Tax', 'Personnel/Human Resource', 'Personnel/HR', 'Regulatory Ethics', 'Professional Development', 'Behavioral Ethics', 'Management Services', 'A&A', 'Yellow Book', 'Professional Ethics', 'Fraud', 'Accounting Governmental', 'Auditing Governmental', 'Behavioral Ethics', 'Business Mgmt and Org', 'State Ethics', 'Cybersecurity Update', 'Taxation', 'Forensic Accounting', 'Forensic Accounting — Technical', 'Communications & Marketing', 'Group intemet-Gased', 'Management Advisory Services', 'Management Advisory Services Basic Level', 'Ethics (Regulatory)']
 
 
 field_of_studies = field_of_studies + related_studies + special_list
@@ -14,7 +14,7 @@ field_of_studies = list(set(field_of_studies))
 
 pre_keywords = [ 'field of study:', 'For the successful completion of', 'sponsored by YH Advisors, Inc.', 'FOR THE PROGRAM ENTITLED', 'Field of Study', 'for successfully completing', 'bicld of Study', 'Course', 'CPE Fueid of Study.', 'field of study']
 post_keywords = ['bicld of Study', 'bield of Study', 'Field of Study', 'Subject Area', 'Field ofStudy', 'NASBA Field of Study:', 'Curriculum:']
-line_keywords = ['Field of Study:', 'Best Practices in', 'FieldofStudy:', 'Course Field of Study:', 'for successfully completing', 'Fieldof Study:', 'Recommended Field of Study:', 'in the subject area of', 'RecommendedField of Study:', 'Field ofStudy:', 'Ficld of Study:', 'NASBAField of Study:']
+line_keywords = ['Field of Study:', 'Best Practices in', 'FieldofStudy:', 'Course Field of Study:', 'for successfully completing', 'Fieldof Study:', 'Recommended Field of Study:', 'in the subject area of', 'RecommendedField of Study:', 'Field ofStudy:', 'Ficld of Study:', 'NASBAField of Study:', 'Course Freld of Study:']
 
 
 class ParseFos():

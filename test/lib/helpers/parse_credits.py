@@ -1,16 +1,17 @@
 import re
 from lib.common_methods import remove_extra_spaces, validate_line, hasNumbers
+from dateutil.parser import *
 
 
 #line_keywords = ['ofContinuing ProfessionalEducation Credits:', 'CPE credit1', 'CPE Hours', 'Credit', 'hours of CPE', 'hours of Continuing', 'CPE credits']
 pre_line_keywords = ['ofContinuing ProfessionalEducation Credits:', 'CPE credit1', 'CPE Hours', 'Credit', 'hours of CPE', 'hours of Continuing', 'CPE credits', 'CPE is awarded', 'CPE Hour', 'CPE credit hours']
 #line_keywords = ['ofContinuing ProfessionalEducation Credits:', 'CPE credit1', 'CPE Hours', 'Interactive Credit in CPE Hours:', 'For a total of', 'Total CPF. Hours:', 'Total CPE Hours:', 'Total CPF. Hours:', 'Has Successfully Completed', 'Hours of Recommended CPE Credit:', 'CPE Credit Hours:', 'CPE Hours:', 'Number of CPE Credits', 'Total Credit Earned:', 'Duration:', 'CPE Credits:' ]
 
-post_line_keywords = ['Interactive Credit in CPE Hours:', 'For a total of', 'Total CPF. Hours:', 'Total CPE Hours:', 'Total CPF. Hours:', 'Has Successfully Completed', 'Hours of Recommended CPE Credit:', 'CPE Credit Hours:', 'CPE Hours:', 'Number of CPE Credits', 'Total Credit Earned:', 'Duration:', 'CPE Credits:', 'Credit Hours:', 'CPE credit:', 'Credits:', 'CPE Credit Hours.', 'CPE Credits earned:', 'Recommendedfor', 'Recommended for', 'CPE credits:', 'Course Credit:', 'TSCPA Sponsor ID #', 'CPE:', 'Total Credits Earned:', 'Number of CPE credits', 'CPE Credit:', 'CPE Hours ', 'Recommended CPE Credits:']
+post_line_keywords = ['Interactive Credit in CPE Hours:', 'For a total of', 'Total CPF. Hours:', 'Total CPE Hours:', 'Total CPF. Hours:', 'Has Successfully Completed', 'Hours of Recommended CPE Credit:', 'CPE Credit Hours:', 'CPE Hours:', 'Number of CPE Credits', 'Total Credit Earned:', 'Duration:', 'CPE Credits:', 'Credit Hours:', 'CPE credit:', 'Credits:', 'CPE Credit Hours.', 'CPE Credits earned:', 'Recommendedfor', 'Recommended for', 'CPE credits:', 'Course Credit:', 'TSCPA Sponsor ID #', 'CPE:', 'Total Credits Earned:', 'Number of CPE credits', 'CPE Credit:', 'CPE Hours ', 'Recommended CPE Credits:', 'Approved CPE credit(s):']
 
 keywords = ['Numberof CPE Credits', 'Earned CPE credit(s)', 'Awarded CPE Credit Hours', 'Earned CPE Credit(s)', 'Number of CPE Credits', 'Earned CPE credit(s)']
 
-post_keywords = ['Recommended for:', 'CPE CREDIT EARNED', 'CPECredits', 'Credas'] 
+post_keywords = ['Recommended for:', 'CPE CREDIT EARNED', 'CPECredits', 'Credas', 'Recommendedfor:'] 
 
 class ParseCredits():
 
@@ -18,6 +19,7 @@ class ParseCredits():
 				self.contents = contents
 				self.credits = ""
 				self.fos = fos
+				self.max_credit_val = 40
 				print("***CREDIT_INIT***", self.fos)
 				self.field_of_study = []
 
@@ -68,7 +70,7 @@ class ParseCredits():
 														self.credits = val
 														self.credits = self.get_credits()
 														try:
-																if float(self.credits) < float(20):
+																if float(self.credits) < float(self.max_credit_val):
 																		return
 														except:
 																pass
@@ -95,7 +97,7 @@ class ParseCredits():
 														self.credits = self.get_credits()
 														print("CREDIT-ParseSecondPartOfLine------>3", self.credits)
 														try:
-																if float(self.credits) < float(20):
+																if float(self.credits) < float(self.max_credit_val):
 																		print("CREDIT-ParseSecondPartOfLine------>4", self.credits)
 																		return
 														except:
@@ -182,7 +184,7 @@ class ParseCredits():
 
 														if self.validate_credits():
 																print("CREDIT_EXTRACTION---2--")
-																if float(self.credits) < float(20):
+																if float(self.credits) < float(self.max_credit_val):
 																		print("CREDIT_EXTRACTION---3--")
 																		return self.credits
 												except:
@@ -225,11 +227,14 @@ class ParseCredits():
 				for content in self.contents:
 						content = content.lower().strip()
 						if fos.lower() in content:
+								print("CREDITS---CONTENT--->", content)
 								credit = re.findall('\d*\.?\d+', content)
+								if len(credit) >= 3:
+										continue
 								print("Found Credits---->", credit)
 								try:
 										if credit:
-												if float(credit[0]) < float(20):
+												if float(credit[0]) < float(self.max_credit_val):
 														return credit[0]
 								except:
 										continue
@@ -239,7 +244,7 @@ class ParseCredits():
 				if self.credits != "":
 						cred = re.findall('\d*\.?\d+', self.credits)
 						try:
-								if float(cred[0]) < float(20):
+								if float(cred[0]) < float(self.max_credit_val):
 										return cred[0]
 						except:
 								pass
@@ -250,7 +255,7 @@ class ParseCredits():
 						cred = re.findall('\d*\.?\d+', self.credits)
 						print("****CREDITS*****EXTRACTION***", cred)
 						try:
-								if float(cred[0]) < float(20):
+								if float(cred[0]) < float(self.max_credit_val):
 										return cred[0]
 						except:
 								pass
@@ -276,8 +281,8 @@ class ParseCredits():
 								if credits != "":
 										try:
 												credit = float(credits)
-												print("1**CREDITS_INISIDE**", credit, "Assert---->", credit < float(20))
-												if credit < float(20):
+												print("1**CREDITS_INISIDE**", credit, "Assert---->", credit < float(self.max_credit_val))
+												if credit < float(self.max_credit_val):
 														#self.field_of_study.append({"name": fos, "credits": self.extract_credits(fos), "score":""})
 														#self.field_of_study.append({"name": fos, "credits": str(credit), "score":""})
 														self.field_of_study.append({"name": fos, "credits": credit, "score":""})

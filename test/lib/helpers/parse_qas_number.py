@@ -5,7 +5,7 @@ from lib.common_methods import remove_extra_spaces, validate_line, hasNumbers
 
 pre_keywords = [] 
 post_keywords = []
-line_keywords = ['QAS Self-Study:', 'QAS Sponsor ID:', 'QAS:', 'QASSelf-Study:']
+line_keywords = ['QAS Self-Study:', 'QAS Sponsor ID:', 'QAS:', 'QASSelf-Study:', 'NASBAQASID:']
 
 
 class ParseQasNumber():

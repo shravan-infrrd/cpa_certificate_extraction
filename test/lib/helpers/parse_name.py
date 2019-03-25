@@ -5,9 +5,9 @@ preceding_keywords = ['This certifies that', 'certifies that', 'Attendee', 'Cert
 
 following_keywords = ['Has successfully completed the QuickBooks', "Participant's Name", 'for successfully completing', 'has successfully completed', 'Has Successfully Completed the Course:', 'Has successfully completed', 'UF,orattending', 'has completed the QASSelf-Study course', 'has completed the', 'FOR SUCCESSFUL COMPLETION OF', 'Participant Name', 'who haspursued studies and completed all the', 'who has pursued studies and completed all the']
 #name_keywords = ['Attendee’s Name:', '\ Attendee’s Name:', 'V Attendee’s Name:', 'Awardedto:', 'Participant Name:', 'This certificate is presented to', 'Awarded to:']
-line_keywords = ['Presents a Certification of Completion to:', 'Attendee’s Name:', '\ Attendee’s Name:', 'V Attendee’s Name:', 'Awardedto:', 'Participant Name:', 'This certificate is presented to', 'Awarded to:', 'This certifies that', 'Attendee:', 'NAME OF ATTENDEE.', 'Nameof Participant:', 'Name:', 'Attendee Name:', 'This certificate is presented to:', 'Name of Participant:', 'NAME OF PARTICIPANT:', 'Participant Name', 'Student', 'This certificate 1s presented to:', 'this certificate is presented to.', 'Name ofParticipant:', 'this certificate is presented to:', 'This certificate is presented to']
+line_keywords = ['Presents a Certification of Completion to:', 'Attendee’s Name:', '\ Attendee’s Name:', 'V Attendee’s Name:', 'Awardedto:', 'Participant Name:', 'This certificate is presented to', 'Awarded to:', 'This certifies that', 'Attendee:', 'NAME OF ATTENDEE.', 'Nameof Participant:', 'Name:', 'Attendee Name:', 'This certificate is presented to:', 'Name of Participant:', 'NAME OF PARTICIPANT:', 'Participant Name', 'Student', 'This certificate 1s presented to:', 'this certificate is presented to.', 'Name ofParticipant:', 'this certificate is presented to:', 'This certificate is presented to', 'Congratulations,']
 
-invalid_words = ['Freserted to', 'Presented to', 'this', 'that', 'Awarded to', 'Program', 'CPE', 'Firm:', 'Participant', 'Sent', 'CERTIFICATION', '@', 'Issue', 'Attendee Name:', 'Instructional Delivery Method', 'Successful completion of:', 'ATTENDED', 'attended', 'SPONSOR', 'sponsor', 'for successfully completing', 'Individual', 'DATE', 'TIME', 'Certificate ofCompletion', 'Certificate of Completion', 'Congratulations', 'awardedto', 'awarded to', 'For successtully completing', 'TSCPA', 'Credits', 'SCalCPA',"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December", 'Street', 'Application', 'PRESENTED BY', 'Pittsburgh', 'ws DEN', 'Location', 'Tithe', 'Middle', 'Certificate Logo', 'IRS Course', 'Successful campletion of', 'stitute', 'institute', 'Number']
+invalid_words = ['Freserted to', 'Presented to', 'this', 'that', 'Awarded to', 'Program', 'CPE', 'Firm:', 'Participant', 'Sent', 'CERTIFICATION', '@', 'Issue', 'Attendee Name:', 'Instructional Delivery Method', 'Successful completion of:', 'ATTENDED', 'attended', 'SPONSOR', 'sponsor', 'for successfully completing', 'Individual', 'DATE', 'TIME', 'Certificate ofCompletion', 'Certificate of Completion', 'Congratulations', 'awardedto', 'awarded to', 'For successtully completing', 'TSCPA', 'Credits', 'SCalCPA',"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December", 'Street', 'Application', 'PRESENTED BY', 'Pittsburgh', 'ws DEN', 'Location', 'Tithe', 'Middle', 'Certificate Logo', 'IRS Course', 'Successful campletion of', 'stitute', 'institute', 'Number', 'AUDITING', 'PLANS']
 
 class ParseName():
 
@@ -184,7 +184,7 @@ class ParseName():
 
 
 		def parse_within_line(self):
-				print("parse_within_line*********")
+				print("parse_name_within_line*********")
 				for content in self.contents:
 						for kw in line_keywords:
 								if kw in content:
@@ -205,6 +205,9 @@ class ParseName():
 										if word.lower() in self.name.lower():
 												self.name = self.name.split(word)[0]
 										word = "for successfully completing"
+										if word.lower() in self.name.lower():
+												self.name = self.name.split(word)[0]
+										word = ", on having successfully completed"
 										if word.lower() in self.name.lower():
 												self.name = self.name.split(word)[0]
 										
@@ -228,13 +231,13 @@ class ParseName():
 		def parse_approx_name(self):
 				print("***parse_approx_name***")
 				import probablepeople as pp
-				print("***parse_approx_name***")
+				#print("***parse_approx_name***")
 				for content in self.contents:
-						print("Content---->", content.strip())
+						#print("Content---->", content.strip())
 						flag = False
 						for kw in ["Presenters", "Author"]:
 								content = content.strip().replace("\\", "")
-								print("VALIDATION===>", kw in content.strip())
+								#print("VALIDATION===>", kw in content.strip())
 								if kw in content.strip():
 										flag = True
 										break
@@ -260,7 +263,7 @@ class ParseName():
 										self.name = username.strip()
 										if self.validate_name():
 												return
-						print("USERNAME------<", username) 
+						#print("USERNAME------<", username) 
 										
 
 

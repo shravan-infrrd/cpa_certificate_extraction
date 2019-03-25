@@ -4,9 +4,9 @@ from lib.common_methods import remove_extra_spaces, validate_line, hasNumbers
 
 pre_keywords = ['Delivery method:', 'CPEDelivery Method', 'CPE Delivery Method']
 post_keywords = ['Delivery Method']
-line_keywords = ['Program Location:', 'Format:', 'Delivery Method:', 'Instructional Delivery Method -', 'Method Used:', 'Delivery Method', 'Delivery Method Used:', 'Instructional Delivery Method:', 'Program Oelivery Mode', 'Instructional Method:', 'DELIVERY METHOD:', 'NASBARegistry Sponsor Number', 'Oeltvery Method', 'Delivers Method:']
+line_keywords = ['Program Location:', 'Format:', 'Delivery Method:', 'Instructional Delivery Method -', 'Method Used:', 'Delivery Method', 'Delivery Method Used:', 'Instructional Delivery Method:', 'Program Oelivery Mode', 'Instructional Method:', 'DELIVERY METHOD:', 'NASBARegistry Sponsor Number', 'Oeltvery Method', 'Delivers Method:', 'Program Delivery Mode']
 
-delivery_method_lists = [ 'Interactive Self Study', 'Group live', 'Group Internet based', 'QAS Self study', 'Blended learning', 'Nano learning', 'Group Internet-Based', 'Self-Study', 'Self Study', 'Group-Intemet Based', 'Group-live', 'Group - Internet-Based', 'Group-Live', 'Group Internet', 'Webcast', 'Live Presentation', 'Group Intemet Based', 'Group - Internet Based', 'Internet Based', 'Group [nternet- Based', 'Group Program', 'Group Study', 'Conferences', 'Internet-Based', 'Group ‘rternet basea', 'Group Lve', 'Special.zed Knowledge and Application', 'Virtual group live', 'Group-Internet', 'Webinar', 'Group - Live']
+delivery_method_lists = [ 'Interactive Self Study', 'Group live', 'Group Internet based', 'QAS Self study', 'Blended learning', 'Nano learning', 'Group Internet-Based', 'Self-Study', 'Self Study', 'Group-Intemet Based', 'Group-live', 'Group - Internet-Based', 'Group-Live', 'Group Internet', 'Webcast', 'Live Presentation', 'Group Intemet Based', 'Group - Internet Based', 'Internet Based', 'Group [nternet- Based', 'Group Program', 'Group Study', 'Conferences', 'Internet-Based', 'Group ‘rternet basea', 'Group Lve', 'Special.zed Knowledge and Application', 'Virtual group live', 'Group-Internet', 'Webinar', 'Group - Live', 'Virtual Instructor-Led']
 
 invalid_keywords = ['CPE']
 
