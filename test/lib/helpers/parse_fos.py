@@ -6,7 +6,7 @@ field_of_studies = [ 'Accounting & Auditing', 'Accounting and Auditing', 'Admini
 
 special_list = ['Auditing', 'Accounting', 'Specialized Knowledge', 'ACCOUNTING', 'AUDITING', 'BUSINESS MAN AGEMENT', 'MAS', 'TAXES', 'Business Management']
 
-related_studies = ['Computer Software and Applications', 'Accounting & Auditing / Tax', 'Personnel/Human Resource', 'Personnel/HR', 'Regulatory Ethics', 'Professional Development', 'Behavioral Ethics', 'Management Services', 'A&A', 'Yellow Book', 'Professional Ethics', 'Fraud', 'Accounting Governmental', 'Auditing Governmental', 'Behavioral Ethics', 'Business Mgmt and Org', 'State Ethics', 'Cybersecurity Update', 'Taxation', 'Forensic Accounting', 'Forensic Accounting — Technical']
+related_studies = ['Computer Software and Applications', 'Accounting & Auditing / Tax', 'Personnel/Human Resource', 'Personnel/HR', 'Regulatory Ethics', 'Professional Development', 'Behavioral Ethics', 'Management Services', 'A&A', 'Yellow Book', 'Professional Ethics', 'Fraud', 'Accounting Governmental', 'Auditing Governmental', 'Behavioral Ethics', 'Business Mgmt and Org', 'State Ethics', 'Cybersecurity Update', 'Taxation', 'Forensic Accounting', 'Forensic Accounting — Technical', 'Communications & Marketing', 'Group intemet-Gased', 'Management Advisory Services', 'Management Advisory Services Basic Level']
 
 
 field_of_studies = field_of_studies + related_studies + special_list
@@ -84,6 +84,7 @@ class ParseFos():
 														#return
 
 		def parse_within_lines(self): 
+				print("***parse_within_lines***")
 				for index, content in enumerate(self.contents):
 						for kw in line_keywords:
 								if kw in content:
