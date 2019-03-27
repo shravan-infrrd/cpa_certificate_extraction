@@ -31,3 +31,4 @@ dateparser
 datefinder
 openpyxl
 spacy
+gunicorn
