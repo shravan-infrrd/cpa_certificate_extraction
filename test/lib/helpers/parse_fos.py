@@ -10,11 +10,11 @@ related_studies = ['Computer Software and Applications', 'Accounting & Auditing 
 
 
 field_of_studies = field_of_studies + related_studies + special_list
-field_of_studies = list(set(field_of_studies))
+#field_of_studies = list(set(field_of_studies))
 
 pre_keywords = [ 'field of study:', 'For the successful completion of', 'sponsored by YH Advisors, Inc.', 'FOR THE PROGRAM ENTITLED', 'Field of Study', 'for successfully completing', 'bicld of Study', 'Course', 'CPE Fueid of Study.', 'field of study']
 post_keywords = ['bicld of Study', 'bield of Study', 'Field of Study', 'Subject Area', 'Field ofStudy', 'NASBA Field of Study:', 'Curriculum:']
-line_keywords = ['Field of Study:', 'Best Practices in', 'FieldofStudy:', 'Course Field of Study:', 'for successfully completing', 'Fieldof Study:', 'Recommended Field of Study:', 'in the subject area of', 'RecommendedField of Study:', 'Field ofStudy:', 'Ficld of Study:', 'NASBAField of Study:', 'Course Freld of Study:']
+line_keywords = ['Field of Study:', 'Best Practices in', 'FieldofStudy:', 'Course Field of Study:', 'for successfully completing', 'Fieldof Study:', 'Recommended Field of Study:', 'in the subject area of', 'RecommendedField of Study:', 'Field ofStudy:', 'Ficld of Study:', 'NASBAField of Study:', 'Course Freld of Study:', 'NASBAField of Study']
 
 
 class ParseFos():
@@ -99,15 +99,32 @@ class ParseFos():
 										for val in valid_words:
 												if self.validate_with_existing_list(val):
 														if not self.check_if_present(valid_words[0]):  
-																self.field_of_study.append(valid_words[0])
+																print("PROGRAM_NAME_HERE====>", self.fos_check(valid_words[0], content))
+																if self.fos_check(valid_words[0], content):
+																		self.field_of_study.append(valid_words[0])
 										"""
 										if self.validate_with_existing_list(valid_words[0]):
 												if not self.check_if_present(valid_words[0]):  
 														self.field_of_study.append(valid_words[0])
 												#return
 										"""
-							 
+							
+		def fos_check(self, fos, content):	
+				print("FOS_CHECK---->", fos)
+				if fos in ['Accounting', 'accounting', 'Auditing', 'auditing', 'ACCOUNTING']:
+						if content in ['Accounting and Auditing', 'Accounting & Auditing / Tax', 'Accounting Governmental', 'Auditing Governmental', 'Accounting & Auditing', 'ACCOUNTING AND AUDITING']:
+								return False
+				if fos in ['Specialized Knowledge']:
+						if content in ['Specialized Knowledge and Applications', 'Specialized Knowledge & Applications', 'Specialized Knowledge and Applications', 'Specialized Knowledge & Applications', 'SPECIALIZED KNOWLEDGE AND APPLICATIONS' ]:
+								return False
+				if fos in ['Business Management']:
+						if content in ['Business Management & Organization', 'Business Management and Organization', 'BUSINESS MAN AGEMENT', 'Business Mgmt and Org']:
+								return False
+				return True
+			
+ 
 		def extract_from_list(self):
+				print("--->field_of_studies", field_of_studies)
 				for fos in field_of_studies:
 						for content in self.contents:
 									if content.strip() == "":
@@ -117,8 +134,8 @@ class ParseFos():
 											print(f"FOS**FIELF_OF_STUDY--->{fos}, --->CONTENT-->{content}<--")
 											#self.field_of_study.append({"name": fos })
 											print("***FOS***###->1", fos)
-											if fos in ['Accounting', 'accounting', 'Auditing', 'auditing']:
-													if content in ['Accounting and Auditing', 'Accounting & Auditing / Tax', 'Accounting Governmental', 'Auditing Governmental', 'Accounting & Auditing']:
+											if fos in ['Accounting', 'accounting', 'Auditing', 'auditing', 'ACCOUNTING']:
+													if content in ['Accounting and Auditing', 'Accounting & Auditing / Tax', 'Accounting Governmental', 'Auditing Governmental', 'Accounting & Auditing', 'ACCOUNTING AND AUDITING']:
 															continue
 											if fos in ['Specialized Knowledge']:
 													if content in ['Specialized Knowledge and Applications', 'Specialized Knowledge & Applications', 'Specialized Knowledge and Applications', 'Specialized Knowledge & Applications', 'SPECIALIZED KNOWLEDGE AND APPLICATIONS' ]:

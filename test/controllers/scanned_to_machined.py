@@ -180,6 +180,32 @@ def get_string(img_path):
 		cv.imwrite(img_path, img)
 		print("=======END=======")
 
+def check_for_rotated_image(image_path):
+		import re
+
+		print("check_for_rotated_image********")
+		command = ['tesseract', image_path, 'stdout', '-l', 'osd', '--psm', '0']
+		res = subprocess.check_output(command)
+		result = str(res)
+		degree = re.findall(r"Rotate: (\d+)", result)[0]
+		img = cv.imread(image_path, 0)
+
+		if degree == '0':
+				return img
+		elif degree == '90':
+				rotated = cv.rotate(img, cv.ROTATE_90_CLOCKWISE)
+				return rotated
+		elif degree == '270':
+				rotated = cv.rotate(img, cv.ROTATE_90_COUNTERCLOCKWISE)
+				return rotated
+		elif degree == '180':
+				rotated = cv.rotate(img, cv.ROTATE_180)
+				return rotated
+		
+
+
+
+
 def read_scanned_pdf(pdf_path, output_dir_location):
 		try:
 				""" 
@@ -204,6 +230,8 @@ def read_scanned_pdf(pdf_path, output_dir_location):
 								os.makedirs(text_dir)
 								pdf_split_with_pdfseparate(pdf_path, page_dir_location)
 								pages = natsorted(glob.glob(os.path.join(page_dir_location, "*.pdf")))
+								if len(pages) >= 3:
+										shravan.append("")
 								#print("Initializing..")
 								for page in pages:
 										print(page)
@@ -212,8 +240,9 @@ def read_scanned_pdf(pdf_path, output_dir_location):
 										#print("Imag: ->", os.path.join(image_dir_location, page_name_without_ext))
 										image_path = os.path.join(image_dir_location, page_name_without_ext)
 										pdf_page_to_image(page, os.path.join(image_dir_location, page_name_without_ext))
+										img = check_for_rotated_image(image_path)
 
-										img = cv.imread( image_path, 0 )
+										#img = cv.imread( image_path, 0 )
 										img = cv.resize(img, None, fx=1.5, fy=1.3, interpolation=cv.INTER_CUBIC)
 										img = cv.medianBlur(img, 5)
 										#ret, th1 = cv.threshold(img,127,255,cv.THRESH_BINARY)

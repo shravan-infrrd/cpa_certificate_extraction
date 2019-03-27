@@ -5,9 +5,9 @@ preceding_keywords = ['This certifies that', 'certifies that', 'Attendee', 'Cert
 
 following_keywords = ['Has successfully completed the QuickBooks', "Participant's Name", 'for successfully completing', 'has successfully completed', 'Has Successfully Completed the Course:', 'Has successfully completed', 'UF,orattending', 'has completed the QASSelf-Study course', 'has completed the', 'FOR SUCCESSFUL COMPLETION OF', 'Participant Name', 'who haspursued studies and completed all the', 'who has pursued studies and completed all the']
 #name_keywords = ['Attendee’s Name:', '\ Attendee’s Name:', 'V Attendee’s Name:', 'Awardedto:', 'Participant Name:', 'This certificate is presented to', 'Awarded to:']
-line_keywords = ['Presents a Certification of Completion to:', 'Attendee’s Name:', '\ Attendee’s Name:', 'V Attendee’s Name:', 'Awardedto:', 'Participant Name:', 'This certificate is presented to', 'Awarded to:', 'This certifies that', 'Attendee:', 'NAME OF ATTENDEE.', 'Nameof Participant:', 'Name:', 'Attendee Name:', 'This certificate is presented to:', 'Name of Participant:', 'NAME OF PARTICIPANT:', 'Participant Name', 'Student', 'This certificate 1s presented to:', 'this certificate is presented to.', 'Name ofParticipant:', 'this certificate is presented to:', 'This certificate is presented to', 'Congratulations,']
+line_keywords = ['Presents a Certification of Completion to:', 'Attendee’s Name:', '\ Attendee’s Name:', 'V Attendee’s Name:', 'Awardedto:', 'Participant Name:', 'This certificate is presented to', 'Awarded to:', 'This certifies that', 'Attendee:', 'NAME OF ATTENDEE.', 'Nameof Participant:', 'Name:', 'Attendee Name:', 'This certificate is presented to:', 'Name of Participant:', 'NAME OF PARTICIPANT:', 'Participant Name', 'Student', 'This certificate 1s presented to:', 'this certificate is presented to.', 'Name ofParticipant:', 'this certificate is presented to:', 'This certificate is presented to', 'Congratulations,', 'Participant Name:', 'This to certify that']
 
-invalid_words = ['Freserted to', 'Presented to', 'this', 'that', 'Awarded to', 'Program', 'CPE', 'Firm:', 'Participant', 'Sent', 'CERTIFICATION', '@', 'Issue', 'Attendee Name:', 'Instructional Delivery Method', 'Successful completion of:', 'ATTENDED', 'attended', 'SPONSOR', 'sponsor', 'for successfully completing', 'Individual', 'DATE', 'TIME', 'Certificate ofCompletion', 'Certificate of Completion', 'Congratulations', 'awardedto', 'awarded to', 'For successtully completing', 'TSCPA', 'Credits', 'SCalCPA',"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December", 'Street', 'Application', 'PRESENTED BY', 'Pittsburgh', 'ws DEN', 'Location', 'Tithe', 'Middle', 'Certificate Logo', 'IRS Course', 'Successful campletion of', 'stitute', 'institute', 'Number', 'AUDITING', 'PLANS']
+invalid_words = ['Freserted to', 'Presented to', 'this', 'that', 'Awarded to', 'Program', 'CPE', 'Firm:', 'Participant', 'Sent', 'CERTIFICATION', '@', 'Issue', 'Attendee Name:', 'Instructional Delivery Method', 'Successful completion of:', 'ATTENDED', 'attended', 'SPONSOR', 'sponsor', 'for successfully completing', 'Individual', 'DATE', 'TIME', 'Certificate ofCompletion', 'Certificate of Completion', 'Congratulations', 'awardedto', 'awarded to', 'For successtully completing', 'TSCPA', 'Credits', 'SCalCPA',"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December", 'Street', 'Application', 'PRESENTED BY', 'Pittsburgh', 'ws DEN', 'Location', 'Tithe', 'Middle', 'Certificate Logo', 'IRS Course', 'Successful campletion of', 'stitute', 'institute', 'Number', 'AUDITING', 'PLANS', 'CPA Crossing', 'minute hour', 'Partici', 'Participant', 'http', 'Details', 'Affirmation', 'COMPLIANCE AUDITS', 'EDITION']
 
 class ParseName():
 
@@ -27,12 +27,20 @@ class ParseName():
 						else:
 								self.name = ""
 								return False
+				elif len(name) >=3:
+						count = 0
+						for n in name:
+								if n[1] in ['GivenName', 'Surname']:
+										count = count + 1
+						if count < 1:
+								self.name = ""
+								return False
 				elif len(name) != 1:
 						return True
 				else:
-						print("cross_check_name====>returning-->", self.name)
+						#print("cross_check_name====>returning-->", self.name)
 						self.name = ""
-						print("cross_check_name====>returning-->", self.name)
+						#print("cross_check_name====>returning-->", self.name)
 						return False
 				
 
@@ -49,6 +57,10 @@ class ParseName():
 				print("****NAEM***FOUND***", self.name)
 				if len(self.name.split(' ')) > 4:
 						print("NAME-ERROR--1")
+						self.name = ""
+						return False
+				if len(self.name.split(' ')[0]) <= 2:
+						print("NAME-ERROR--1.5")
 						self.name = ""
 						return False
 				if hasNumbers(self.name):
@@ -158,7 +170,10 @@ class ParseName():
 																if word.lower() in self.name.lower():
 																		self.name = self.name.split(word)[0]
 																if self.validate_name():
-																		return
+																		if self.cross_check_name():
+																				#print("4.02*****************NAME*****************", self.name)
+																				return
+																		#return
 														values = remove_extra_spaces(self.contents[index - 2].strip())
 														print("values---->", values)
 														for val in values:
@@ -167,7 +182,10 @@ class ParseName():
 																		continue
 																self.name = val
 																if self.validate_name():
-																		return
+																		if self.cross_check_name():
+																				#print("4.02*****************NAME*****************", self.name)
+																				return
+																		#return
 
 														values = remove_extra_spaces(self.contents[index - 3].strip())
 														#print("values---->", values)
@@ -184,6 +202,7 @@ class ParseName():
 
 
 		def parse_within_line(self):
+				words = ["has successfully completed", 'for successfully completing', ', on having successfully completed', 'for successfully completing this course']
 				print("parse_name_within_line*********")
 				for content in self.contents:
 						for kw in line_keywords:
@@ -196,11 +215,20 @@ class ParseName():
 										if valid_words is None:
 												continue
 										print("3***START***NAME", valid_words)
-										if ':' in valid_words[0]:
-												continue
+										#if ':' in valid_words[0]:
+										#		continue
 										print("4***START***NAME", self.name)
-										word = 'has successfully completed'
 										self.name = valid_words[0]
+										print("5***START***NAME", self.name)
+
+										for word in words:
+												print("WORD---->", word)
+												if word.lower() in self.name.lower():
+														print("WORD_MATCH---->", word)
+														self.name = self.name.split(word)[0]
+														break
+				
+										"""
 										print("5***START***NAME", self.name)
 										if word.lower() in self.name.lower():
 												self.name = self.name.split(word)[0]
@@ -210,6 +238,10 @@ class ParseName():
 										word = ", on having successfully completed"
 										if word.lower() in self.name.lower():
 												self.name = self.name.split(word)[0]
+										word = "for successfully completing this course"
+										if word.lower() in self.name.lower():
+												self.name = self.name.split(word)[0]
+										"""
 										
 										print("6***START***NAME", self.name)
 										if self.validate_name():
