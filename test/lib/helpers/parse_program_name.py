@@ -4,7 +4,7 @@ from lib.common_methods import remove_extra_spaces, validate_line, find_pattern,
 
 
 
-preceding_keywords = ['has successfully completed', 'CERTIFICATE OF ATTENDANCE', 'has successfully completed the online course', 'Online Certification training:', 'Certificate of Attendance', 'Certificate of Completion', 'for participation in', 'for participation in', 'successfully completed', 'completion ot the course', 'entitled', 'for successfully completing', 'completed', 'For Successfully Completing', 'has successfully completed:', 'Has Successfully Completed the Course:', 'Has Successfully Completed the Course:', 'For successful completion of', 'for the successful completion of', 'has completed', 'has completed the group Internet-based course', 'nas success*u ly comoleted:', 'Forattending', 'For attending', 'FOR THE PROGRAM ENTITLED', 'Congratulations on the successful completion of', 'for successful completion of the course', 'Has Successtully Completed the Course:', 'COMPLETION OF THE FOLLOWING ', 'for successful completion of', 'For successfully completing:', 'FOR THE COURSE ENTITLED', 'For completion of', 'FOR SUCCESSFUL COMPLETION OF', 'HAS COMPLETED THE TRAINING COURSETITLED', 'HAS COMPLETED THE TRAINING COURSE TITLED', 'For successfully completing', 'On Demand Video', 'FOR SUCCESSFUL COMPLETION', 'For successful completionof:', 'For successful completion of:', 'attended the course', 'Successful campletion of', 'HAS SUCCESSFULLY COMPLETED', 'For the successful completion of', 'This certifies that']
+preceding_keywords = ['has successfully completed', 'CERTIFICATE OF ATTENDANCE', 'has successfully completed the online course', 'Online Certification training:', 'Certificate of Attendance', 'Certificate of Completion', 'for participation in', 'for participation in', 'successfully completed', 'completion ot the course', 'entitled', 'for successfully completing', 'completed', 'For Successfully Completing', 'has successfully completed:', 'Has Successfully Completed the Course:', 'Has Successfully Completed the Course:', 'For successful completion of', 'for the successful completion of', 'has completed', 'has completed the group Internet-based course', 'nas success*u ly comoleted:', 'Forattending', 'For attending', 'FOR THE PROGRAM ENTITLED', 'Congratulations on the successful completion of', 'for successful completion of the course', 'Has Successtully Completed the Course:', 'COMPLETION OF THE FOLLOWING ', 'for successful completion of', 'For successfully completing:', 'FOR THE COURSE ENTITLED', 'For completion of', 'FOR SUCCESSFUL COMPLETION OF', 'HAS COMPLETED THE TRAINING COURSETITLED', 'HAS COMPLETED THE TRAINING COURSE TITLED', 'For successfully completing', 'On Demand Video', 'FOR SUCCESSFUL COMPLETION', 'For successful completionof:', 'For successful completion of:', 'attended the course', 'Successful campletion of', 'HAS SUCCESSFULLY COMPLETED', 'For the successful completion of', 'This certifies that', 'Has Successfully Completed:']
 
 """
 Is hereby awardedto (the institute of internal)
@@ -278,6 +278,21 @@ class ParseProgramName():
 								print("REFINING--PROGRAM_NAME=================*********************", self.program_name, "KW--->", kw)
 								self.program_name = self.program_name.replace(kw, '')
 
+
+		def find_through_product_code(self):
+				keywords = ['Product Code:']
+				val = ""
+				for content in self.contents:
+						for kw in keywords:
+								if kw in content.strip():
+										val = content.split(kw)[1].strip()
+				if len(val) > 0:	
+						for content in self.contents:
+								if val in content.strip():
+										self.program_name = content
+										if self.validate_program_name():
+												return
+
 		#def identify_program_name(self):
 		def extract(self):
 				self.find_from_priority_keywords()
@@ -288,8 +303,11 @@ class ParseProgramName():
 						self.parse_within_line()
 				if self.program_name == '':
 						self.find_key_words()
+				if self.program_name == "":
+						self.find_through_product_code()
 				if self.program_name != "":
 						self.refine_program_name()
 						return True
+
 				return True
 

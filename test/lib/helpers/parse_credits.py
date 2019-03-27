@@ -1,7 +1,7 @@
 import re
 from lib.common_methods import remove_extra_spaces, validate_line, hasNumbers
 from dateutil.parser import *
-
+from pygrok import Grok
 
 #line_keywords = ['ofContinuing ProfessionalEducation Credits:', 'CPE credit1', 'CPE Hours', 'Credit', 'hours of CPE', 'hours of Continuing', 'CPE credits']
 pre_line_keywords = ['ofContinuing ProfessionalEducation Credits:', 'CPE credit1', 'CPE Hours', 'Credit', 'hours of CPE', 'hours of Continuing', 'CPE credits', 'CPE is awarded', 'CPE Hour', 'CPE credit hours']
@@ -12,6 +12,9 @@ post_line_keywords = ['Interactive Credit in CPE Hours:', 'For a total of', 'Tot
 keywords = ['Numberof CPE Credits', 'Earned CPE credit(s)', 'Awarded CPE Credit Hours', 'Earned CPE Credit(s)', 'Number of CPE Credits', 'Earned CPE credit(s)']
 
 post_keywords = ['Recommended for:', 'CPE CREDIT EARNED', 'CPECredits', 'Credas', 'Recommendedfor:'] 
+
+invalid_keywords = ['Completion Date:']
+
 
 class ParseCredits():
 
@@ -52,21 +55,24 @@ class ParseCredits():
 										return
 						
 
-		def parse_first_part_of_line(self):
+		def parse_first_part_of_line(self):	
+				print("***parse_first_part_of_line***")
 				for content in self.contents:
 						for kw in pre_line_keywords:
 								if kw in content:
 										#print("***CREDITS***====>", content, "***KW***", kw)
 										#valid_words = validate_line(content.strip(), kw) #remove_extra_spaces( content.split(kw)[0].strip() )
 
-										#print(remove_extra_spaces( content.split(kw)[0].strip() ))
-
 										valid_words = remove_extra_spaces( content.split(kw)[0].strip() )
-										#print("valid_words-->", valid_words)
-										#print("***END***")
 										for val in valid_words:
 												if hasNumbers( val ):
-														print("***CREDITS***", val)
+														flag = False
+														for ikw in invalid_keywords:
+																if ikw in val.strip():
+																		flag = True
+																		break
+														if flag:
+																continue
 														self.credits = val
 														self.credits = self.get_credits()
 														try:
@@ -221,6 +227,10 @@ class ParseCredits():
 								"""
 	
 								#return content.split(fos)
+
+		def exclude_if_date(self):
+				patterns = ['%{YEAR:year}-%{MONTHNUM:month}-%{MONTHDAY:day}', '%{YEAR:year}/%{MONTHNUM:month}/%{MONTHDAY:day}']
+				
 
 		def find_credits(self, fos):
 				print("*****FIND_CREDITS*****1", fos.lower())

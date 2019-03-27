@@ -18,9 +18,9 @@ class ParseName():
 		def cross_check_name(self):
 				import probablepeople as pp
 				name = pp.parse(self.name)
-				print("cross_check_name====>", name)
-				print("cross_check_name====>", len(name))
-				print("cross_check_name====>", name[0][1])
+				if len(self.name.strip().split(' ')) == 1 and len(name) >1:
+						self.name = ""
+						return False
 				if len(name) == 1:
 						if name[0][1] in ['GivenName', 'Surname']:
 								return True
@@ -228,20 +228,6 @@ class ParseName():
 														self.name = self.name.split(word)[0]
 														break
 				
-										"""
-										print("5***START***NAME", self.name)
-										if word.lower() in self.name.lower():
-												self.name = self.name.split(word)[0]
-										word = "for successfully completing"
-										if word.lower() in self.name.lower():
-												self.name = self.name.split(word)[0]
-										word = ", on having successfully completed"
-										if word.lower() in self.name.lower():
-												self.name = self.name.split(word)[0]
-										word = "for successfully completing this course"
-										if word.lower() in self.name.lower():
-												self.name = self.name.split(word)[0]
-										"""
 										
 										print("6***START***NAME", self.name)
 										if self.validate_name():
@@ -251,14 +237,16 @@ class ParseName():
 		def parse_line_without_keywords(self):
 				print("***parse_line_without_keywords***")
 				kw = ', CPA'
+				keywords = [', CPA', '#CPA'] 
 				ignore_keywords = ['Participant Name:', 'LECTURER:']
 				for content in self.contents:
-						if kw in content:
-								self.name = content.split(kw)[0]
-								for kwi in ignore_keywords:
-										if kwi in self.name:
-												self.name = self.name.split(kwi)[-1]
-								return
+						for kw in keywords:
+								if kw in content:
+										self.name = content.split(kw)[0]
+										for kwi in ignore_keywords:
+												if kwi in self.name:
+														self.name = self.name.split(kwi)[-1]
+										return
 
 		def parse_approx_name(self):
 				print("***parse_approx_name***")

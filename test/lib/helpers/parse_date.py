@@ -124,6 +124,7 @@ class ParseDate():
 						if find_pattern(content.lower().strip(), self.program_name.lower().strip()):
 						#if self.name.lower() in content.lower().strip():
 								parse = True
+								continue
 						#print("3***PARSE***", str(parse))
 						if parse:
 								#if hasNumbers(content):
