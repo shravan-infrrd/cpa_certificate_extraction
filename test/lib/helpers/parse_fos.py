@@ -124,7 +124,6 @@ class ParseFos():
 			
  
 		def extract_from_list(self):
-				print("--->field_of_studies", field_of_studies)
 				for fos in field_of_studies:
 						for content in self.contents:
 									if content.strip() == "":

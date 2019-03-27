@@ -33,17 +33,17 @@ class ParseDate():
 				return True
 
 		def make_corrections(self, date):
-				print("DATE---make_corrections--->1", date)
+				#print("DATE---make_corrections--->1", date)
 				date = date.lower().split(' to ')[-1]
 				date = date.lower().split(' at ')[0]
 				date = date.replace('virtue of the', '')
-				print("DATE---make_corrections--->2", date)
+				#print("DATE---make_corrections--->2", date)
 				if 'Part'.lower() in date:
-						print("DATE---make_corrections--->3", date)
+						#print("DATE---make_corrections--->3", date)
 						dates = re.findall(r"part \d+ on (.*)$", date.lower())
-						print("DATE---make_corrections--->4", dates)
+						#print("DATE---make_corrections--->4", dates)
 						if dates:
-								print("DATE---make_corrections--->5", date)
+								#print("DATE---make_corrections--->5", date)
 								date = dates[0]
 				"""
 				date = date.lower().replace('october', 'octaber')
