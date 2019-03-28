@@ -1,17 +1,18 @@
 import re
 from lib.common_methods import remove_extra_spaces, validate_line, hasNumbers
 from dateutil.parser import *
-from pygrok import Grok
+from word2number import w2n
+
 
 #line_keywords = ['ofContinuing ProfessionalEducation Credits:', 'CPE credit1', 'CPE Hours', 'Credit', 'hours of CPE', 'hours of Continuing', 'CPE credits']
-pre_line_keywords = ['ofContinuing ProfessionalEducation Credits:', 'CPE credit1', 'CPE Hours', 'Credit', 'hours of CPE', 'hours of Continuing', 'CPE credits', 'CPE is awarded', 'CPE Hour', 'CPE credit hours']
+pre_line_keywords = ['ofContinuing ProfessionalEducation Credits:', 'CPE credit1', 'CPE Hours', 'Credit', 'hours of CPE', 'hours of Continuing', 'CPE credits', 'CPE is awarded', 'CPE Hour', 'CPE credit hours', 'Hour Continuing Education Credit']
 #line_keywords = ['ofContinuing ProfessionalEducation Credits:', 'CPE credit1', 'CPE Hours', 'Interactive Credit in CPE Hours:', 'For a total of', 'Total CPF. Hours:', 'Total CPE Hours:', 'Total CPF. Hours:', 'Has Successfully Completed', 'Hours of Recommended CPE Credit:', 'CPE Credit Hours:', 'CPE Hours:', 'Number of CPE Credits', 'Total Credit Earned:', 'Duration:', 'CPE Credits:' ]
 
-post_line_keywords = ['Interactive Credit in CPE Hours:', 'For a total of', 'Total CPF. Hours:', 'Total CPE Hours:', 'Total CPF. Hours:', 'Has Successfully Completed', 'Hours of Recommended CPE Credit:', 'CPE Credit Hours:', 'CPE Hours:', 'Number of CPE Credits', 'Total Credit Earned:', 'Duration:', 'CPE Credits:', 'Credit Hours:', 'CPE credit:', 'Credits:', 'CPE Credit Hours.', 'CPE Credits earned:', 'Recommendedfor', 'Recommended for', 'CPE credits:', 'Course Credit:', 'TSCPA Sponsor ID #', 'CPE:', 'Total Credits Earned:', 'Number of CPE credits', 'CPE Credit:', 'CPE Hours ', 'Recommended CPE Credits:', 'Approved CPE credit(s):', 'CPE Credits', 'Number of CPE credits']
+post_line_keywords = ['Recommended CPE Credits:', 'Interactive Credit in CPE Hours:', 'For a total of', 'Total CPF. Hours:', 'Total CPE Hours:', 'Total CPF. Hours:', 'Has Successfully Completed', 'Hours of Recommended CPE Credit:', 'CPE Credit Hours:', 'CPE Hours:', 'Number of CPE Credits', 'Total Credit Earned:', 'Duration:', 'CPE Credits:', 'Credit Hours:', 'CPE credit:', 'Credits:', 'CPE Credit Hours.', 'CPE Credits earned:', 'Recommendedfor', 'Recommended for', 'CPE credits:', 'Course Credit:', 'TSCPA Sponsor ID #', 'CPE:', 'Total Credits Earned:', 'Number of CPE credits', 'CPE Credit:', 'CPE Hours ', 'Approved CPE credit(s):', 'CPE Credits', 'Number of CPE credits', 'Recommended CPE credits for this course:', 'CPE Credits Received:', 'Recommended CPE credit']
 
 keywords = ['Numberof CPE Credits', 'Earned CPE credit(s)', 'Awarded CPE Credit Hours', 'Earned CPE Credit(s)', 'Number of CPE Credits', 'Earned CPE credit(s)']
 
-post_keywords = ['Recommended for:', 'CPE CREDIT EARNED', 'CPECredits', 'Credas', 'Recommendedfor:'] 
+post_keywords = ['Recommended for:', 'CPE CREDIT EARNED', 'CPECredits', 'Credas', 'Recommendedfor:', 'CPE Credit', 'CPE Credits:'] 
 
 invalid_keywords = ['Completion Date:']
 
@@ -33,14 +34,22 @@ class ParseCredits():
 				return True
 
 		def get_credits(self):
+				print("--GET_CREDITS-->", self.credits)
 				creds = re.findall('\d*\.?\d+', self.credits)
 				if creds:
 						for cred in creds:
+								print("--CRED-->", cred)
 								try:
 										if float(cred) < float(30):
+												print("--CRED--2", float(cred))										
 												return str(float(cred))
+										else:
+												self.credits = ""
+												return ""
 								except:
-										continue
+										print("get_credits---ERROR-->")
+										self.credits = ""	
+										return ""
 				else:
 						return self.credits
 
@@ -79,6 +88,17 @@ class ParseCredits():
 																if float(self.credits) < float(self.max_credit_val):
 																		return
 														except:
+																pass
+												else:
+														print("====WORD2NUMBER====1", val)
+														try:
+																number = w2n.word_to_num(val)
+																print("====WORD2NUMBER====2", number)
+																self.credits = str(number)
+																self.credits = self.get_credits()
+																return
+														except:	
+																print("====WORD2NUMBER====error")
 																pass
 
 
@@ -147,6 +167,7 @@ class ParseCredits():
 								if kw in content:
 										print("6.15*************PARSING_CREDITS*****************", kw)
 										values = remove_extra_spaces( self.contents[ index + 1 ].strip() )
+										print("6.16*************PARSING_CREDITS*****************", values)
 										for val in values:
 
 												if hasNumbers(val):
@@ -164,6 +185,7 @@ class ParseCredits():
 																print("6.2*************PARSING_CREDITS*****************", val)
 																self.credits = val
 																self.credits = self.get_credits()
+																print("6.3*************PARSING_CREDITS*****************", val)
 																if self.validate_credits():
 																		return
 										except:
@@ -200,33 +222,6 @@ class ParseCredits():
 										else:
 												continue
 
-								#return ""
-								"""
-								if '(' in content:
-										credit = content.split(fos.lower())[1]
-								else:
-										credit = content.split(fos.lower())[0]
-
-								print("1***EXTRACT_CREDITS***", credit)
-								extracted_credit = re.findall('\d*\.?\d+', credit)
-								if extracted_credit:
-										print("2***EXTRACT_CREDITS***", extracted_credit)
-										return extracted_credit[0]
-								else:
-										print("3***EXTRACT_CREDITS***", credit)
-										return credit
-
-								"""
-								"""
-								credit = re.findall("\d+\.\d+", credit)
-								if not credit:
-										credit = re.findall("\d+", credit)
-
-								return credit
-							
-								"""
-	
-								#return content.split(fos)
 
 		def exclude_if_date(self):
 				patterns = ['%{YEAR:year}-%{MONTHNUM:month}-%{MONTHDAY:day}', '%{YEAR:year}/%{MONTHNUM:month}/%{MONTHDAY:day}']
@@ -234,6 +229,28 @@ class ParseCredits():
 
 		def find_credits(self, fos):
 				print("*****FIND_CREDITS*****1", fos.lower())
+				self.parse_within_lines()
+				if self.credits != "":
+						cred = re.findall('\d*\.?\d+', self.credits)
+						print("****CREDITS*****EXTRACTION***", cred)
+						try:
+								if float(cred[0]) < float(self.max_credit_val):
+										return cred[0]
+						except:
+								pass
+
+				print("2*****FIND_CREDITS*****1", fos.lower())
+				self.parse_between_lines()
+				if self.credits != "":
+						cred = re.findall('\d*\.?\d+', self.credits)
+						print("2*****FIND_CREDITS*****2", cred)
+						try:
+								if float(cred[0]) < float(self.max_credit_val):
+										return cred[0]
+						except:
+								pass
+
+				print("3*****FIND_CREDITS*****1", fos.lower())
 				for content in self.contents:
 						content = content.lower().strip()
 						if fos.lower() in content:
@@ -249,26 +266,6 @@ class ParseCredits():
 								except:
 										continue
 
-				print("2*****FIND_CREDITS*****1", fos.lower())
-				self.parse_between_lines()
-				if self.credits != "":
-						cred = re.findall('\d*\.?\d+', self.credits)
-						try:
-								if float(cred[0]) < float(self.max_credit_val):
-										return cred[0]
-						except:
-								pass
-
-				print("3*****FIND_CREDITS*****1", fos.lower())
-				self.parse_within_lines()
-				if self.credits != "":
-						cred = re.findall('\d*\.?\d+', self.credits)
-						print("****CREDITS*****EXTRACTION***", cred)
-						try:
-								if float(cred[0]) < float(self.max_credit_val):
-										return cred[0]
-						except:
-								pass
 				print("5*****FIND_CREDITS*****1", fos.lower())
 				return ""
 

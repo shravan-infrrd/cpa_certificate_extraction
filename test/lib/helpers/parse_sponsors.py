@@ -5,7 +5,7 @@ from lib.sponsor_list import sponsor_lists
 pre_keywords = [] 
 post_keywords = []
 line_keywords = ['iS registered', 'is registeres', 'is registered', '0 roguterod', 'is registeced', 'ts registered', 'SPONSOR:', "1's registered", '1s registered', 'Sponsor:']
-special_keywords	= ['sponsored by', 'CPE Sponsor Name', "Program Sponsor's Name and Address", "Sponsor:"]
+special_keywords	= ['sponsored by', 'CPE Sponsor Name', "Program Sponsor's Name and Address", "Sponsor:", 'Name of Provider:']
 
 #sponsor_list = ["AICPA","Deloitte", "Becker Professional Education", "Intuit", "Optiv Security", "FICPA", "KPMG", "EY", "CPA Academy", "Becker", "Beene Garter LLP", "Checkpoint Learning", "PricewaterhouseCoopers LLP", "PWC", "Deloitte LLP", "MACPA", "CPAAcademy.org", "CPAwebengage, Inc.", "Wolters Kluwer", "Grant Thornton LLP", "The Institute of Internal Auditors", "Ernst & Young LLP", "Learning.net", "KPMG LLP", "SC&H Group", "Association of International Certified Professional Accountants", "Thomson Reuters", "RSM", "HoganTaylor LLP", "Western CPE", "MICPA", "Practising Law Institute", "TSCPA", "Plain-English Accounting", "Surgent McCoy CPE, LLC", "Ernst & Young", "Surgent", "OSCPA", "VSCPA", "PricewaterhouseCoopers"]
 
@@ -13,7 +13,7 @@ sponsor_list = ["AICPA", "Deloitte", "Becker Professional Education", "Intuit", 
 sponsor_list = sponsor_list + sponsor_lists
 sponsor_list = list(set(sponsor_list))
 
-extra_list= ["ASSOCIATION OF CERTIFIED FRAUD EXAMINERS", 'Plaio-English Accounting', 'pliedu', 'the Institute of Internal Auditors', 'WAthe Institute of Internal Auditors', 'Institute of Internal Auditors', 'THOMSON REUTERS', 'The Virginia Society of CPAs', 'Wes:ern CPE', 'Plain-English Acooanting', 'Plain-English Accoanting', 'schoolefbookkeeping', 'The ASCPA CPE', 'Armanino LLP', "Accounting & Financial Women's Alliance", "Corporate Finance", "Management Concepts", 'Adaptive Insights']
+extra_list= ["ASSOCIATION OF CERTIFIED FRAUD EXAMINERS", 'Plaio-English Accounting', 'pliedu', 'the Institute of Internal Auditors', 'WAthe Institute of Internal Auditors', 'Institute of Internal Auditors', 'THOMSON REUTERS', 'The Virginia Society of CPAs', 'Wes:ern CPE', 'Plain-English Acooanting', 'Plain-English Accoanting', 'schoolefbookkeeping', 'The ASCPA CPE', 'Armanino LLP', "Accounting & Financial Women's Alliance", "Corporate Finance", "Management Concepts", 'Adaptive Insights', 'DCB Holding Ltd', 'Plam-English Accounting', 'AudioSolutionZ', 'Dixon Hughes Goodman LLP', 'STEIN SPERLING', 'Frazier & Deeter, LLC']
 
 sponsor_list = sponsor_list + extra_list
 

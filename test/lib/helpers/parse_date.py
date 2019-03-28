@@ -5,7 +5,7 @@ from lib.common_methods import remove_extra_spaces, validate_line, hasNumbers, f
 import datefinder
 import datetime
 import re
-line_keywords = ['Date of Completion:', 'Date Issued:', 'End Date', 'End Date:', 'Date Completed:', 'Presentation Date:', 'Date Attended:', 'Completion Date:', 'Event Date:', 'Session End Date', 'Oate Attended:', 'Completion Date', 'Session End Date', 'awarded this certificate on', 'Date(s) Completed:', 'PROGRAM DATES:', 'Program Date:', 'Date Issued:', 'Class End Date', 'DATE ATTENDED:', 'Date:', 'Dated', 'Date.', 'Date', 'Awarded:', 'Completion date:', 'Seal of the Association this']
+line_keywords = ['Date of Completion:', 'Date Issued:', 'End Date', 'End Date:', 'Date Completed:', 'Presentation Date:', 'Date Attended:', 'Completion Date:', 'Event Date:', 'Session End Date', 'Oate Attended:', 'Completion Date', 'Session End Date', 'awarded this certificate on', 'Date(s) Completed:', 'PROGRAM DATES:', 'Program Date:', 'Date Issued:', 'Class End Date', 'DATE ATTENDED:', 'Date:', 'Dated', 'Date.', 'Date', 'Awarded:', 'Completion date:', 'Seal of the Association this', 'Completed on']
 post_keywords = [ 'Completion Date:', 'Date Attended', 'Date of Completion', 'event on', 'awardedthis certificate on', 'awarded this certificate on']
 pre_keywords	= ['Date Certified', 'Date', 'Date of Course', 'Dace of Course', 'Program Date(s)', 'Course Date', 'pate', 'Date of Completion']
 
@@ -147,7 +147,14 @@ class ParseDate():
 										if self.validate_date():
 												return
 
-
+		def get_date_from_program_name(self):
+				dates = list(datefinder.find_dates(self.program_name))
+				if len(dates) > 0:
+						if dates[-1].year > datetime.datetime.now().year or dates[-1].year < 2000:
+								return
+						self.date = str(dates[-1])
+						if self.validate_date():
+								return
 
 
 		def extract(self):
@@ -158,6 +165,9 @@ class ParseDate():
 				if self.date == "":
 						self.extract_without_keywords()
 				print("Date Extraction Complete===>1", self.date) 
+
+				if self.date == "":
+						self.get_date_from_program_name()
 
 				if self.date != "":
 						self.date = self.make_corrections(self.date)

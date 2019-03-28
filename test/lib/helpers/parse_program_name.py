@@ -4,19 +4,19 @@ from lib.common_methods import remove_extra_spaces, validate_line, find_pattern,
 
 
 
-preceding_keywords = ['has successfully completed', 'CERTIFICATE OF ATTENDANCE', 'has successfully completed the online course', 'Online Certification training:', 'Certificate of Attendance', 'Certificate of Completion', 'for participation in', 'for participation in', 'successfully completed', 'completion ot the course', 'entitled', 'for successfully completing', 'completed', 'For Successfully Completing', 'has successfully completed:', 'Has Successfully Completed the Course:', 'Has Successfully Completed the Course:', 'For successful completion of:', 'for the successful completion of', 'has completed', 'has completed the group Internet-based course', 'nas success*u ly comoleted:', 'Forattending', 'For attending', 'FOR THE PROGRAM ENTITLED', 'Congratulations on the successful completion of', 'for successful completion of the course', 'Has Successtully Completed the Course:', 'COMPLETION OF THE FOLLOWING ', 'for successful completion of', 'For successfully completing:', 'FOR THE COURSE ENTITLED', 'For completion of', 'FOR SUCCESSFUL COMPLETION OF', 'HAS COMPLETED THE TRAINING COURSETITLED', 'HAS COMPLETED THE TRAINING COURSE TITLED', 'For successfully completing', 'On Demand Video', 'FOR SUCCESSFUL COMPLETION', 'For successful completionof:', 'For successful completion of', 'attended the course', 'Successful campletion of', 'HAS SUCCESSFULLY COMPLETED', 'For the successful completion of', 'This certifies that', 'Has Successfully Completed:', 'Has successfully completed', 'has successfully completed the course', 'Has successfully completed the Introduction to']
+preceding_keywords = ['has successfully completed', 'CERTIFICATE OF ATTENDANCE', 'has successfully completed the online course', 'Online Certification training:', 'Certificate of Attendance', 'Certificate of Completion', 'for participation in', 'for participation in', 'successfully completed', 'completion ot the course', 'entitled', 'for successfully completing', 'completed', 'For Successfully Completing', 'has successfully completed:', 'Has Successfully Completed the Course:', 'Has Successfully Completed the Course:', 'For successful completion of:', 'for the successful completion of', 'has completed', 'has completed the group Internet-based course', 'nas success*u ly comoleted:', 'Forattending', 'For attending', 'FOR THE PROGRAM ENTITLED', 'Congratulations on the successful completion of', 'for successful completion of the course', 'Has Successtully Completed the Course:', 'COMPLETION OF THE FOLLOWING ', 'for successful completion of', 'For successfully completing:', 'FOR THE COURSE ENTITLED', 'For completion of', 'FOR SUCCESSFUL COMPLETION OF', 'HAS COMPLETED THE TRAINING COURSETITLED', 'HAS COMPLETED THE TRAINING COURSE TITLED', 'For successfully completing', 'On Demand Video', 'FOR SUCCESSFUL COMPLETION', 'For successful completionof:', 'For successful completion of', 'attended the course', 'Successful campletion of', 'HAS SUCCESSFULLY COMPLETED', 'For the successful completion of', 'This certifies that', 'Has Successfully Completed:', 'Has successfully completed', 'has successfully completed the course', 'Has successfully completed the Introduction to', 'course.', 'for successfully completing the event', 'has completed the training session', '(Please record only those hours you haveactually attended.)', 'has completed the group live course', 'Has successfully completed the QuickBooks', 'Has successfully completed the following training:', 'HAS SUCCESSFULLY COMPLETED THE COURSE', 'Successful campletion of:', 'Successfully completed the', 'who haspursued studies and completed all the', 'who has pursued studies and completed all the', 'successfully completed the webinar', 'Has successfully completed course:']
 
 """
 Is hereby awardedto (the institute of internal)
 """
 following_keywords = ['Course Name', 'a seminar presented by'] #, 'Is hereby awardedto', 'Is hereby awarded to']
-line_keywords = ['Course Title:', 'for successfully completing:', 'for successfully completing', 'Program Title:', 'PROGRAM TITLE:', 'For successful completion of', 'Title.', 'Title:', 'for success‘ully comp et ng', 'Course:', 'Event Title:', 'tor successfully completing', 'Course Title', 'Subject:', 'Event:', 'NAME OF COURSE:', 'Course', 'Title of Training:', 'For Attending', 'For successfully completing the', 'EVENT NAME:', 'has successfully completed:', 'TOPIC:', 'CourseTitle:', 'On Demand Video:', 'For successfully completing:' ]
+line_keywords = ['Program Name:', 'Course Tithe:', 'Course Title:', 'for successfully completing:', 'for successfully completing', 'Program Title:', 'PROGRAM TITLE:', 'For successful completion of', 'Title.', 'Title:', 'for success‘ully comp et ng', 'Course:', 'Event Title:', 'tor successfully completing', 'Course Title', 'Subject:', 'Event:', 'NAME OF COURSE:', 'Course', 'Title of Training:', 'For Attending', 'For successfully completing the', 'EVENT NAME:', 'has successfully completed:', 'TOPIC:', 'CourseTitle:', 'On Demand Video:', 'For successfully completing:', 'Attended Quarterly', 'For attending the Career Development Series:', 'ProgramTitle: ' ]
 
-invalid_keywords = ['presented to', 'Awarded to', 'Date', 'Freserted to', 'granted', 'Association of Cortificd', 'Association of Certified', 'Field of Study', 'Please', 'Program Location', 'CPE', 'Credits', 'CTEC', 'Participant', 'Sent', 'This is to ceruty that', 'This is to certify that', 'This is to', 'awardedthis', 'awarded this', 'preserted to', 'success‘ully', '@', 'certify that', 'Instructional Delivery Method', 'Attendee', 'Exam', 'Attendee Name:', 'SPONSOR', 'sponsor', 'PROGRAM TITLE:', 'program title', 'Successfully', 'successfully', 'ACKNOWLEDGES', 'THIS CERTIFIES THAT', 'this certifies that', 'for participation in', 'This certificate is presentedto', 'This certificate is presented to', 'Author', 'Congratulations', 'Self-Study Programs', 'CourseTitle', 'Course Title', 'DELIVERY METHOD', 'awardedto', 'awarded to', 'Location', 'CPEcredits', 'CPE credits', 'Event Dates', 'OBJECTIVE', 'Units', 'Has Successtully Completed the', 'Course Freld of Study', 'Course Field of Study', 'Course Number', 'Delivery Method Used', 'Type of InstructionalDelivery', 'Type of Instructional Delivery', 'Completion Certificate', 'Dates', 'Street', 'Pittsburgh', 'Sponsored by', 'Inc', 'Presenter', 'Fleld of Study', 'Field of Study', 'Fields of Study', 'http', 'Format', 'has completed']
+invalid_keywords = ['presented to', 'Awarded to', 'Date', 'Freserted to', 'granted', 'Association of Cortificd', 'Association of Certified', 'Field of Study', 'Please', 'Program Location', 'Credits', 'CTEC', 'Participant', 'Sent', 'This is to ceruty that', 'This is to certify that', 'This is to', 'awardedthis', 'awarded this', 'preserted to', 'success‘ully', '@', 'certify that', 'Instructional Delivery Method', 'Attendee', 'Attendee Name:', 'SPONSOR', 'sponsor', 'PROGRAM TITLE:', 'program title', 'Successfully', 'successfully', 'ACKNOWLEDGES', 'THIS CERTIFIES THAT', 'this certifies that', 'for participation in', 'This certificate is presentedto', 'This certificate is presented to', 'Author', 'Congratulations', 'Self-Study Programs', 'CourseTitle', 'Course Title', 'DELIVERY METHOD', 'awardedto', 'awarded to', 'Location', 'CPEcredits', 'CPE credits', 'Event Dates', 'OBJECTIVE', 'Units', 'Has Successtully Completed the', 'Course Freld of Study', 'Course Field of Study', 'Course Number', 'Delivery Method Used', 'Type of InstructionalDelivery', 'Type of Instructional Delivery', 'Completion Certificate', 'Dates', 'Street', 'Pittsburgh', 'Sponsored by', 'Inc', 'Presenter', 'Fleld of Study', 'Field of Study', 'Fields of Study', 'http', 'Format', 'has completed', 'Auburn Folsom Rd', 'Student', 'SHRM', 'Certificate of Attendance', 'Instructor', 'Naine', 'Name', 'In accordance with the standards for']
 
-possible_keywords = ['Conference', 'Event', 'Webcast', 'Seminar', 'Review Course', 'Ethics:', 'CPE DIRECT']
+possible_keywords = ['Conference', 'Event', 'Webcast', 'Seminar', 'Review Course', 'Ethics:', 'CPE DIRECT', 'A WORKSHIP ABOUT WEBINARS', "Accountant's Guide", 'Crosslin:']
 
-priority_keywords = ['(Part |)', 'Part |', 'PART 1', 'Module 1', 'Module |']
+priority_keywords = ['(Part |)', 'Part |', 'PART 1', 'Module 1', 'Module |', 'Module 2', 'Moduel 3', 'Module 4', 'Modeul 5', 'Module 6', 'MODULE 2']
 
 class ParseProgramName():
 
@@ -44,6 +44,11 @@ class ParseProgramName():
 										print("Error2--->")
 										#self.program_name = ""
 										#return False
+				#Temporary Fix
+				if len(self.program_name.split(' ')) == 1:
+						if self.program_name == 'completed' or self.program_name == 'attended':
+								self.program_name = ""
+								return False
 	
 				"""	
 				if self.sponsor.lower() != "":
@@ -100,12 +105,14 @@ class ParseProgramName():
 								if find_pattern(self.name.lower(), values[0]):
 										return [], True
 						print("***VALiDATE***3")
+						"""
 						if ':' in values[0]:
 								for k in ['ethics']:
 										print("***VALiDATE***3", find_pattern('ethics', values[0]))
 										if find_pattern('ethics', values[0]):
 												pass
 												#return [], status
+						"""
 						print("***VALiDATE***4", check_for_valid_string(values[0]))
 						if not check_for_valid_string(values[0]):
 								return [], True
@@ -149,7 +156,7 @@ class ParseProgramName():
 								#if kw == content.strip():
 								if kw in content.strip():
 										print(f"Content--->{content.strip()}, kw--->{kw}")
-										check_valid_keyword_to_extract = content.strip().split(kw)
+										check_valid_keyword_to_extract = [content.strip().split(kw)[1]]
 										print("parse_between_lines****1", check_valid_keyword_to_extract)
 										words = list( filter( None, check_valid_keyword_to_extract ) )
 										print("parse_between_lines****2", words)
@@ -169,16 +176,17 @@ class ParseProgramName():
 														continue
 												"""
 												values_1, status = self.validate_each_value(remove_extra_spaces( self.contents[index + 1].strip() ) )
+												#values_1, status = self.validate_each_value( [self.contents[index + 1].strip() ])
 												if status:
 														values_2, status = self.validate_each_value(remove_extra_spaces(self.contents[index + 2].strip() ))
 												else:
-														values_1 = []
+														#values_1 = []
 														values_2 = []
 												if status:
 														values_3, status = self.validate_each_value(remove_extra_spaces(self.contents[index + 3].strip() ))
 												else:
-														values_1 = []
-														values_2 = []
+														#values_1 = []
+														#values_2 = []
 														values_3 = []
 												print(f"values_1-->{values_1}, values_2-->{values_2}, values_3-->{values_3}")
 												#print("TRUE/FALSE-------->", self.is_valid_program_name(values_1, values_2, values_3))
