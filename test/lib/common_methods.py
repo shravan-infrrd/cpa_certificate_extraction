@@ -68,6 +68,7 @@ def remove_extra_spaces( line ):
 		return valid_words
 
 def validate_line(content, keyword):
+		print(f"Content-->{content}, keyword-->{keyword}")
 		words = content.split(keyword)
 		if len(words) == 1:
 				return None

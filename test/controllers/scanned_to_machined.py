@@ -184,7 +184,7 @@ def check_for_rotated_image(image_path):
 		import re
 
 		print("check_for_rotated_image********")
-		command = ['tesseract', image_path, 'stdout', '-l', 'osd', '--psm', '0']
+		command = ['tesseract', image_path, 'stdout', '-l', 'eng', '--psm', '0']
 		res = subprocess.check_output(command)
 		result = str(res)
 		degree = re.findall(r"Rotate: (\d+)", result)[0]
