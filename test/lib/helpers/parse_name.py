@@ -5,7 +5,7 @@ preceding_keywords = ['This certifies that', 'certifies that', 'Attendee', 'Cert
 
 following_keywords = ['Has successfully completed the QuickBooks', "Participant's Name", 'for successfully completing', 'has successfully completed', 'Has Successfully Completed the Course:', 'Has successfully completed', 'UF,orattending', 'has completed the QASSelf-Study course', 'has completed the', 'FOR SUCCESSFUL COMPLETION OF', 'Participant Name', 'who haspursued studies and completed all the', 'who has pursued studies and completed all the']
 #name_keywords = ['Attendee’s Name:', '\ Attendee’s Name:', 'V Attendee’s Name:', 'Awardedto:', 'Participant Name:', 'This certificate is presented to', 'Awarded to:']
-line_keywords = ['Presents a Certification of Completion to:', 'Attendee’s Name:', '\ Attendee’s Name:', 'V Attendee’s Name:', 'Awardedto:', 'Participant Name:', 'This certificate is presented to', 'Awarded to:', 'This certifies that', 'Attendee:', 'NAME OF ATTENDEE.', 'Nameof Participant:', 'Name:', 'Attendee Name:', 'This certificate is presented to:', 'Name of Participant:', 'NAME OF PARTICIPANT:', 'Participant Name', 'Student', 'This certificate 1s presented to:', 'this certificate is presented to.', 'Name ofParticipant:', 'this certificate is presented to:', 'This certificate is presented to', 'Congratulations,', 'Participant Name:', 'This to certify that']
+line_keywords = ['Presents a Certification of Completion to:', 'Attendee’s Name:', '\ Attendee’s Name:', 'V Attendee’s Name:', 'Awardedto:', 'Participant Name:', 'This certificate is presented to', 'Awarded to:', 'This certifies that', 'Attendee:', 'NAME OF ATTENDEE.', 'Nameof Participant:', 'Name:', 'Attendee Name:', 'This certificate is presented to:', 'Name of Participant:', 'NAME OF PARTICIPANT:', 'Participant Name', 'Student', 'This certificate 1s presented to:', 'this certificate is presented to.', 'Name ofParticipant:', 'this certificate is presented to:', 'This certificate is presented to', 'Congratulations,', 'Participant Name:', 'This to certify that', '[his certificate is presented to:', 'This certificate is presented to:']
 
 invalid_words = ['Freserted to', 'Presented to', 'this', 'that', 'Awarded to', 'Program', 'CPE', 'Firm:', 'Participant', 'Sent', 'CERTIFICATION', '@', 'Issue', 'Attendee Name:', 'Instructional Delivery Method', 'Successful completion of:', 'ATTENDED', 'attended', 'SPONSOR', 'sponsor', 'for successfully completing', 'Individual', 'DATE', 'TIME', 'Certificate ofCompletion', 'Certificate of Completion', 'Congratulations', 'awardedto', 'awarded to', 'For successtully completing', 'TSCPA', 'Credits', 'SCalCPA',"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December", 'Street', 'Application', 'PRESENTED BY', 'Pittsburgh', 'ws DEN', 'Location', 'Tithe', 'Middle', 'Certificate Logo', 'IRS Course', 'Successful campletion of', 'stitute', 'institute', 'Number', 'AUDITING', 'PLANS', 'CPA Crossing', 'minute hour', 'Partici', 'Participant', 'http', 'Details', 'Affirmation', 'COMPLIANCE AUDITS', 'EDITION', 'Risk']
 
@@ -46,7 +46,7 @@ class ParseName():
 
 
 		def validate_name(self):
-				print("***NAME***validation called", self.name)
+				#print("***NAME***validation called", self.name)
 				for kw in invalid_words:
 						#print(f"keyword --> {kw.lower()} ===> {self.name.lower()}")
 						if kw.lower() in self.name.lower():
@@ -54,7 +54,7 @@ class ParseName():
 								#print("True condition", kw, '**', self.name)
 								self.name = ""
 								return False
-				print("****NAEM***FOUND***", self.name)
+				#print("****NAEM***FOUND***", self.name)
 				if len(self.name.split(' ')) > 4:
 						print("NAME-ERROR--1")
 						self.name = ""
@@ -72,7 +72,7 @@ class ParseName():
 								print("NAME--ERROR--2.1")
 								self.name = ""
 								return False
-				print("NAMELENGTH---->", len(self.name))
+				#print("NAMELENGTH---->", len(self.name))
 				if len(self.name.strip()) <= 4:
 						print("NAME-ERROR--3")
 						self.name = ""
@@ -86,11 +86,11 @@ class ParseName():
 						for kw in preceding_keywords:
 								#print(f"START***NAME**content=={content},***kw=={kw}")
 								if kw.lower() in content.strip().lower():
-										print("1*****************NAME*****************", kw)
+										#print("1*****************NAME*****************", kw)
 										values = remove_extra_spaces( self.contents[index + 1].strip() )
-										print("2*****************NAME*****************", values)
+										#print("2*****************NAME*****************", values)
 										for val in values:
-												print("NAME_VALIDATION=========>", val) 
+												#print("NAME_VALIDATION=========>", val) 
 												self.name = val
 												word = 'successfully completed'
 												if word.lower() in self.name.lower():
@@ -100,16 +100,16 @@ class ParseName():
 																		if len(self.name.split(' ')) > 4:
 																				self.name = ""
 																				continue
-																		print("2.0*****************NAME*****************", self.name)
+																		#print("2.0*****************NAME*****************", self.name)
 																		if self.validate_name():
-																				print("2.01*****************NAME*****************", )
+																				#print("2.01*****************NAME*****************", )
 																				if self.cross_check_name():
-																						print("2.02*****************NAME*****************", self.name)
+																						#print("2.02*****************NAME*****************", self.name)
 																						return
-																print("2.1*****************NAME*****************", self.name)
+																#print("2.1*****************NAME*****************", self.name)
 																self.name = ""
 																continue
-												print("3*****************NAME*****************", self.name)
+												#print("3*****************NAME*****************", self.name)
 												if self.validate_name():
 														if self.cross_check_name():
 																return
@@ -120,9 +120,9 @@ class ParseName():
 														if len(values) == 0:
 																values = remove_extra_spaces( self.contents[index + 3].strip() )
 																
-														print("4*****************NAME*****************", values)
+														#print("4*****************NAME*****************", values)
 														for val in values:
-																print("4*****************NAME*****************", values)
+																#print("4*****************NAME*****************", values)
 																self.name = val
 																word = 'successfully completed'
 																if word.lower() in self.name.lower():
@@ -133,20 +133,20 @@ class ParseName():
 																								self.name = ""
 																								continue
 																						if self.validate_name():
-																								print("4.01*****************NAME*****************", self.name)
+																								#print("4.01*****************NAME*****************", self.name)
 																								if self.cross_check_name():
-																										print("4.02*****************NAME*****************", self.name)
+																										#print("4.02*****************NAME*****************", self.name)
 																										return
-																				print("4.1*****************NAME*****************", self.name)
+																				#print("4.1*****************NAME*****************", self.name)
 																				self.name = ""
 																				continue
-																print("5*****************NAME*****************", val)
+																#print("5*****************NAME*****************", val)
 																if self.validate_name():
-																		print("5.01*****************NAME*****************", self.cross_check_name())
+																		#print("5.01*****************NAME*****************", self.cross_check_name())
 																		if self.cross_check_name():
-																				print("5.02*****************NAME*****************", val)
+																				#print("5.02*****************NAME*****************", val)
 																				return
-																print("5*****************NAME-FAILED*****************", val)
+																#print("5*****************NAME-FAILED*****************", val)
 										except:
 													continue
 
@@ -158,11 +158,11 @@ class ParseName():
 												#print("5*****************NAME*****************", kw)
 												if kw in content.strip():
 												#if kw == content.strip():
-														print(f"***NAME****content=={content}===kw{kw}")
+														#print(f"***NAME****content=={content}===kw{kw}")
 														values = remove_extra_spaces(self.contents[index - 1].strip())
-														print("values---->", values)
+														#print("values---->", values)
 														for val in values:
-																print("NAME---val", val)
+																#print("NAME---val", val)
 																if ':' in val:
 																		continue
 																self.name = val
@@ -175,9 +175,9 @@ class ParseName():
 																				return
 																		#return
 														values = remove_extra_spaces(self.contents[index - 2].strip())
-														print("values---->", values)
+														#print("values---->", values)
 														for val in values:
-																print("NAME---val", val)
+																#print("NAME---val", val)
 																if ':' in val:
 																		continue
 																self.name = val
@@ -207,31 +207,31 @@ class ParseName():
 				for content in self.contents:
 						for kw in line_keywords:
 								if kw in content:
-										print(f"Content-->{content}, kw-->{kw}")
+										#print(f"Content-->{content}, kw-->{kw}")
 
-										print("1***START***NAME", content, "**kw**", kw)
+										#print("1***START***NAME", content, "**kw**", kw)
 										valid_words = validate_line(content, kw)
-										print("2***START***NAME", valid_words)
+										#print("2***START***NAME", valid_words)
 										if valid_words is None:
 												continue
-										print("3***START***NAME", valid_words)
+										#print("3***START***NAME", valid_words)
 										#if ':' in valid_words[0]:
 										#		continue
-										print("4***START***NAME", self.name)
+										#print("4***START***NAME", self.name)
 										self.name = valid_words[0]
-										print("5***START***NAME", self.name)
+										#print("5***START***NAME", self.name)
 
 										for word in words:
-												print("WORD---->", word)
+												#print("WORD---->", word)
 												if word.lower() in self.name.lower():
-														print("WORD_MATCH---->", word)
+														#print("WORD_MATCH---->", word)
 														self.name = self.name.split(word)[0]
 														break
 				
 										
-										print("6***START***NAME", self.name)
+										#print("6***START***NAME", self.name)
 										if self.validate_name():
-												print("****END***NAME")
+												#print("****END***NAME")
 												return
 
 		def parse_line_without_keywords(self):

@@ -157,6 +157,18 @@ class ParseDate():
 								return
 
 
+		def expection_case(self):
+				print("DATE_EXCEPTION----->", self.date)
+				for content in self.contents:
+						if 'Date' in content:
+								print("DATE_EXCEPTION----->1", content)
+								dates = re.findall(r"Date: (\d+.\d+.\d+)", content)
+								print("DATE_EXCEPTION----->2", dates)
+								self.date = dates[0].replace('.', '/')
+								if self.validate_date():
+										return
+							
+
 		def extract(self):
 				self.parse_within_lines()
 				if self.date == "":
@@ -169,10 +181,15 @@ class ParseDate():
 				if self.date == "":
 						self.get_date_from_program_name()
 
+				if self.date == "":
+						self.expection_case()
+
 				if self.date != "":
 						self.date = self.make_corrections(self.date)
 						print("Date Extraction Complete===>2", self.date)
 						self.date = format_date(self.date)
 						print("Date Extraction Complete===>3", self.date)
+
+
 
 

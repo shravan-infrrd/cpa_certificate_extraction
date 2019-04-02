@@ -6,11 +6,10 @@ from word2number import w2n
 
 #line_keywords = ['ofContinuing ProfessionalEducation Credits:', 'CPE credit1', 'CPE Hours', 'Credit', 'hours of CPE', 'hours of Continuing', 'CPE credits']
 pre_line_keywords = ['ofContinuing ProfessionalEducation Credits:', 'CPE credit1', 'CPE Hours', 'Credit', 'hours of CPE', 'hours of Continuing', 'CPE credits', 'CPE is awarded', 'CPE Hour', 'CPE credit hours', 'Hour Continuing Education Credit']
-#line_keywords = ['ofContinuing ProfessionalEducation Credits:', 'CPE credit1', 'CPE Hours', 'Interactive Credit in CPE Hours:', 'For a total of', 'Total CPF. Hours:', 'Total CPE Hours:', 'Total CPF. Hours:', 'Has Successfully Completed', 'Hours of Recommended CPE Credit:', 'CPE Credit Hours:', 'CPE Hours:', 'Number of CPE Credits', 'Total Credit Earned:', 'Duration:', 'CPE Credits:' ]
 
-post_line_keywords = ['Recommended CPE Credits:', 'Interactive Credit in CPE Hours:', 'For a total of', 'Total CPF. Hours:', 'Total CPE Hours:', 'Total CPF. Hours:', 'Has Successfully Completed', 'Hours of Recommended CPE Credit:', 'CPE Credit Hours:', 'CPE Hours:', 'Number of CPE Credits', 'Total Credit Earned:', 'Duration:', 'CPE Credits:', 'Credit Hours:', 'CPE credit:', 'Credits:', 'CPE Credit Hours.', 'CPE Credits earned:', 'Recommendedfor', 'Recommended for', 'CPE credits:', 'Course Credit:', 'TSCPA Sponsor ID #', 'CPE:', 'Total Credits Earned:', 'Number of CPE credits', 'CPE Credit:', 'CPE Hours ', 'Approved CPE credit(s):', 'CPE Credits', 'Number of CPE credits', 'Recommended CPE credits for this course:', 'CPE Credits Received:', 'Recommended CPE credit']
+post_line_keywords = ['Recommended CPE Credits:', 'Interactive Credit in CPE Hours:', 'For a total of', 'Total CPF. Hours:', 'Total CPE Hours:', 'Total CPF. Hours:', 'Has Successfully Completed', 'Hours of Recommended CPE Credit:', 'CPE Credit Hours:', 'CPE Hours:', 'Number of CPE Credits', 'Total Credit Earned:', 'Duration:', 'CPE Credits:', 'Credit Hours:', 'CPE credit:', 'Credits:', 'CPE Credit Hours.', 'CPE Credits earned:', 'Recommendedfor', 'Recommended for', 'CPE credits:', 'Course Credit:', 'TSCPA Sponsor ID #', 'CPE:', 'Total Credits Earned:', 'Number of CPE credits', 'CPE Credit:', 'CPE Hours ', 'Approved CPE credit(s):', 'CPE Credits', 'Number of CPE credits', 'Recommended CPE credits for this course:', 'CPE Credits Received:', 'Recommended CPE credit', 'Total Hours:']
 
-keywords = ['Numberof CPE Credits', 'Earned CPE credit(s)', 'Awarded CPE Credit Hours', 'Earned CPE Credit(s)', 'Number of CPE Credits', 'Earned CPE credit(s)']
+keywords = ['Numberof CPE Credits', 'Earned CPE credit(s)', 'Awarded CPE Credit Hours', 'Earned CPE Credit(s)', 'Number of CPE Credits', 'Earned CPE credit(s)', 'CPE Credit Hours']
 
 post_keywords = ['Recommended for:', 'CPE CREDIT EARNED', 'CPECredits', 'Credas', 'Recommendedfor:', 'CPE Credit', 'CPE Credits:'] 
 
@@ -28,6 +27,8 @@ class ParseCredits():
 				self.field_of_study = []
 
 		def validate_credits(self):
+				if self.credits == "":
+						return False
 				if len(self.credits) > 4:
 						self.credits = ""
 						return False
@@ -36,6 +37,12 @@ class ParseCredits():
 		def get_credits(self):
 				print("--GET_CREDITS-->", self.credits)
 				creds = re.findall('\d*\.?\d+', self.credits)
+				for cred in creds:
+						if '.' not in cred:
+								if len(str(cred.replace('.', ''))) >=4:
+										self.credits = ""
+										return ""
+				print("--GET_CREDITS-->", creds)
 				if creds:
 						for cred in creds:
 								print("--CRED-->", cred)
@@ -117,6 +124,11 @@ class ParseCredits():
 												continue
 										for val in valid_words:
 												print("CREDIT-ParseSecondPartOfLine------>1.5",	val)
+												if len(val) == 1:
+														if val == 'l' or val == 'L' or val == 'I':
+																val = '1'
+												
+												print("Credits--->", val)				
 												if hasNumbers( val ):
 														print("CREDIT-ParseSecondPartOfLine------>2", val)
 														self.credits = val
@@ -155,11 +167,15 @@ class ParseCredits():
 						for kw in keywords:
 								if kw in content:
 										values = remove_extra_spaces( self.contents[ index -1 ].strip() )
+										print("5.1*************PARSING_CREDITS*****************", values)
+											
 										for val in values:
+												print("5.2*************PARSING_CREDITS*****************", val)
 												if hasNumbers( val ):
 														self.credits = val
 														self.credits = self.get_credits()
-														return
+														if self.validate_credits():
+																return
 
 				print("6*************PARSING_CREDITS*****************")
 				for index, content in enumerate(self.contents):
@@ -194,6 +210,7 @@ class ParseCredits():
 
 		def extract_credits(self, fos):
 				print("extract_credits******", fos)
+				self.credits = ""
 				for content in self.contents:
 						content = content.lower().strip()
 						if fos.lower() in content.strip().lower():
@@ -222,6 +239,17 @@ class ParseCredits():
 										else:
 												continue
 
+				extracted_credit = ""
+				if self.credits == "":
+						extracted_credit = re.findall('\d*\.?\d+', fos)	
+						if len(extracted_credit) > 0:
+								self.credits = extracted_credit[0]
+								if self.validate_credits():
+										if float(self.credits) < float(self.max_credit_val):
+												return self.credits
+							
+	
+				return ""
 
 		def exclude_if_date(self):
 				patterns = ['%{YEAR:year}-%{MONTHNUM:month}-%{MONTHDAY:day}', '%{YEAR:year}/%{MONTHNUM:month}/%{MONTHDAY:day}']

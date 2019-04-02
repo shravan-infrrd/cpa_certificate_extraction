@@ -91,20 +91,20 @@ class ParseProgramName():
 				return True
 
 		def validate_each_value(self, values):
-				print("VALIDATION====PROGRAM_NAME===>", values)
+				#print("VALIDATION====PROGRAM_NAME===>", values)
 				status = False
 				if not values:
 						return [], True
 				#try:
 				if values[0] != "":
-						print("***VALiDATE***1", self.check_invalid_keywords(values[0]))
+						#print("***VALiDATE***1", self.check_invalid_keywords(values[0]))
 						if not self.check_invalid_keywords(values[0]):
 								return [], status
-						print("***VALiDATE***2")
+						#print("***VALiDATE***2")
 						if self.name != "":
 								if find_pattern(self.name.lower(), values[0]):
 										return [], True
-						print("***VALiDATE***3")
+						#print("***VALiDATE***3")
 						"""
 						if ':' in values[0]:
 								for k in ['ethics']:
@@ -113,10 +113,10 @@ class ParseProgramName():
 												pass
 												#return [], status
 						"""
-						print("***VALiDATE***4", check_for_valid_string(values[0]))
+						#print("***VALiDATE***4", check_for_valid_string(values[0]))
 						if not check_for_valid_string(values[0]):
 								return [], True
-						print("***VALiDATE***5")
+						#print("***VALiDATE***5")
 						return values, True
 				#except Exception as error:
 						#print("ERROR IN VALIDATE_EACH_VALUE----->", values, "Error--->", error)
