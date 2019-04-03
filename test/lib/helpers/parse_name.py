@@ -56,28 +56,28 @@ class ParseName():
 								return False
 				#print("****NAEM***FOUND***", self.name)
 				if len(self.name.split(' ')) > 4:
-						print("NAME-ERROR--1")
+						#print("NAME-ERROR--1")
 						self.name = ""
 						return False
 				if len(self.name.split(' ')[0]) <= 2:
-						print("NAME-ERROR--1.5")
+						#print("NAME-ERROR--1.5")
 						self.name = ""
 						return False
 				if hasNumbers(self.name):
-						print("NAME-ERROR--2")
+						#print("NAME-ERROR--2")
 						if '(' in self.name or ')' in self.name or '-' in self.name:
 						#if self.name in ['(', ')', '-']
 								pass
 						else:
-								print("NAME--ERROR--2.1")
+								#print("NAME--ERROR--2.1")
 								self.name = ""
 								return False
 				#print("NAMELENGTH---->", len(self.name))
 				if len(self.name.strip()) <= 4:
-						print("NAME-ERROR--3")
+						#print("NAME-ERROR--3")
 						self.name = ""
 						return False
-				print("NAME-FOUND-SUCCESS-----", self.name)
+				#print("NAME-FOUND-SUCCESS-----", self.name)
 				return True
 
 		def parse_between_lines(self):

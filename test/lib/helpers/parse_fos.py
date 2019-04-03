@@ -1,10 +1,10 @@
 #text_file = "./text_files/22.txt"
 from lib.common_methods import remove_extra_spaces, validate_line, hasNumbers, find_pattern
 
-field_of_studies = [ 'Accounting & Auditing', 'Accounting and Auditing', 'Administrativei Practice', 'Business Management & Organization', 'Communications', 'Computer Science', 'Economics', 'Ethics - Behavioral', 'Ethics - Regulatory', 'Finance', 'Marketing', 'Mathematics', 'Personal Development', 'Personnel/Human Resources', 'Production', 'Specialized Knowledge and Applications', 'Specialized Knowledge & Applications', 'Social Environment of Business', 'Statistics', 'Accounting - Governmental', 'Auditing - Governmental', 'Business Law', 'Management Advisory Services', 'Taxes', 'Communications and Marketing', 'Information Technology', 'Computer Software & Applications', 'Audit', 'Business Management and Organization', 'SPECIALIZED KNOWLEDGE AND APPLICATIONS']
+field_of_studies = [ 'Accounting & Auditing', 'Accounting and Auditing', 'Administrativei Practice', 'Business Management & Organization', 'Communications', 'Computer Science', 'Economics', 'Ethics - Behavioral', 'Ethics - Regulatory', 'Finance', 'Marketing', 'Mathematics', 'Personal Development', 'Personnel/Human Resources', 'Production', 'Specialized Knowledge and Applications', 'Specialized Knowledge & Applications', 'Social Environment of Business', 'Statistics', 'Accounting - Governmental', 'Auditing - Governmental', 'Business Law', 'Management Advisory Services', 'Taxes', 'Communications and Marketing', 'Information Technology', 'Computer Software & Applications', 'Business Management and Organization', 'SPECIALIZED KNOWLEDGE AND APPLICATIONS']
 
 
-special_list = ['Auditing', 'Accounting', 'Specialized Knowledge', 'ACCOUNTING', 'AUDITING', 'BUSINESS MAN AGEMENT', 'MAS', 'TAXES', 'Business Management', 'Tax']
+special_list = ['Auditing', 'Accounting', 'Specialized Knowledge', 'ACCOUNTING', 'AUDITING', 'BUSINESS MAN AGEMENT', 'MAS', 'TAXES', 'Business Management', 'Tax', 'Audit']
 
 related_studies = ['Computer Software and Applications', 'Accounting & Auditing / Tax', 'Personnel/Human Resource', 'Personnel/HR', 'Regulatory Ethics', 'Professional Development', 'Behavioral Ethics', 'Management Services', 'A&A', 'Yellow Book', 'Professional Ethics', 'Fraud', 'Accounting Governmental', 'Auditing Governmental', 'Behavioral Ethics', 'Business Mgmt and Org', 'State Ethics', 'Cybersecurity Update', 'Taxation', 'Forensic Accounting', 'Forensic Accounting — Technical', 'Communications & Marketing', 'Group intemet-Gased', 'Management Advisory Services', 'Management Advisory Services Basic Level', 'Ethics (Regulatory)', 'Computer Software & Applications — Non-Technical', 'Laws & Rules Ethics', 'Ethics/Regulatory Ethics', 'Taxes (in NY Taxation)', 'Governmental Accounting', 'specialized Krewledge', 'Special Knowledge']
 
@@ -16,7 +16,7 @@ pre_keywords = [ 'field of study:', 'For the successful completion of', 'sponsor
 
 post_keywords = ['bicld of Study', 'bield of Study', 'Field of Study', 'Subject Area', 'Field ofStudy', 'NASBA Field of Study:', 'Curriculum:']
 
-line_keywords = ['Field of Study:', 'Best Practices in', 'FieldofStudy:', 'Course Field of Study:', 'for successfully completing', 'Fieldof Study:', 'Recommended Field of Study:', 'in the subject area of', 'RecommendedField of Study:', 'Field ofStudy:', 'Ficld of Study:', 'NASBAField of Study:', 'Course Freld of Study:', 'NASBAField of Study', 'NASBA Recognized Field of Study:', 'NASBAField of Study: ', 'Fleld of Study Associated with Credit:']
+line_keywords = ['Field of Study:', 'Best Practices in', 'FieldofStudy:', 'Course Field of Study:', 'for successfully completing', 'Fieldof Study:', 'Recommended Field of Study:', 'in the subject area of', 'RecommendedField of Study:', 'Field ofStudy:', 'Ficld of Study:', 'NASBAField of Study:', 'Course Freld of Study:', 'NASBAField of Study', 'NASBA Recognized Field of Study:', 'NASBAField of Study: ', 'Fleld of Study Associated with Credit:', 'Number of CPE Credits']
 
 
 class ParseFos():
@@ -29,6 +29,14 @@ class ParseFos():
 				for fos in field_of_studies:
 						if fos.lower() in field.lower():
 								print(f"Validation_TRUE---->{fos.lower()}---->{field.lower()}")
+								print( ((len(field) - len(fos)) / len(fos) )) 
+								print( ((len(field) - len(fos)) / len(fos) )  > float(5 ))
+								print( (len(field.strip())) - len(fos.strip()) )
+								if (len(field.strip())) - len(fos.strip()) == 0:
+										return True
+
+								if (( (len(field) - len(fos))) / len(fos)  ) > float(5):
+										return False
 						#if field.lower() in fos.lower():
 								return True
 				return False
@@ -88,24 +96,25 @@ class ParseFos():
 														#return
 
 		def parse_within_lines(self): 
-				print("***parse_within_lines***")
+				print("FOS--***parse_within_lines***")
 				for index, content in enumerate(self.contents):
 						for kw in line_keywords:
 								if kw in content:
+										print("FOS--START--->", kw)
 										valid_words = validate_line(content, kw)
-										#print("FOS***START***", content, "***valid_words**", valid_words)
+										print("FOS***START***", content, "***valid_words**", valid_words)
 										if valid_words is None:
 												continue
-										#print("parse_within_lines***>1" )
+										print("FOS--parse_within_lines***>1" )
 										#self.field_of_study = valid_words[0]
 										for val in valid_words:
-												#print("parse_within_lines***>2" )
+												print("FOS--parse_within_lines***>2", val, self.validate_with_existing_list(val))
 												if self.validate_with_existing_list(val):
-														#print("parse_within_lines***>3" )
+														print("FOS--parse_within_lines***>3", val )
 														if not self.check_if_present(valid_words[0]):  
-																#print("PROGRAM_NAME_HERE====>", self.fos_check(valid_words[0], content))
-																if self.fos_check(valid_words[0], content):
-																		self.field_of_study.append(valid_words[0])
+																print("FOS--FOS_HERE====>",val,  self.fos_check(val, content))
+																if self.fos_check(val, content):
+																		self.field_of_study.append(val)
 										"""
 										if self.validate_with_existing_list(valid_words[0]):
 												if not self.check_if_present(valid_words[0]):  

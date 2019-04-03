@@ -32,3 +32,4 @@ datefinder
 openpyxl
 spacy
 gunicorn
+word2number
