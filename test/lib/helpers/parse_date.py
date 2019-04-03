@@ -113,22 +113,19 @@ class ParseDate():
 				print("****WITHOUT_KEYWORD_EXTRACTION***")
 				parse = False
 				for content in self.contents:
-						#print(f"Date:------>{self.program_name.lower().strip()}") #===Content:-->{content.lower().strip()}")
-						#print(f"Content:--->{content.lower().strip()}")
-						#print(f"TRUE/FALSE---DATE--->{find_pattern(self.program_name.lower().strip(), content.lower().strip())}")
-						#print(f"TRUE/FALSE->{find_pattern(content.lower().strip(), self.program_name.lower().strip())}")
-						#if find_pattern(self.program_name.lower().strip(), content.lower().strip()):
-						#print("1***PARSE***", str(parse))
+						if content.strip() == "":
+								continue
+						print(f"Date:------>{self.program_name.lower().strip()}") #===Content:-->{content.lower().strip()}")
+						print(f"Content:--->{content.lower().strip()}")
 						if self.program_name == "":
 								parse = True
-						#print("2***PARSE_Pattern***", str(parse))
-						#print("content.lower().strip()======>", content.lower().strip())
-						#print("self.program_name.lower().strip()===>", self.program_name.lower().strip())
+						print("2***PARSE_Pattern***", str(parse))
+						print("FIND_PATTERN_RESULT--->", find_pattern(content.lower().strip(), self.program_name.lower().strip()))
 						if find_pattern(content.lower().strip(), self.program_name.lower().strip()):
 						#if self.name.lower() in content.lower().strip():
 								parse = True
 								continue
-						#print("3***PARSE***", str(parse))
+						print("3***PARSE***", str(parse))
 						if parse:
 								#if hasNumbers(content):
 								#print("FINDING-DATE----->1", content)
