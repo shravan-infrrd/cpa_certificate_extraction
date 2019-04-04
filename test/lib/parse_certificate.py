@@ -10,23 +10,24 @@ from lib.helpers.parse_sponsor_id import ParseSponsorId
 from lib.helpers.parse_program_name import ParseProgramName
 from lib.helpers.parse_qas_number import ParseQasNumber
 
+
+
+
+
 def parse_all_fields( contents, result):
     pn = ParseName(contents)
     pn.extract()
 
-    ps = ParseSponsors(contents)
-    ps.extract()
 
-    pp = ParseProgramName(contents, pn.name, ps.sponsor)
+
+    pp = ParseProgramName(contents, pn.name)
     pp.extract()
+
+    ps = ParseSponsors(contents, pp.program_name)
+    ps.extract()
 
     pd  = ParseDate(contents, pn.name, pp.program_name)
     pd.extract()
-
-    """
-    pf = ParseFieldOfStudy(contents)
-    pf.extract()
-    """
 
     pfos = ParseFos(contents)
     pfos.extract()
@@ -34,15 +35,8 @@ def parse_all_fields( contents, result):
     pc = ParseCredits(contents, pfos.field_of_study)
     pc.extract()
 
-
-
-    #pcod = ParseCompletionDate(contents)
-    #pcod.extract()
-
     pm = ParseDeliveryMethod(contents)
     pm.extract()
-
-
 
     pi = ParseSponsorId(contents)
     pi.extract()

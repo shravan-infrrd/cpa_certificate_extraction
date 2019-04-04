@@ -5,6 +5,7 @@ from lib.common_methods import remove_extra_spaces, validate_line, hasNumbers, f
 import datefinder
 import datetime
 import re
+from pygrok import Grok
 line_keywords = ['Date of Completion:', 'Date Issued:', 'End Date', 'End Date:', 'Date Completed:', 'Presentation Date:', 'Date Attended:', 'Completion Date:', 'Event Date:', 'Session End Date', 'Oate Attended:', 'Completion Date', 'Session End Date', 'awarded this certificate on', 'Date(s) Completed:', 'PROGRAM DATES:', 'Program Date:', 'Date Issued:', 'Class End Date', 'DATE ATTENDED:', 'Date:', 'Dated', 'Date.', 'Date', 'Awarded:', 'Completion date:', 'Seal of the Association this', 'Completed on', 'awardedthis certificate on']
 post_keywords = [ 'Completion Date:', 'Date Attended', 'Date of Completion', 'event on', 'awardedthis certificate on', 'awarded this certificate on']
 pre_keywords	= ['Date Certified', 'Date', 'Date of Course', 'Dace of Course', 'Program Date(s)', 'Course Date', 'pate', 'Date of Completion']
@@ -115,17 +116,17 @@ class ParseDate():
 				for content in self.contents:
 						if content.strip() == "":
 								continue
-						print(f"Date:------>{self.program_name.lower().strip()}") #===Content:-->{content.lower().strip()}")
+						#print(f"Date:------>{self.program_name.lower().strip()}") #===Content:-->{content.lower().strip()}")
 						print(f"Content:--->{content.lower().strip()}")
 						if self.program_name == "":
 								parse = True
-						print("2***PARSE_Pattern***", str(parse))
+						#print("2***PARSE_Pattern***", str(parse))
 						print("FIND_PATTERN_RESULT--->", find_pattern(content.lower().strip(), self.program_name.lower().strip()))
 						if find_pattern(content.lower().strip(), self.program_name.lower().strip()):
 						#if self.name.lower() in content.lower().strip():
 								parse = True
 								continue
-						print("3***PARSE***", str(parse))
+						print("3***PARSE_DATE***", str(parse))
 						if parse:
 								#if hasNumbers(content):
 								#print("FINDING-DATE----->1", content)
@@ -148,11 +149,22 @@ class ParseDate():
 												return
 
 		def get_date_from_program_name(self):
-				dates = list(datefinder.find_dates(self.program_name))
-				if len(dates) > 0:
-						if dates[-1].year > datetime.datetime.now().year or dates[-1].year < 2000:
-								return
-						self.date = str(dates[-1])
+				print("get_date_from_program_name************>GROK", self.program_name)
+				date_pattern = '%{MONTH:month} %{MONTHDAY:day}, %{YEAR:year}'
+				grok = Grok(date_pattern)
+				date_obj = grok.match(self.program_name)
+				print("get_date_from_program_name************>GROK",date_obj)
+				if date_obj is None:
+						dates = list(datefinder.find_dates(self.program_name))
+						if len(dates) > 0:
+								if dates[-1].year > datetime.datetime.now().year or dates[-1].year < 2000:
+										return
+								self.date = str(dates[-1])
+								if self.validate_date():
+										return
+				else:
+						#{'month': 'January', 'day': '16', 'year': '2018'}
+						self.date = date_obj['month'] + " " + date_obj['day'] + ", " + date_obj['year']
 						if self.validate_date():
 								return
 

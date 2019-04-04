@@ -14,11 +14,11 @@ def parse_all_fields( contents, result):
     pn = ParseName(contents)
     pn.extract()
 
-    ps = ParseSponsors(contents)
-    ps.extract()
-
-    pp = ParseProgramName(contents, pn.name, ps.sponsor)
+    pp = ParseProgramName(contents, pn.name)
     pp.extract()
+
+    ps = ParseSponsors(contents, pp.program_name)
+    ps.extract()
 
     pd  = ParseDate(contents, pn.name, pp.program_name)
     pd.extract()

@@ -1,10 +1,10 @@
 #text_file = "./textfiles/21.txt"
 import re
 from lib.common_methods import remove_extra_spaces, validate_line, find_pattern, check_for_valid_string
+from dateutil.parser import parse
 
 
-
-preceding_keywords = ['This certifies that you have successfully completed course:', 'has successfully completed', 'CERTIFICATE OF ATTENDANCE', 'has successfully completed the online course', 'Online Certification training:', 'Certificate of Attendance', 'Certificate of Completion', 'for participation in', 'for participation in', 'successfully completed', 'completion ot the course', 'entitled', 'for successfully completing', 'completed', 'For Successfully Completing', 'has successfully completed:', 'Has Successfully Completed the Course:', 'Has Successfully Completed the Course:', 'For successful completion of:', 'for the successful completion of', 'has completed', 'has completed the group Internet-based course', 'nas success*u ly comoleted:', 'Forattending', 'For attending', 'FOR THE PROGRAM ENTITLED', 'Congratulations on the successful completion of', 'for successful completion of the course', 'Has Successtully Completed the Course:', 'COMPLETION OF THE FOLLOWING ', 'for successful completion of', 'For successfully completing:', 'FOR THE COURSE ENTITLED', 'For completion of', 'FOR SUCCESSFUL COMPLETION OF', 'HAS COMPLETED THE TRAINING COURSETITLED', 'HAS COMPLETED THE TRAINING COURSE TITLED', 'For successfully completing', 'On Demand Video', 'FOR SUCCESSFUL COMPLETION', 'For successful completionof:', 'For successful completion of', 'attended the course', 'Successful campletion of', 'HAS SUCCESSFULLY COMPLETED', 'For the successful completion of', 'This certifies that', 'Has Successfully Completed:', 'Has successfully completed', 'has successfully completed the course', 'Has successfully completed the Introduction to', 'course.', 'for successfully completing the event', 'has completed the training session', '(Please record only those hours you haveactually attended.)', 'has completed the group live course', 'Has successfully completed the QuickBooks', 'Has successfully completed the following training:', 'HAS SUCCESSFULLY COMPLETED THE COURSE', 'Successful campletion of:', 'Successfully completed the', 'who haspursued studies and completed all the', 'who has pursued studies and completed all the', 'successfully completed the webinar', 'Has successfully completed course:', 'has successfully completed the program:']
+preceding_keywords = ['This certifies that you have successfully completed course:', 'has successfully completed', 'CERTIFICATE OF ATTENDANCE', 'has successfully completed the online course', 'Online Certification training:', 'Certificate of Attendance', 'Certificate of Completion', 'for participation in', 'for participation in', 'successfully completed', 'completion ot the course', 'entitled', 'for successfully completing', 'completed', 'For Successfully Completing', 'has successfully completed:', 'Has Successfully Completed the Course:', 'Has Successfully Completed the Course:', 'For successful completion of:', 'for the successful completion of', 'has completed', 'has completed the group Internet-based course', 'nas success*u ly comoleted:', 'Forattending', 'For attending', 'FOR THE PROGRAM ENTITLED', 'Congratulations on the successful completion of', 'for successful completion of the course', 'Has Successtully Completed the Course:', 'COMPLETION OF THE FOLLOWING ', 'for successful completion of', 'For successfully completing:', 'FOR THE COURSE ENTITLED', 'For completion of', 'FOR SUCCESSFUL COMPLETION OF', 'HAS COMPLETED THE TRAINING COURSETITLED', 'HAS COMPLETED THE TRAINING COURSE TITLED', 'For successfully completing', 'On Demand Video', 'FOR SUCCESSFUL COMPLETION', 'For successful completionof:', 'For successful completion of', 'attended the course', 'Successful campletion of', 'HAS SUCCESSFULLY COMPLETED', 'For the successful completion of', 'This certifies that', 'Has Successfully Completed:', 'Has successfully completed', 'has successfully completed the course', 'Has successfully completed the Introduction to', 'course.', 'for successfully completing the event', 'has completed the training session', '(Please record only those hours you haveactually attended.)', 'has completed the group live course', 'Has successfully completed the QuickBooks', 'Has successfully completed the following training:', 'HAS SUCCESSFULLY COMPLETED THE COURSE', 'Successful campletion of:', 'Successfully completed the', 'who haspursued studies and completed all the', 'who has pursued studies and completed all the', 'successfully completed the webinar', 'Has successfully completed course:', 'has successfully completed the program:', 'has completed the course']
 
 """
 Is hereby awardedto (the institute of internal)
@@ -20,11 +20,10 @@ priority_keywords = ['(Part |)', 'Part |', 'PART 1', 'Module 1', 'Module |', 'Mo
 
 class ParseProgramName():
 
-		def __init__(self, contents, name, sponsor):
+		def __init__(self, contents, name):
 				self.contents = contents
 				self.name = name
 				self.program_name = ""
-				self.sponsor = sponsor
 
 		def validate_program_name(self):
 				print("ValidateProgramName**", self.program_name)
@@ -50,13 +49,6 @@ class ParseProgramName():
 								self.program_name = ""
 								return False
 	
-				"""	
-				if self.sponsor.lower() != "":
-						if find_pattern(self.sponsor.lower(), self.program_name.lower()):
-								print("Error3--->")
-								self.program_name = ""
-								return False
-				"""
 				if '(' in self.program_name:
 						if ')' not in self.program_name:
 								self.program_name = ""
@@ -116,6 +108,13 @@ class ParseProgramName():
 						#print("***VALiDATE***4", check_for_valid_string(values[0]))
 						if not check_for_valid_string(values[0]):
 								return [], True
+
+						try:
+								parse(values[0]).strftime("%Y%m%d")
+								return [], False
+						except:
+								pass
+
 						#print("***VALiDATE***5")
 						return values, True
 				#except Exception as error:
@@ -199,7 +198,7 @@ class ParseProgramName():
 												print(f"values_1-->{values_1}, values_2-->{values_2}, values_3-->{values_3}")
 												#print("TRUE/FALSE-------->", self.is_valid_program_name(values_1, values_2, values_3))
 												#values_1, values_2, values_3 = self.is_valid_program_name(values_1, values_2, values_3)
-												print(f"values_1-->{values_1}, values_2-->{values_2}, values_3-->{values_3}")
+												#print(f"values_1-->{values_1}, values_2-->{values_2}, values_3-->{values_3}")
 												self.program_name = self.get_progrma_name(values_1, values_2, values_3)
 												if self.program_name is not None:
 														print("***VALIDATING_PROGRAM_NAME***")

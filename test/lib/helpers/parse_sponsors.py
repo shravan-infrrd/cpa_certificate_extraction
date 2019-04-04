@@ -7,8 +7,6 @@ post_keywords = []
 line_keywords = ['iS registered', 'is registeres', 'is registered', '0 roguterod', 'is registeced', 'ts registered', 'SPONSOR:', "1's registered", '1s registered', 'Sponsor:']
 special_keywords	= ['sponsored by', 'CPE Sponsor Name', "Program Sponsor's Name and Address", "Sponsor:", 'Name of Provider:']
 
-#sponsor_list = ["AICPA","Deloitte", "Becker Professional Education", "Intuit", "Optiv Security", "FICPA", "KPMG", "EY", "CPA Academy", "Becker", "Beene Garter LLP", "Checkpoint Learning", "PricewaterhouseCoopers LLP", "PWC", "Deloitte LLP", "MACPA", "CPAAcademy.org", "CPAwebengage, Inc.", "Wolters Kluwer", "Grant Thornton LLP", "The Institute of Internal Auditors", "Ernst & Young LLP", "Learning.net", "KPMG LLP", "SC&H Group", "Association of International Certified Professional Accountants", "Thomson Reuters", "RSM", "HoganTaylor LLP", "Western CPE", "MICPA", "Practising Law Institute", "TSCPA", "Plain-English Accounting", "Surgent McCoy CPE, LLC", "Ernst & Young", "Surgent", "OSCPA", "VSCPA", "PricewaterhouseCoopers"]
-
 sponsor_list = ["AICPA", "Deloitte", "Becker Professional Education", "Intuit", "Optiv Security", "FICPA", "KPMG", "EY", "CPA Academy", "Becker", "Beene Garter LLP", "Checkpoint Learning", "PricewaterhouseCoopers LLP", "PWC", "Deloitte LLP", "MACPA", "CPAAcademy.org", "CPAwebengage, Inc.", "Wolters Kluwer", "Grant Thornton LLP", "The Institute of Internal Auditors", "Ernst & Young LLP", "Learning.net", "KPMG LLP", "SC&H Group", "Association of International Certified Professional Accountants", "Thomson Reuters", "RSM", "HoganTaylor LLP", "Western CPE", "MICPA", "Practising Law Institute", "TSCPA", "Plain-English Accounting", "Surgent McCoy CPE, LLC", "Ernst & Young", "Surgent", "OSCPA", "VSCPA", "PricewaterhouseCoopers", "RSM US LLP", "AuditSense", "Becker CPE", "Workiva", "DTTL", "BKD, LLP", "KPMG Executive Education", "Foundation for Accounting Education", "PLI", "ACFE", "Association of Certified Fraud Examiners", "Grant Thornton", "Learnlive Technologies", 'Robert Half', 'The Madray Group', 'The Madray Group, Inc.', 'CPE Solutions, LLC', 'Cliftor LarsonAller LLP', 'SourceMedia Inc.', 'SourceMedia Inc', 'Proformative', 'Perry Glen Moore', 'CPA Crossings', 'CPE DepotInc', 'Financial Accounting Foundation', 'FASB', 'Tennessee Valley Authority', 'Accountants Education Group', 'The CalCPA Education Foundation', 'Sisterson & Co. LLP', 'Sisterson & Co']
 sponsor_list = sponsor_list + sponsor_lists
 sponsor_list = list(set(sponsor_list))
@@ -19,9 +17,10 @@ sponsor_list = sponsor_list + extra_list
 
 class ParseSponsors():
 
-		def __init__(self, contents):
+		def __init__(self, contents, program_name):
 				self.contents = contents
 				self.sponsor = ""
+				self.program_name = program_name
 
 		def validate_sponsor(self):
 				for sponsor in sponsor_list:
@@ -115,10 +114,12 @@ class ParseSponsors():
 
 		def extract_from_list(self):
 				for content in self.contents:
-						for sp in sponsor_list:
-									if find_pattern(sp.lower(), content.lower()):
-											self.sponsor = sp
-											return
+						if self.program_name.lower() not in content.strip().lower():
+								for sp in sponsor_list:
+
+										if find_pattern(sp.lower(), content.lower()):
+												self.sponsor = sp
+												return
 
 
 								
