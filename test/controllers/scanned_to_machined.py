@@ -6,7 +6,7 @@ import numpy as np
 from natsort import natsorted
 
 from utils import is_machine_generated
-
+from service.extract_tables import crop_boundary
 
 def pdf_split_with_pdfseparate(file_location, page_dir_location):
 		"""
@@ -115,12 +115,15 @@ def read_scanned_image(filename, doc_dir_location):
 				os.makedirs(text_dir)
 				print("***3***")
 
+				crop_boundary( filename )
 				img = cv.imread( filename, 0 )
+				img = cv.resize(img, None, fx=1.5, fy=1.3, interpolation=cv.INTER_CUBIC)
 				img = cv.medianBlur(img, 5)
 				#ret, th1 = cv.adaptiveThreshold(img,255,cv.ADAPTIVE_THRESH_GAUSSIAN_C, cv.THRESH_BINARY,11,2)
 				#ret, th1 = cv.threshold(img,180,255,cv.THRESH_BINARY)
-				ret, th1 = cv.threshold(img,150,255,cv.THRESH_BINARY)
+				ret, th1 = cv.threshold(img,180,255,cv.THRESH_BINARY)
 				cv.imwrite( filename, th1)
+
 				print("***4***", filename)
 
 				pdf_page_name_without_ext = os.path.basename(filename).split('.')[0] + ".pdf"
@@ -171,7 +174,7 @@ def get_string(img_path):
 		# Apply dilation and erosion to remove some noise
 		kernel = np.ones((1, 1), np.uint8)
 		img = cv.dilate(img, kernel, iterations=1)
-		img = cv.erode(img, kernel, iterations=1)
+		#img = cv.erode(img, kernel, iterations=1)
 
 		#  Apply threshold to get image with only black and white
 		#img = apply_threshold(img, method)
@@ -191,17 +194,19 @@ def check_for_rotated_image(image_path):
 		img = cv.imread(image_path, 0)
 
 		if degree == '0':
-				return img
+				rotated = img
+				#return img
 		elif degree == '90':
 				rotated = cv.rotate(img, cv.ROTATE_90_CLOCKWISE)
-				return rotated
+				#return rotated
 		elif degree == '270':
 				rotated = cv.rotate(img, cv.ROTATE_90_COUNTERCLOCKWISE)
-				return rotated
+				#return rotated
 		elif degree == '180':
 				rotated = cv.rotate(img, cv.ROTATE_180)
-				return rotated
-		
+				#return rotated
+	
+		cv.imwrite(image_path, rotated)	
 
 
 
@@ -240,15 +245,21 @@ def read_scanned_pdf(pdf_path, output_dir_location):
 										#print("Imag: ->", os.path.join(image_dir_location, page_name_without_ext))
 										image_path = os.path.join(image_dir_location, page_name_without_ext)
 										pdf_page_to_image(page, os.path.join(image_dir_location, page_name_without_ext))
-										img = check_for_rotated_image(image_path)
+										#img = check_for_rotated_image(image_path)
+										crop_boundary(image_path)
 
-										#img = cv.imread( image_path, 0 )
+										img = cv.imread( image_path, 0 )
+										#kernel = np.ones((2, 2), np.uint8)
+										#img = cv.dilate(img, kernel, iterations=1)
+										#img = cv.erode(img, kernel, iterations=1)
 										img = cv.resize(img, None, fx=1.5, fy=1.3, interpolation=cv.INTER_CUBIC)
+										#img = cv.resize(img, None, fx=1.4, fy=1.4, interpolation=cv.INTER_CUBIC)
 										img = cv.medianBlur(img, 5)
 										#ret, th1 = cv.threshold(img,127,255,cv.THRESH_BINARY)
 										ret, th1 = cv.threshold(img,180,255,cv.THRESH_BINARY)
 										#th1 = cv2.adaptiveThreshold(cv2.GaussianBlur(img, (5, 5), 0), 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 31, 2)
 										cv.imwrite(image_path, th1)
+
 										#get_string(image_path)
 
 										#print("is_machine_generated-->", is_machine_generated(page))

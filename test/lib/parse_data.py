@@ -14,8 +14,6 @@ def parse_all_fields( contents, result):
     pn = ParseName(contents)
     pn.extract()
 
-
-
     ps = ParseSponsors(contents)
     ps.extract()
 
@@ -24,11 +22,6 @@ def parse_all_fields( contents, result):
 
     pd  = ParseDate(contents, pn.name, pp.program_name)
     pd.extract()
-
-    """
-    pf = ParseFieldOfStudy(contents)
-    pf.extract()
-    """
 
     pfos = ParseFos(contents)
     pfos.extract()

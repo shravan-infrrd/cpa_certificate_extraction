@@ -9,7 +9,7 @@ pre_line_keywords = ['ofContinuing ProfessionalEducation Credits:', 'CPE credit1
 
 post_line_keywords = ['Recommended CPE Credits:', 'Interactive Credit in CPE Hours:', 'For a total of', 'Total CPF. Hours:', 'Total CPE Hours:', 'Total CPF. Hours:', 'Has Successfully Completed', 'Hours of Recommended CPE Credit:', 'CPE Credit Hours:', 'CPE Hours:', 'Number of CPE Credits', 'Total Credit Earned:', 'Duration:', 'CPE Credits:', 'Credit Hours:', 'CPE credit:', 'Credits:', 'CPE Credit Hours.', 'CPE Credits earned:', 'Recommendedfor', 'Recommended for', 'CPE credits:', 'Course Credit:', 'TSCPA Sponsor ID #', 'CPE:', 'Total Credits Earned:', 'Number of CPE credits', 'CPE Credit:', 'CPE Hours ', 'Approved CPE credit(s):', 'CPE Credits', 'Number of CPE credits', 'Recommended CPE credits for this course:', 'CPE Credits Received:', 'Recommended CPE credit', 'Total Hours:']
 
-keywords = ['Numberof CPE Credits', 'Earned CPE credit(s)', 'Awarded CPE Credit Hours', 'Earned CPE Credit(s)', 'Number of CPE Credits', 'Earned CPE credit(s)', 'CPE Credit Hours']
+keywords = ['Numberof CPE Credits', 'Earned CPE credit(s)', 'Awarded CPE Credit Hours', 'Earned CPE Credit(s)', 'Number of CPE Credits', 'Earned CPE credit(s)', 'CPE Credit Hours', 'CPE Credit']
 
 post_keywords = ['Recommended for:', 'CPE CREDIT EARNED', 'CPECredits', 'Credas', 'Recommendedfor:', 'CPE Credit', 'CPE Credits:'] 
 
@@ -125,7 +125,7 @@ class ParseCredits():
 										for val in valid_words:
 												print("CREDIT-ParseSecondPartOfLine------>1.5",	val)
 												if len(val) == 1:
-														if val == 'l' or val == 'L' or val == 'I':
+														if val == 'l' or val == 'L' or val == 'I' or val == '|':
 																val = '1'
 												
 												print("Credits--->", val)				
@@ -165,8 +165,11 @@ class ParseCredits():
 				print("5*************PARSING_CREDITS*****************")
 				for index, content in enumerate(self.contents):
 						for kw in keywords:
-								if kw in content:
-										values = remove_extra_spaces( self.contents[ index -1 ].strip() )
+								if kw in content.strip():
+										values = remove_extra_spaces( self.contents[ index - 1 ].strip() )
+										if not values:
+												values = remove_extra_spaces( self.contents[ index - 2 ].strip() )
+									
 										print("5.1*************PARSING_CREDITS*****************", values)
 											
 										for val in values:
@@ -284,6 +287,7 @@ class ParseCredits():
 						if fos.lower() in content:
 								print("CREDITS---CONTENT--->", content)
 								credit = re.findall('\d*\.?\d+', content)
+								print("CREDITS---CONTENT--->", credit)
 								if len(credit) >= 3:
 										continue
 								print("Found Credits---->", credit)
@@ -294,7 +298,7 @@ class ParseCredits():
 								except:
 										continue
 
-				print("5*****FIND_CREDITS*****1", fos.lower())
+				print("5*****FIND_CREDITS*****", fos.lower())
 				return ""
 
 		def build_field_of_study(self):

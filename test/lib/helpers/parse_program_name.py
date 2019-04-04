@@ -162,7 +162,9 @@ class ParseProgramName():
 										print("parse_between_lines****2", words)
 										if len(words) > 0:
 												if len(words) == 1:
+														print("parse_between_lines****3", words)
 														if len(re.findall(r"[\d+]", words[0])) > 0:
+																print("parse_between_lines****4", re.findall(r"\[\d+\]", words[0]))
 																pass
 														else:
 																continue
