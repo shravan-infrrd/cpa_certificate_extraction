@@ -115,7 +115,10 @@ def read_scanned_image(filename, doc_dir_location):
 				os.makedirs(text_dir)
 				print("***3***")
 
-				crop_boundary( filename )
+				try:
+						crop_boundary( filename )
+				except:
+						pass
 				img = cv.imread( filename, 0 )
 				img = cv.resize(img, None, fx=1.5, fy=1.3, interpolation=cv.INTER_CUBIC)
 				img = cv.medianBlur(img, 5)
@@ -246,7 +249,10 @@ def read_scanned_pdf(pdf_path, output_dir_location):
 										image_path = os.path.join(image_dir_location, page_name_without_ext)
 										pdf_page_to_image(page, os.path.join(image_dir_location, page_name_without_ext))
 										#img = check_for_rotated_image(image_path)
-										crop_boundary(image_path)
+										try:
+												crop_boundary(image_path)
+										except:
+												pass
 
 										img = cv.imread( image_path, 0 )
 										#kernel = np.ones((2, 2), np.uint8)
@@ -291,6 +297,6 @@ def read_scanned_pdf(pdf_path, output_dir_location):
 				print('********************************************************')
 				return {'text_file_path': text_dir, 'stitched_pdf_path': stitched_file}
 		except Exception as e:
-				print("Error-->", e)
+				print("Error-->SCANNED_CONTROLLER", e)
 				return {'text_file_path': None}
 
