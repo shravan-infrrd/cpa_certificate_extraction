@@ -5,7 +5,7 @@ preceding_keywords = ['This certifies that', 'certifies that', 'Attendee', 'Cert
 
 following_keywords = ['Has successfully completed the QuickBooks', "Participant's Name", 'for successfully completing', 'has successfully completed', 'Has Successfully Completed the Course:', 'Has successfully completed', 'UF,orattending', 'has completed the QASSelf-Study course', 'has completed the', 'FOR SUCCESSFUL COMPLETION OF', 'Participant Name', 'who haspursued studies and completed all the', 'who has pursued studies and completed all the']
 #name_keywords = ['Attendee’s Name:', '\ Attendee’s Name:', 'V Attendee’s Name:', 'Awardedto:', 'Participant Name:', 'This certificate is presented to', 'Awarded to:']
-line_keywords = ['Presents a Certification of Completion to:', 'Attendee’s Name:', '\ Attendee’s Name:', 'V Attendee’s Name:', 'Awardedto:', 'Participant Name:', 'This certificate is presented to', 'Awarded to:', 'This certifies that', 'Attendee:', 'NAME OF ATTENDEE.', 'Nameof Participant:', 'Name:', 'Attendee Name:', 'This certificate is presented to:', 'Name of Participant:', 'NAME OF PARTICIPANT:', 'Participant Name', 'Student', 'This certificate 1s presented to:', 'this certificate is presented to.', 'Name ofParticipant:', 'this certificate is presented to:', 'Congratulations,', 'Participant Name:', 'This to certify that', '[his certificate is presented to:']
+line_keywords = ['Presents a Certification of Completion to:', 'Attendee’s Name:', '\ Attendee’s Name:', 'V Attendee’s Name:', 'Awardedto:', 'Participant Name:', 'This certificate is presented to', 'Awarded to:', 'This certifies that', 'Attendee:', 'NAME OF ATTENDEE.', 'Nameof Participant:', 'Name:', 'Attendee Name:', 'This certificate is presented to:', 'Name of Participant:', 'NAME OF PARTICIPANT:', 'Participant Name', 'Student', 'This certificate 1s presented to:', 'this certificate is presented to.', 'Name ofParticipant:', 'this certificate is presented to:', 'Congratulations,', 'Participant Name:', 'This to certify that', '[his certificate is presented to:', 'This certificate ts presented to']
 
 invalid_words = ['Freserted to', 'Presented to', 'this', 'that', 'Awarded to', 'Program', 'CPE', 'Firm:', 'Participant', 'Sent', 'CERTIFICATION', '@', 'Issue', 'Attendee Name:', 'Instructional Delivery Method', 'Successful completion of:', 'ATTENDED', 'attended', 'SPONSOR', 'sponsor', 'for successfully completing', 'Individual', 'DATE', 'TIME', 'Certificate ofCompletion', 'Certificate of Completion', 'Congratulations', 'awardedto', 'awarded to', 'For successtully completing', 'TSCPA', 'Credits', 'SCalCPA',"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December", 'Street', 'Application', 'PRESENTED BY', 'Pittsburgh', 'ws DEN', 'Location', 'Tithe', 'Middle', 'Certificate Logo', 'IRS Course', 'Successful campletion of', 'stitute', 'institute', 'Number', 'AUDITING', 'PLANS', 'CPA Crossing', 'minute hour', 'Partici', 'Participant', 'http', 'Details', 'Affirmation', 'COMPLIANCE AUDITS', 'EDITION', 'Risk', 'Fundamentals', 'Review by']
 
@@ -54,7 +54,7 @@ class ParseName():
 
 
 		def validate_name(self):
-				print("***NAME***validation called", self.name)
+				#print("***NAME***validation called", self.name)
 				for kw in invalid_words:
 						#print(f"keyword --> {kw.lower()} ===> {self.name.lower()}")
 						if kw.lower() in self.name.lower():
@@ -62,17 +62,17 @@ class ParseName():
 								#print("True condition", kw, '**', self.name)
 								self.name = ""
 								return False
-				print("****NAEM***FOUND***", self.name)
+				#print("****NAEM***FOUND***", self.name)
 				if len(self.name.split(' ')) > 4:
 						print("NAME-ERROR--1")
 						self.name = ""
 						return False
 				if len(self.name.split(' ')[0]) <= 2:
-						print("NAME-ERROR--1.5")
+						#print("NAME-ERROR--1.5")
 						self.name = ""
 						return False
 				if hasNumbers(self.name):
-						print("NAME-ERROR--2")
+						#print("NAME-ERROR--2")
 						if '(' in self.name or ')' in self.name or '-' in self.name:
 						#if self.name in ['(', ')', '-']
 								pass
@@ -80,12 +80,12 @@ class ParseName():
 								#print("NAME--ERROR--2.1")
 								self.name = ""
 								return False
-				print("NAMELENGTH---->", len(self.name))
+				#print("NAMELENGTH---->", len(self.name))
 				if len(self.name.strip()) <= 4:
 						#print("NAME-ERROR--3")
 						self.name = ""
 						return False
-				print("NAME-FOUND-SUCCESS-----", self.name)
+				#print("NAME-FOUND-SUCCESS-----", self.name)
 				return True
 
 		def parse_between_lines(self):

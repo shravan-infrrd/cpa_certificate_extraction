@@ -11,6 +11,7 @@ from constant import PDF_UPLOAD_DIRECTORY, PROJECT_ROOT, REFERENCE_FILE
 from os import path
 import os
 import subprocess
+import copy 
 
 
 from lib.parse_data import parse_all_fields
@@ -98,12 +99,17 @@ class ExtractData(Resource):
 								logging.info('%r %2.2f sec' % ("Time---->", te - ts))
 								print(f"TimeTake=====>{te - ts}")
 								print(f"FieldOfStudy--->{result['field_of_study']}")
+
+								if index == 0:
+										first_result = copy.deepcopy(result)
 								if result['field_of_study']:
 										print("***FIELD_OF_STUDY*** is valid")
 										return jsonify( {"data": result} )
 								else:
 										print("***FIELD_OF_STUDY*** is not valid")
 										if max_try == index:
+												if result['field_of_study'] is None:
+														result = first_result
 												return jsonify( {'data': result} )
 										continue
 
