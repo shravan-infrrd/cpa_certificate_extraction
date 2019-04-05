@@ -1,18 +1,19 @@
 #text_file = "./text_files/22.txt"
 from lib.common_methods import remove_extra_spaces, validate_line, hasNumbers, find_pattern
+from lib.field_of_study_mapping import find_fos_match
 
 field_of_studies = [ 'Finance-Technical', 'Accounting & Auditing', 'Accounting and Auditing', 'Administrativei Practice', 'Business Management & Organization', 'Communications', 'Computer Science', 'Economics', 'Ethics - Behavioral', 'Ethics - Regulatory', 'Finance', 'Marketing', 'Mathematics', 'Personal Development', 'Personnel/Human Resources', 'Production', 'Specialized Knowledge and Applications', 'Specialized Knowledge & Applications', 'Social Environment of Business', 'Statistics', 'Accounting - Governmental', 'Auditing - Governmental', 'Business Law', 'Management Advisory Services', 'Taxes', 'Communications and Marketing', 'Information Technology', 'Computer Software & Applications', 'Business Management and Organization', 'SPECIALIZED KNOWLEDGE AND APPLICATIONS']
 
 
 special_list = ['Auditing', 'Accounting', 'Specialized Knowledge', 'ACCOUNTING', 'AUDITING', 'BUSINESS MAN AGEMENT', 'MAS', 'TAXES', 'Business Management', 'Tax', 'Audit']
 
-related_studies = ['Computer Software and Applications', 'Accounting & Auditing / Tax', 'Personnel/Human Resource', 'Personnel/HR', 'Regulatory Ethics', 'Professional Development', 'Behavioral Ethics', 'Management Services', 'A&A', 'Yellow Book', 'Professional Ethics', 'Fraud', 'Accounting Governmental', 'Auditing Governmental', 'Behavioral Ethics', 'Business Mgmt and Org', 'State Ethics', 'Cybersecurity Update', 'Taxation', 'Forensic Accounting', 'Forensic Accounting — Technical', 'Communications & Marketing', 'Group intemet-Gased', 'Management Advisory Services', 'Management Advisory Services Basic Level', 'Ethics (Regulatory)', 'Computer Software & Applications — Non-Technical', 'Laws & Rules Ethics', 'Ethics/Regulatory Ethics', 'Taxes (in NY Taxation)', 'Governmental Accounting', 'specialized Krewledge', 'Special Knowledge', 'Specialized Khoyledqe']
+related_studies = ['Computer Software and Applications', 'Accounting & Auditing / Tax', 'Personnel/Human Resource', 'Personnel/HR', 'Regulatory Ethics', 'Professional Development', 'Behavioral Ethics', 'Management Services', 'A&A', 'Yellow Book', 'Professional Ethics', 'Fraud', 'Accounting Governmental', 'Auditing Governmental', 'Business Mgmt and Org', 'State Ethics', 'Cybersecurity Update', 'Taxation', 'Forensic Accounting', 'Forensic Accounting — Technical', 'Communications & Marketing', 'Management Advisory Services Basic Level', 'Ethics (Regulatory)', 'Computer Software & Applications — Non-Technical', 'Laws & Rules Ethics', 'Ethics/Regulatory Ethics', 'Taxes (in NY Taxation)', 'Governmental Accounting', 'Auditing - Webinar', 'Informational Technology - Technical']
 
 
 field_of_studies = field_of_studies + related_studies + special_list
 #field_of_studies = list(set(field_of_studies))
 
-pre_keywords = [ 'field of study:', 'For the successful completion of', 'sponsored by YH Advisors, Inc.', 'FOR THE PROGRAM ENTITLED', 'Field of Study', 'for successfully completing', 'bicld of Study', 'Course', 'CPE Fueid of Study.', 'field of study']
+pre_keywords = [ 'field of study:', 'For the successful completion of', 'sponsored by YH Advisors, Inc.', 'FOR THE PROGRAM ENTITLED', 'Field of Study', 'for successfully completing', 'bicld of Study', 'Course', 'CPE Fueid of Study.', 'field of study', 'Field Of Study:']
 
 post_keywords = ['bicld of Study', 'bield of Study', 'Field of Study', 'Subject Area', 'Field ofStudy', 'NASBA Field of Study:', 'Curriculum:']
 
@@ -21,27 +22,33 @@ line_keywords = ['Field of Study:', 'Best Practices in', 'FieldofStudy:', 'Cours
 
 class ParseFos():
 
-		def __init__(self, contents):
+		def __init__(self, contents, program_name):
 				self.contents = contents
 				self.field_of_study = []
+				self.program_name = program_name
 
 		def validate_with_existing_list(self, field):
+				print("validate_with_existing_list----->", field)
 				for fos in field_of_studies:
 						if fos.lower() in field.lower():
-								print(f"Validation_TRUE---->{fos.lower()}---->{field.lower()}")
-								print( ((len(field) - len(fos)) / len(fos) )) 
-								print( ((len(field) - len(fos)) / len(fos) )  > float(5 ))
-								print( (len(field.strip())) - len(fos.strip()) )
+								#print(f"Validation_TRUE---->{fos.lower()}---->{field.lower()}")
+								#print( ((len(field) - len(fos)) / len(fos) )) 
+								#print( ((len(field) - len(fos)) / len(fos) )  > float(5 ))
+								#print( (len(field.strip())) - len(fos.strip()) )
 								if (len(field.strip())) - len(fos.strip()) == 0:
+										print("FOS-->VALIDATE_WITH_EXISTING_LIST-----SUCCESS----1")
 										return True
 
 								if (( (len(field) - len(fos))) / len(fos)  ) > float(5):
+										print("FOS-->VALIDATE_WITH_EXISTING_LIST-----FAILEDi----1")
 										return False
-						#if field.lower() in fos.lower():
+								print("FOS-->VALIDATE_WITH_EXISTING_LIST-----SUCCESS----2")
 								return True
+				print("FOS-->VALIDATE_WITH_EXISTING_LIST-----FAILED----2")
 				return False
 
 		def check_if_present(self, fos):
+				print('CHECK_IF_PRESENT--->', self.field_of_study)
 				for fs in self.field_of_study:
 						if fos.lower() in fs.lower():
 								return True
@@ -56,29 +63,23 @@ class ParseFos():
 										values = remove_extra_spaces( self.contents[index+1].strip())
 										print("parse_between_lines====>", values)
 										if len(values) > 0:
-												#self.field_of_study = values[0]
-												print("FOS1. FieldOfStudy---->", values) #, self.validate_with_existing_list())
+												print("FOS1. FieldOfStudy---->", values)
 												if self.validate_with_existing_list(values[0]):
-														#self.field_of_study.append({"name": values[0] } )
+														print("FOS1. FieldOfStudy---->", values[0]) 
 														if not self.check_if_present(values[0]):
-																if values[0] in special_list:
-																		self.field_of_study.append(values[0] )
-																		continue
-														#return
-												#print(f"1----KW->{kw}----")
-										#if not found:
-										#if ':' not in self.contents[index+2].strip():
+																print("FOUND----FOS-->", values[0])
+																self.field_of_study.append(values[0] )
+																continue
+
 										values = remove_extra_spaces( self.contents[index+2].strip() )
 										print(f"values-->{values}, -->{len(values)}")
 										if len(values) > 0 and len(values) < 5:
-												#self.field_of_study = values[0] 
 												#print("FOS2. FieldOfStudy---->", values)
 												if self.validate_with_existing_list(values[0]): 
 														if not self.check_if_present(values[0]):
 																self.field_of_study.append( values[0])
-														#self.field_of_study.append({"name": values[0]})
 																continue
-														#return
+
 				if len(self.field_of_study) == 0:
 						for index, content in enumerate(self.contents):
 								for kw in post_keywords:
@@ -141,6 +142,8 @@ class ParseFos():
 						for content in self.contents:
 									if content.strip() == "":
 											continue
+									if self.program_name.lower() in content.strip().lower():
+											continue
 									#if fos.lower() in content.lower():
 									if find_pattern(fos.lower(), content.lower().strip() ):
 											#print(f"FOS**FIELF_OF_STUDY--->{fos}, --->CONTENT-->{content}<--")
@@ -165,17 +168,23 @@ class ParseFos():
 		def extract(self):
 				self.parse_within_lines()
 				print("FOS***1***", self.field_of_study)
-				if len(self.field_of_study) == 0:
-						print("FOS***2***", self.field_of_study)
-						self.parse_between_lines()
-				else:
+				if len(self.field_of_study) != 0:
+						self.field_of_study = list(set(self.field_of_study))
+						self.field_of_study = find_fos_match(self.field_of_study)
 						return True
-				if len(self.field_of_study) == 0:
-						print("FOS***3***", self.field_of_study)
-						self.extract_from_list()
+
+				self.parse_between_lines()
+				print("FOS***2***", self.field_of_study)
+				if len(self.field_of_study) != 0:
+						self.field_of_study = list(set(self.field_of_study))
+						self.field_of_study = find_fos_match(self.field_of_study)
+						return True
+				print("FOS***3***", self.field_of_study)
+				self.extract_from_list()
 				print("FOS***4***", self.field_of_study)
 				self.field_of_study = list(set(self.field_of_study))
 				print("FOS***5***", self.field_of_study)
+				self.field_of_study = find_fos_match(self.field_of_study)
 				return True
 
 

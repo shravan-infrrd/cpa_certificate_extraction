@@ -46,9 +46,14 @@ class ParseDate():
 						if dates:
 								#print("DATE---make_corrections--->5", date)
 								date = dates[0]
-				dates = re.findall(r"\d+/\d+/\d+ \d+", date)
+				dates = re.findall(r"\d+/\d+/\d{2} \d{2}", date)
 				if len(dates) > 0:
 						date = dates[0].replace(' ', '')
+
+				dates = re.findall(r"\d{2},\d{4}", date)
+				if len(dates) > 0:
+						date = date.replace(',', ', ')
+
 				"""
 				date = date.lower().replace('october', 'octaber')
 				date = date.lower().replace('to', 'to a')

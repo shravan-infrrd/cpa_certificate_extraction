@@ -175,8 +175,12 @@ class ParseCredits():
 										for val in values:
 												print("5.2*************PARSING_CREDITS*****************", val)
 												if hasNumbers( val ):
+														creds = re.findall('\d*\.?\d+', val)
+														if len(creds) >= 3:
+																continue
 														self.credits = val
 														self.credits = self.get_credits()
+														
 														if self.validate_credits():
 																return
 

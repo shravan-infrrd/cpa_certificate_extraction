@@ -5,7 +5,7 @@ preceding_keywords = ['This certifies that', 'certifies that', 'Attendee', 'Cert
 
 following_keywords = ['Has successfully completed the QuickBooks', "Participant's Name", 'for successfully completing', 'has successfully completed', 'Has Successfully Completed the Course:', 'Has successfully completed', 'UF,orattending', 'has completed the QASSelf-Study course', 'has completed the', 'FOR SUCCESSFUL COMPLETION OF', 'Participant Name', 'who haspursued studies and completed all the', 'who has pursued studies and completed all the']
 #name_keywords = ['Attendee’s Name:', '\ Attendee’s Name:', 'V Attendee’s Name:', 'Awardedto:', 'Participant Name:', 'This certificate is presented to', 'Awarded to:']
-line_keywords = ['Presents a Certification of Completion to:', 'Attendee’s Name:', '\ Attendee’s Name:', 'V Attendee’s Name:', 'Awardedto:', 'Participant Name:', 'This certificate is presented to', 'Awarded to:', 'This certifies that', 'Attendee:', 'NAME OF ATTENDEE.', 'Nameof Participant:', 'Name:', 'Attendee Name:', 'This certificate is presented to:', 'Name of Participant:', 'NAME OF PARTICIPANT:', 'Participant Name', 'Student', 'This certificate 1s presented to:', 'this certificate is presented to.', 'Name ofParticipant:', 'this certificate is presented to:', 'This certificate is presented to', 'Congratulations,', 'Participant Name:', 'This to certify that', '[his certificate is presented to:', 'This certificate is presented to:']
+line_keywords = ['Presents a Certification of Completion to:', 'Attendee’s Name:', '\ Attendee’s Name:', 'V Attendee’s Name:', 'Awardedto:', 'Participant Name:', 'This certificate is presented to', 'Awarded to:', 'This certifies that', 'Attendee:', 'NAME OF ATTENDEE.', 'Nameof Participant:', 'Name:', 'Attendee Name:', 'This certificate is presented to:', 'Name of Participant:', 'NAME OF PARTICIPANT:', 'Participant Name', 'Student', 'This certificate 1s presented to:', 'this certificate is presented to.', 'Name ofParticipant:', 'this certificate is presented to:', 'Congratulations,', 'Participant Name:', 'This to certify that', '[his certificate is presented to:']
 
 invalid_words = ['Freserted to', 'Presented to', 'this', 'that', 'Awarded to', 'Program', 'CPE', 'Firm:', 'Participant', 'Sent', 'CERTIFICATION', '@', 'Issue', 'Attendee Name:', 'Instructional Delivery Method', 'Successful completion of:', 'ATTENDED', 'attended', 'SPONSOR', 'sponsor', 'for successfully completing', 'Individual', 'DATE', 'TIME', 'Certificate ofCompletion', 'Certificate of Completion', 'Congratulations', 'awardedto', 'awarded to', 'For successtully completing', 'TSCPA', 'Credits', 'SCalCPA',"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December", 'Street', 'Application', 'PRESENTED BY', 'Pittsburgh', 'ws DEN', 'Location', 'Tithe', 'Middle', 'Certificate Logo', 'IRS Course', 'Successful campletion of', 'stitute', 'institute', 'Number', 'AUDITING', 'PLANS', 'CPA Crossing', 'minute hour', 'Partici', 'Participant', 'http', 'Details', 'Affirmation', 'COMPLIANCE AUDITS', 'EDITION', 'Risk', 'Fundamentals']
 
@@ -34,6 +34,14 @@ class ParseName():
 								if n[1] in ['GivenName', 'Surname']:
 										count = count + 1
 						if count < 1:
+								self.name = ""
+								return False
+				elif len(name) == 2:
+						count = 0
+						for n in name:
+								if n[1] in ['GivenName', 'Surname']:
+										count = count + 1
+						if count == 0:
 								self.name = ""
 								return False
 				elif len(name) != 1:

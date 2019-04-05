@@ -1,12 +1,12 @@
 #text_file = "./text_files/22.txt"
 from lib.common_methods import remove_extra_spaces, validate_line, hasNumbers
-from lib.delivery_format_mapping import group_live, group_internet_based, qas_self_study, blendend_learning, nano_learning
+from lib.delivery_format_mapping import map_with_given_list
 
 pre_keywords = ['Delivery method:', 'CPEDelivery Method', 'CPE Delivery Method']
 post_keywords = ['Delivery Method']
 line_keywords = ['Program Location:', 'Format:', 'Delivery Method:', 'Instructional Delivery Method -', 'Method Used:', 'Delivery Method', 'Delivery Method Used:', 'Instructional Delivery Method:', 'Program Oelivery Mode', 'Instructional Method:', 'DELIVERY METHOD:', 'NASBARegistry Sponsor Number', 'Oeltvery Method', 'Delivers Method:', 'Program Delivery Mode', 'Instructional delivery method-', 'Instructional/Delivery Method:']
 
-delivery_method_lists = [ 'Interactive Self Study', 'Group live', 'Group Internet based', 'QAS Self study', 'Blended learning', 'Nano learning', 'Group Internet-Based', 'Self-Study', 'Self Study', 'Group-Intemet Based', 'Group-live', 'Group - Internet-Based', 'Group-Live', 'Group Internet', 'Webcast', 'Live Presentation', 'Group Intemet Based', 'Group - Internet Based', 'Internet Based', 'Group [nternet- Based', 'Group Program', 'Group Study', 'Conferences', 'Internet-Based', 'Group ‘rternet basea', 'Group Lve', 'Virtual group live', 'Group-Internet', 'Webinar', 'Group - Live', 'Virtual Instructor-Led', 'GroupInternet', 'GroupLive', 'Group/Live']
+delivery_method_lists = [ 'Interactive Self Study', 'Group live', 'Group Internet based', 'QAS Self study', 'Blended learning', 'Nano learning', 'Group Internet-Based', 'Self-Study', 'Self Study', 'Group-Intemet Based', 'Group-live', 'Group - Internet-Based', 'Group-Live', 'Group Internet', 'Webcast', 'Live Presentation', 'Group Intemet Based', 'Group - Internet Based', 'Internet Based', 'Group [nternet- Based', 'Group Program', 'Group Study', 'Conferences', 'Internet-Based', 'Group ‘rternet basea', 'Group Lve', 'Virtual group live', 'Group-Internet', 'Webinar', 'Group - Live', 'Virtual Instructor-Led', 'GroupInternet', 'GroupLive', 'Group/Live', 'Group: Live']
 
 invalid_keywords = ['CPE']
 
@@ -103,28 +103,6 @@ class ParseDeliveryMethod():
 											self.delivery_method = dm
 											return
 
-		def map_with_given_list(self):
-				for gl in group_live:
-						if self.delivery_method == gl:
-								self.delivery_method = 'Group live'
-								return
-				for gib in group_internet_based:
-						if self.delivery_method == gib:	
-								self.delivery_method = 'Group Internet based'
-								return
-				for qss in qas_self_study:	
-						if self.delivery_method == qss:
-								self.delivery_method = 'QAS Self study'
-								return
-				for bl in blendend_learning:
-						if self.delivery_method == bl:
-								self.delivery_method = 'Blended learning'
-								return
-				for nl in nano_learning:
-						if self.delivery_method == nl:
-								self.delivery_method = 'Nano learning'
-								return
-				return
 
 		def extract(self):
 				self.parse_within_lines()
@@ -133,7 +111,7 @@ class ParseDeliveryMethod():
 				if self.delivery_method == "":
 						self.extract_from_list()
 				if self.delivery_method != "":
-						self.map_with_given_list()
+						self.delivery_method = map_with_given_list(self.delivery_method)
 				return True
 
 

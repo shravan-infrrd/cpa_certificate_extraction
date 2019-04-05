@@ -23,7 +23,7 @@ def parse_all_fields( contents, result):
     pd  = ParseDate(contents, pn.name, pp.program_name)
     pd.extract()
 
-    pfos = ParseFos(contents)
+    pfos = ParseFos(contents, pp.program_name)
     pfos.extract()
 
     pc = ParseCredits(contents, pfos.field_of_study)
