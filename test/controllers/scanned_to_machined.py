@@ -191,10 +191,13 @@ def check_for_rotated_image(image_path):
 		import re
 
 		print("check_for_rotated_image********")
-		command = ['tesseract', image_path, 'stdout', '-l', 'eng', '--psm', '0']
+		#command = ['tesseract', image_path, 'stdout', '-l', 'eng', '--psm', '0']
+		command = ['tesseract', image_path, 'stdout', '--psm', '0']
 		res = subprocess.check_output(command)
 		result = str(res)
+		print("check_for_rotated_image********", result, "********")
 		degree = re.findall(r"Rotate: (\d+)", result)[0]
+		print("check_for_rotated_image********", degree, "********")
 		img = cv.imread(image_path, 0)
 
 		if degree == '0':
@@ -357,7 +360,7 @@ def read_scanned_pdf(pdf_path, output_dir_location, erosion_val=0):
 								#print("Imag: ->", os.path.join(image_dir_location, page_name_without_ext))
 								image_path = os.path.join(image_dir_location, page_name_without_ext)
 								pdf_page_to_image(page, os.path.join(image_dir_location, page_name_without_ext))
-								#img = check_for_rotated_image(image_path)
+								check_for_rotated_image(image_path)
 								try:
 										crop_boundary(image_path)
 								except:
