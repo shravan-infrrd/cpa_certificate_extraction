@@ -7,6 +7,7 @@ from natsort import natsorted
 
 from utils import is_machine_generated
 from service.extract_tables import crop_boundary
+import shutil
 
 def pdf_split_with_pdfseparate(file_location, page_dir_location):
 		"""
@@ -100,7 +101,7 @@ def stitch_pdfs(pdf_pages_path):
 				print("Error Stitching")
 				print(e)
 
-def read_scanned_image(filename, doc_dir_location):
+def read_scanned_image(filename, doc_dir_location, erosion_val=0):
 		try:
 				print("***1***")
 				page_dir_location = os.path.join(doc_dir_location, 'pages') 
@@ -213,8 +214,8 @@ def check_for_rotated_image(image_path):
 
 
 
-
-def read_scanned_pdf(pdf_path, output_dir_location):
+def read_scanned_pdf1(pdf_path, output_dir_location, erosion_val=0):
+		print(f"READ_SCANNED_PDF----{pdf_path}---{erosion_val}")
 		try:
 				""" 
 				file_name = pdf_path.replace(' ', '_')
@@ -230,12 +231,15 @@ def read_scanned_pdf(pdf_path, output_dir_location):
 				machined_pdf_location = os.path.join(doc_dir_location, 'pdfs')
 				text_dir = os.path.join(doc_dir_location, 'texts')
 				stitched_file = os.path.join(page_dir_location, 'stitched.pdf')
+				print("READ_SCANNED_PDF--->11")
 				if doc_dir_location is not None and pdf_path is not None:
+						print("READ_SCANNED_PDF--->11")
 						if not os.path.exists(page_dir_location):
 								os.makedirs(page_dir_location)
 								os.makedirs(image_dir_location)
 								os.makedirs(machined_pdf_location)
 								os.makedirs(text_dir)
+
 								pdf_split_with_pdfseparate(pdf_path, page_dir_location)
 								pages = natsorted(glob.glob(os.path.join(page_dir_location, "*.pdf")))
 								if len(pages) >= 3:
@@ -255,6 +259,13 @@ def read_scanned_pdf(pdf_path, output_dir_location):
 												pass
 
 										img = cv.imread( image_path, 0 )
+										print(f"READ_SCANNED_PDF-1--->EROSION_VAL-->{erosion_val}")
+										if erosion_val != 0:
+												print(f"READ_SCANNED_PDF-2--->EROSION_VAL-->{erosion_val}")
+												kernel = np.ones((erosion_val, erosion_val), np.uint8)
+												img = cv.erode(img, kernel, iterations=1)
+												
+										#kernel = np.ones((3, 3), np.uint8)
 										#kernel = np.ones((2, 2), np.uint8)
 										#img = cv.dilate(img, kernel, iterations=1)
 										#img = cv.erode(img, kernel, iterations=1)
@@ -284,6 +295,111 @@ def read_scanned_pdf(pdf_path, output_dir_location):
 														pdf_page_name_without_ext = os.path.basename(image).split('.')[0] + ".pdf"
 														make_machined_page_pdf(image, os.path.join(machined_pdf_location, pdf_page_name_without_ext))
 												#print('Stitching')
+
+				stitch_pdfs( page_dir_location )
+				machined_pages = natsorted(glob.glob(os.path.join(machined_pdf_location, "*.pdf")))
+				scannes_pages = natsorted(glob.glob(os.path.join( page_dir_location, "*.pdf") ))
+				stitch_pdfs(machined_pdf_location)
+				machined_pages = natsorted(glob.glob(os.path.join(machined_pdf_location, "*.pdf")))
+				for mach_page in machined_pages:
+						#print("************MACHINE_PAGE************", mach_page)
+						pdf_page_name_without_ext = os.path.basename(mach_page).split('.')[0] + ".txt"
+						convert_pdf_to_text(mach_page, os.path.join(text_dir, pdf_page_name_without_ext))
+				print('********************************************************')
+				return {'text_file_path': text_dir, 'stitched_pdf_path': stitched_file}
+		except Exception as e:
+				print("Error-->SCANNED_CONTROLLER", e)
+				return {'text_file_path': None}
+
+def read_scanned_pdf(pdf_path, output_dir_location, erosion_val=0):
+		print(f"READ_SCANNED_PDF----{pdf_path}---{erosion_val}")
+		try:
+				""" 
+				file_name = pdf_path.replace(' ', '_')
+				folder_name = os.path.dirname(pdf_path).split('/')[-1]
+				file_name_without_ext = os.path.basename(file_name).split('.')[0]
+				doc_dir_location = os.path.join(output_dir_location, folder_name, file_name_without_ext)
+				"""
+				file_name = pdf_path
+				doc_dir_location = output_dir_location
+				page_dir_location = os.path.join(doc_dir_location, 'pages')
+				print("page-->", page_dir_location)
+				image_dir_location = os.path.join(doc_dir_location, 'images')
+				machined_pdf_location = os.path.join(doc_dir_location, 'pdfs')
+				text_dir = os.path.join(doc_dir_location, 'texts')
+				stitched_file = os.path.join(page_dir_location, 'stitched.pdf')
+
+				try:
+						shutil.rmtree(page_dir_location)
+						shutil.rmtree(image_dir_location)
+						shutil.rmtree(machined_pdf_location)
+						shutil.rmtree(text_dir)
+				except:
+						pass
+				print("READ_SCANNED_PDF--->11")
+				if doc_dir_location is not None and pdf_path is not None:
+						print("READ_SCANNED_PDF--->12")
+						if not os.path.exists(page_dir_location):
+								os.makedirs(page_dir_location)
+								os.makedirs(image_dir_location)
+								os.makedirs(machined_pdf_location)
+								os.makedirs(text_dir)
+
+						pdf_split_with_pdfseparate(pdf_path, page_dir_location)
+						pages = natsorted(glob.glob(os.path.join(page_dir_location, "*.pdf")))
+						if len(pages) >= 3:
+								shravan.append("")
+						#print("Initializing..")
+						for page in pages:
+								print(page)
+								page_name_without_ext = os.path.basename(page).split('.')[0] + ".jpg"
+								#print("Page: ->", page)
+								#print("Imag: ->", os.path.join(image_dir_location, page_name_without_ext))
+								image_path = os.path.join(image_dir_location, page_name_without_ext)
+								pdf_page_to_image(page, os.path.join(image_dir_location, page_name_without_ext))
+								#img = check_for_rotated_image(image_path)
+								try:
+										crop_boundary(image_path)
+								except:
+										pass
+
+								img = cv.imread( image_path, 0 )
+								print(f"READ_SCANNED_PDF-1--->EROSION_VAL-->{erosion_val}")
+								if erosion_val != 0:
+										print(f"READ_SCANNED_PDF-2--->EROSION_VAL-->{erosion_val}")
+										kernel = np.ones((erosion_val, erosion_val), np.uint8)
+										img = cv.erode(img, kernel, iterations=1)
+										
+								#kernel = np.ones((3, 3), np.uint8)
+								#kernel = np.ones((2, 2), np.uint8)
+								#img = cv.dilate(img, kernel, iterations=1)
+								#img = cv.erode(img, kernel, iterations=1)
+								img = cv.resize(img, None, fx=1.5, fy=1.3, interpolation=cv.INTER_CUBIC)
+								#img = cv.resize(img, None, fx=1.4, fy=1.4, interpolation=cv.INTER_CUBIC)
+								img = cv.medianBlur(img, 5)
+								#ret, th1 = cv.threshold(img,127,255,cv.THRESH_BINARY)
+								ret, th1 = cv.threshold(img,180,255,cv.THRESH_BINARY)
+								#th1 = cv2.adaptiveThreshold(cv2.GaussianBlur(img, (5, 5), 0), 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 31, 2)
+								cv.imwrite(image_path, th1)
+
+								#get_string(image_path)
+
+								#print("is_machine_generated-->", is_machine_generated(page))
+								if is_machine_generated(page):
+										#print('Machine Generated')
+										text_page_name_without_ext = os.path.basename(page).split('.')[0] + ".txt"
+										#print("--0--")
+										convert_pdf_to_text(page, os.path.join(text_dir, text_page_name_without_ext))
+										#print("--6--")
+
+								else:
+										#print('Scanned Document')
+										images = natsorted(glob.glob(os.path.join(image_dir_location, "*.jpg")))
+										#print('OCR running')
+										for image in images:
+												pdf_page_name_without_ext = os.path.basename(image).split('.')[0] + ".pdf"
+												make_machined_page_pdf(image, os.path.join(machined_pdf_location, pdf_page_name_without_ext))
+										#print('Stitching')
 
 				stitch_pdfs( page_dir_location )
 				machined_pages = natsorted(glob.glob(os.path.join(machined_pdf_location, "*.pdf")))

@@ -9,9 +9,9 @@ computer_science = ['Computer Science', 'Cybersecurity Update']
 #Economics
 economics = ['Economics']
 #Ethics - Behavioral
-ethics_behavioral = ['Ethics - Behavioral', 'Behavioral Ethics', 'Professional Ethics', 'Professional Development']
+ethics_behavioral = ['Ethics - Behavioral', 'Behavioral Ethics', 'Professional Ethics', 'Professional Development', 'Behavioral']
 #Ethics - Regulatory
-ethics_regulatory = ['Ethics - Regulatory', 'Regulatory Ethics', 'State Ethics', 'Ethics (Regulatory)', 'Ethics/Regulatory Ethics']
+ethics_regulatory = ['Ethics - Regulatory', 'Regulatory Ethics', 'State Ethics', 'Ethics (Regulatory)', 'Ethics/Regulatory Ethics', 'Regulatory', 'Ethics']
 #Finance
 finance = [ 'Finance-Technical', 'Finance']
 #Marketing
@@ -19,9 +19,9 @@ marketing = ['Marketing']
 #Mathematics
 mathematcis = ['Mathematics']
 #Personal Development
-personal_development = ['Personal Development']
+personal_development = ['Personal Development', 'Personal']
 #Personnel/Human Resources
-personnel_human_resources = ['Personnel/Human Resources', 'Personnel/Human Resource', 'Personnel/HR']
+personnel_human_resources = ['Personnel/Human Resources', 'Personnel/Human Resource', 'Personnel/HR', 'Personnel']
 #Production
 production = ['Production']
 #Specialized Knowledge &amp; Applications
@@ -62,15 +62,15 @@ field_of_studies = [{'name': 'Administrative Practice', 'values': adminstrative_
 
 
 def find_fos_match(fos):
-		print(f"--->mapping--->FOS---->{fos}")
+		#print(f"--->MAPPING_FOS--->FOS---->{fos}--")
 		updated_fos = []
 		for extracted_fos in fos:
 				for mapping_fos in field_of_studies:
-						print(f"MAPPING_FOS---->{mapping_fos['name']}")
+						#print(f"MAPPING_FOS---->{mapping_fos['name']}")
 						flag = False
 						for fi in mapping_fos['values']:
 								if fi.lower() in extracted_fos.lower():
-											print(f"---fi--{fi}---extracted_fos-->{extracted_fos}")
+											#print(f"---fi--{fi}---extracted_fos-->{extracted_fos}")
 											updated_fos.append(mapping_fos['name'])
 											flag = True
 											break

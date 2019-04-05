@@ -11,7 +11,7 @@ sponsor_list = ["AICPA", "Deloitte", "Becker Professional Education", "Intuit", 
 sponsor_list = sponsor_list + sponsor_lists
 sponsor_list = list(set(sponsor_list))
 
-extra_list= ["ASSOCIATION OF CERTIFIED FRAUD EXAMINERS", 'Plaio-English Accounting', 'pliedu', 'the Institute of Internal Auditors', 'WAthe Institute of Internal Auditors', 'Institute of Internal Auditors', 'THOMSON REUTERS', 'The Virginia Society of CPAs', 'Wes:ern CPE', 'Plain-English Acooanting', 'Plain-English Accoanting', 'schoolefbookkeeping', 'The ASCPA CPE', 'Armanino LLP', "Accounting & Financial Women's Alliance", "Corporate Finance", "Management Concepts", 'Adaptive Insights', 'DCB Holding Ltd', 'Plam-English Accounting', 'AudioSolutionZ', 'Dixon Hughes Goodman LLP', 'STEIN SPERLING', 'Frazier & Deeter, LLC', 'Tate & Tryon', 'HogantTaylor']
+extra_list= ["ASSOCIATION OF CERTIFIED FRAUD EXAMINERS", 'Plaio-English Accounting', 'pliedu', 'the Institute of Internal Auditors', 'WAthe Institute of Internal Auditors', 'Institute of Internal Auditors', 'THOMSON REUTERS', 'The Virginia Society of CPAs', 'Wes:ern CPE', 'Plain-English Acooanting', 'Plain-English Accoanting', 'schoolefbookkeeping', 'The ASCPA CPE', 'Armanino LLP', "Accounting & Financial Women's Alliance", "Corporate Finance", "Management Concepts", 'Adaptive Insights', 'DCB Holding Ltd', 'Plam-English Accounting', 'AudioSolutionZ', 'Dixon Hughes Goodman LLP', 'STEIN SPERLING', 'Frazier & Deeter, LLC', 'Tate & Tryon', 'HogantTaylor', 'HoganTaylor']
 
 sponsor_list = sponsor_list + extra_list
 

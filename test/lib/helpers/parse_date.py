@@ -14,10 +14,11 @@ invalid_keywords = ['cpe', 'CPE', 'Location', 'of course', 'tatas8']
 
 class ParseDate():
 
-		def __init__(self, contents, name, program_name):
+		def __init__(self, contents, name, program_name, input_format=""):
 				self.contents = contents
 				self.date			= ""
-				self.name			= name		
+				self.name			= name
+				self.input_format = format_date	
 				try:
 						self.program_name = program_name.lower().strip()
 				except:
@@ -122,7 +123,7 @@ class ParseDate():
 						if content.strip() == "":
 								continue
 						#print(f"Date:------>{self.program_name.lower().strip()}") #===Content:-->{content.lower().strip()}")
-						print(f"Content:--->{content.lower().strip()}")
+						#print(f"Content:--->{content.lower().strip()}")
 						if self.program_name == "":
 								parse = True
 						#print("2***PARSE_Pattern***", str(parse))
@@ -134,13 +135,13 @@ class ParseDate():
 						print("3***PARSE_DATE***", str(parse))
 						if parse:
 								#if hasNumbers(content):
-								#print("FINDING-DATE----->1", content)
+								print("FINDING-DATE----->1", content)
 								content = self.make_corrections(content)
 
 								content = content.replace('.', ',')
-								#print("FINDING-DATE----->2", content)
+								print("FINDING-DATE----->2", content)
 								dates = list(datefinder.find_dates(content))
-								#print("Dates------------>3", dates)
+								print("Dates------------>3", dates)
 								if len(dates) > 0:
 										if dates[-1].year > datetime.datetime.now().year or dates[-1].year < 2000:
 												continue

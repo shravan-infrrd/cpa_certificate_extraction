@@ -61,7 +61,7 @@ def parse_all_fields( contents, result):
     #result['sponsor_id']      = pi.ids
     result['qas_number']      = pq.qas_number
     #result['fos']             = pfos.field_of_study
-    result['fos']             = pc.field_of_study
+    result['field_of_study']             = pc.field_of_study
 
     print("RESULT====>", result)
     return result

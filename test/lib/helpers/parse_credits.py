@@ -2,7 +2,7 @@ import re
 from lib.common_methods import remove_extra_spaces, validate_line, hasNumbers
 from dateutil.parser import *
 from word2number import w2n
-
+from lib.field_of_study_mapping import find_fos_match
 
 #line_keywords = ['ofContinuing ProfessionalEducation Credits:', 'CPE credit1', 'CPE Hours', 'Credit', 'hours of CPE', 'hours of Continuing', 'CPE credits']
 pre_line_keywords = ['ofContinuing ProfessionalEducation Credits:', 'CPE credit1', 'CPE Hours', 'Credit', 'hours of CPE', 'hours of Continuing', 'CPE credits', 'CPE is awarded', 'CPE Hour', 'CPE credit hours', 'Hour Continuing Education Credit']
@@ -158,7 +158,9 @@ class ParseCredits():
 						return
 				print("3*************PARSING_CREDITS*****************")
 				self.parse_second_part_of_line()
-				print("4*************PARSING_CREDITS*****************")
+				print("4*************PARSING_CREDITS*****************", self.credits)
+				if self.credits != "":
+						return
 
 		def parse_between_lines(self):
 				
@@ -310,11 +312,17 @@ class ParseCredits():
 						#self.find_credits(self.fos[0])
 						print("====CREDITS===>1", self.fos)
 						try:
+								print('--11--')
 								credit = float(self.find_credits(self.fos[0]))
+								print('--12--', credit)
 								credit = str(credit)
+								print('--13--',credit)
+								mapped_fos = find_fos_match([self.fos[0]])
+								print('--14--', mapped_fos)
 								#self.field_of_study.append({"name": self.fos[0], "credits": str(credit), "score": ""})
 								#self.field_of_study.append({"name": self.fos[0], "credits": credit, "score": ""})
-								self.field_of_study.append({"name": self.fos[0], "value": credit, "score": ""})
+								#self.field_of_study.append({"name": self.fos[0], "value": credit, "score": ""})
+								self.field_of_study.append({"name": mapped_fos[0], "value": credit, "score": ""})
 						except Exception as error:
 								print("2***CREDIT_ERROR*****", error)
 								#self.field_of_study.append({"name": self.fos[0], "credits": 0.0, "score": ""})
@@ -325,15 +333,21 @@ class ParseCredits():
 								print("====Credits===>2", credits)
 								if credits != "":
 										try:
+												print("--1--", credits)
 												credit = float(credits)
-												credit = str(credit)
+												print("--2--", credit)
+
+												print("--3--", credit)
 												print("1**CREDITS_INISIDE**", credit, "Assert---->", credit < float(self.max_credit_val))
 												if credit < float(self.max_credit_val):
+														credit = str(credit)
+														mapped_fos = find_fos_match([fos])
 														#self.field_of_study.append({"name": fos, "credits": self.extract_credits(fos), "score":""})
 														#self.field_of_study.append({"name": fos, "credits": str(credit), "score":""})
-														self.field_of_study.append({"name": fos, "value": credit, "score":""})
-										except:
-												print("1***CREDIT_ERROR*****")
+														#self.field_of_study.append({"name": fos, "value": credit, "score":""})
+														self.field_of_study.append({"name": mapped_fos[0], "value": credit, "score":""})
+										except Exception as error:
+												print("1***CREDIT_ERROR*****", error)
 												#self.field_of_study.append({"name": fos, "credits": self.extract_credits(fos), "score":""})
 												pass
 
