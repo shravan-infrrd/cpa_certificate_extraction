@@ -28,7 +28,7 @@ opencv-python
 pandas
 docx
 dateparser
-datefinder
+datefinder==0.6.1
 openpyxl
 spacy
 gunicorn
