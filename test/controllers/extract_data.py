@@ -74,7 +74,7 @@ class ExtractData(Resource):
 
 						#erosion_val = [0, 3, 2, 4]
 						erosion_val = [0, 3]
-						#erosion_val = [3]
+						#erosion_val = [0]
 						max_try = len(erosion_val) - 1
 						for index, e_val in enumerate(erosion_val):
 								print("EROSION_VALUE-------->", e_val)
@@ -100,8 +100,9 @@ class ExtractData(Resource):
 								print(f"TimeTake=====>{te - ts}")
 								print(f"FieldOfStudy--->{result['field_of_study']}")
 
-								if index == 0:
+								if e_val == 0:
 										first_result = copy.deepcopy(result)
+								print(f"****FIRST_RESULT****>{first_result}")
 								if result['field_of_study']:
 										print("***FIELD_OF_STUDY*** is valid")
 										return jsonify( {"data": result} )
@@ -109,7 +110,7 @@ class ExtractData(Resource):
 										print("***FIELD_OF_STUDY*** is not valid")
 										if max_try == index:
 												if result['field_of_study'] is None:
-														result = first_result
+														return jsonify( {'data': result} )
 												return jsonify( {'data': result} )
 										continue
 

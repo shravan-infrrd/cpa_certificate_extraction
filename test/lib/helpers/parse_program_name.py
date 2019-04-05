@@ -10,7 +10,7 @@ preceding_keywords = ['This certifies that you have successfully completed cours
 Is hereby awardedto (the institute of internal)
 """
 following_keywords = ['Course Name', 'a seminar presented by', 'and are awarded this Certificate on'] #, 'Is hereby awardedto', 'Is hereby awarded to']
-line_keywords = ['Program Name:', 'Course Tithe:', 'Course Title:', 'for successfully completing:', 'for successfully completing', 'Program Title:', 'PROGRAM TITLE:', 'For successful completion of', 'Title.', 'Title:', 'for success‘ully comp et ng', 'Course:', 'Event Title:', 'tor successfully completing', 'Course Title', 'Subject:', 'Event:', 'NAME OF COURSE:', 'Course', 'Title of Training:', 'For Attending', 'For successfully completing the', 'EVENT NAME:', 'has successfully completed:', 'TOPIC:', 'CourseTitle:', 'On Demand Video:', 'For successfully completing:', 'Attended Quarterly', 'For attending the Career Development Series:', 'ProgramTitle: ' ]
+line_keywords = ['Program Name:', 'Course Tithe:', 'Course Title:', 'for successfully completing:', 'for successfully completing', 'Program Title:', 'PROGRAM TITLE:', 'For successful completion of', 'Title.', 'Title:', 'for success‘ully comp et ng', 'Course:', 'Event Title:', 'tor successfully completing', 'Course Title', 'Subject:', 'Event:', 'NAME OF COURSE:', 'Course', 'Title of Training:', 'For Attending', 'For successfully completing the', 'EVENT NAME:', 'has successfully completed:', 'TOPIC:', 'CourseTitle:', 'On Demand Video:', 'For successfully completing:', 'Attended Quarterly', 'For attending the Career Development Series:', 'ProgramTitle: ', "for'successiully�~@~Xcompleting" ]
 
 invalid_keywords = ['presented to', 'Awarded to', 'Date', 'Freserted to', 'granted', 'Association of Cortificd', 'Association of Certified', 'Field of Study', 'Please', 'Program Location', 'Credits', 'CTEC', 'Participant', 'Sent', 'This is to ceruty that', 'This is to certify that', 'This is to', 'awardedthis', 'awarded this', 'preserted to', 'success‘ully', '@', 'certify that', 'Instructional Delivery Method', 'Attendee', 'Attendee Name:', 'SPONSOR', 'sponsor', 'PROGRAM TITLE:', 'program title', 'Successfully', 'successfully', 'ACKNOWLEDGES', 'THIS CERTIFIES THAT', 'this certifies that', 'for participation in', 'This certificate is presentedto', 'This certificate is presented to', 'Author', 'Congratulations', 'Self-Study Programs', 'CourseTitle', 'Course Title', 'DELIVERY METHOD', 'awardedto', 'awarded to', 'Location', 'CPEcredits', 'CPE credits', 'Event Dates', 'OBJECTIVE', 'Units', 'Has Successtully Completed the', 'Course Freld of Study', 'Course Field of Study', 'Course Number', 'Delivery Method Used', 'Type of InstructionalDelivery', 'Type of Instructional Delivery', 'Completion Certificate', 'Dates', 'Street', 'Pittsburgh', 'Sponsored by', 'Inc', 'Presenter', 'Fleld of Study', 'Field of Study', 'Fields of Study', 'http', 'Format', 'has completed', 'Auburn Folsom Rd', 'Student', 'SHRM', 'Certificate of Attendance', 'Instructor', 'Naine', 'Name', 'In accordance with the standards for', 'Recommended Continuing Professional Education']
 
@@ -109,11 +109,12 @@ class ParseProgramName():
 						if not check_for_valid_string(values[0]):
 								return [], True
 
-						try:
-								parse(values[0]).strftime("%Y%m%d")
-								return [], False
-						except:
-								pass
+						if len(values[0].strip())	!= 1:
+								try:
+										parse(values[0]).strftime("%Y%m%d")
+										return [], False
+								except:
+										pass
 
 						#print("***VALiDATE***5")
 						return values, True

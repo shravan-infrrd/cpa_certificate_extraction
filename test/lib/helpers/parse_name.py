@@ -58,7 +58,7 @@ class ParseName():
 				for kw in invalid_words:
 						#print(f"keyword --> {kw.lower()} ===> {self.name.lower()}")
 						if kw.lower() in self.name.lower():
-								print("NAME-ERROR--0")
+								#print("NAME-ERROR--0")
 								#print("True condition", kw, '**', self.name)
 								self.name = ""
 								return False

@@ -6,7 +6,7 @@ pre_keywords = ['Delivery method:', 'CPEDelivery Method', 'CPE Delivery Method']
 post_keywords = ['Delivery Method']
 line_keywords = ['Program Location:', 'Format:', 'Delivery Method:', 'Instructional Delivery Method -', 'Method Used:', 'Delivery Method', 'Delivery Method Used:', 'Instructional Delivery Method:', 'Program Oelivery Mode', 'Instructional Method:', 'DELIVERY METHOD:', 'NASBARegistry Sponsor Number', 'Oeltvery Method', 'Delivers Method:', 'Program Delivery Mode', 'Instructional delivery method-', 'Instructional/Delivery Method:']
 
-delivery_method_lists = [ 'Interactive Self Study', 'Group live', 'Group Internet based', 'QAS Self study', 'Blended learning', 'Nano learning', 'Group Internet-Based', 'Self-Study', 'Self Study', 'Group-Intemet Based', 'Group-live', 'Group - Internet-Based', 'Group-Live', 'Group Internet', 'Webcast', 'Live Presentation', 'Group Intemet Based', 'Group - Internet Based', 'Internet Based', 'Group [nternet- Based', 'Group Program', 'Group Study', 'Conferences', 'Internet-Based', 'Group ‘rternet basea', 'Group Lve', 'Virtual group live', 'Group-Internet', 'Webinar', 'Group - Live', 'Virtual Instructor-Led', 'GroupInternet', 'GroupLive', 'Group/Live', 'Group: Live', 'Group intemet-based']
+delivery_method_lists = [ 'Interactive Self Study', 'Group live', 'Group Internet based', 'QAS Self study', 'Blended learning', 'Nano learning', 'Group Internet-Based', 'Self-Study', 'Self Study', 'Group-Intemet Based', 'Group-live', 'Group - Internet-Based', 'Group-Live', 'Group Internet', 'Webcast', 'Live Presentation', 'Group Intemet Based', 'Group - Internet Based', 'Internet Based', 'Group [nternet- Based', 'Group Program', 'Group Study', 'Conferences', 'Internet-Based', 'Group ‘rternet basea', 'Group Lve', 'Virtual group live', 'Group-Internet', 'Webinar', 'Group - Live', 'Virtual Instructor-Led', 'GroupInternet', 'GroupLive', 'Group/Live', 'Group: Live', 'Group intemet-based', 'Group-Internel Based', 'Group-Interet Based', 'Group-Intemet Based', 'Group-Infernel Based']
 
 invalid_keywords = ['CPE']
 
@@ -106,12 +106,16 @@ class ParseDeliveryMethod():
 
 		def extract(self):
 				self.parse_within_lines()
+				print(f"1***DELIVERY_METHOD****{self.delivery_method}")
 				if self.delivery_method == "":
 						self.parse_between_lines()
+				print(f"2***DELIVERY_METHOD****{self.delivery_method}")
 				if self.delivery_method == "":
 						self.extract_from_list()
+				print(f"3***DELIVERY_METHOD****{self.delivery_method}")
 				if self.delivery_method != "":
 						self.delivery_method = map_with_given_list(self.delivery_method)
+				print(f"4***DELIVERY_METHOD****{self.delivery_method}")
 				return True
 
 

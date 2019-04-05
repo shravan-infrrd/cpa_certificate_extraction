@@ -33,11 +33,11 @@ stats = ['Statistics']
 #Accounting
 accounting = ['Accounting & Auditing', 'Accounting and Auditing', 'Accounting & Auditing / Tax', 'Accounting', 'ACCOUNTING', 'A&A']
 #Accounting - Governmental
-accouting_governmental = ['Accounting - Governmental', 'Accounting Governmental', 'Forensic Accounting', 'Forensic Accounting — Technical', 'Governmental Accounting']
+accouting_governmental = ['Accounting - Governmental', 'Accounting Governmental', 'Forensic Accounting', 'Forensic Accounting — Technical', 'Governmental Accounting', 'Accounting (Governmental)',]
 #Auditing
 auditing = ['Auditing', 'AUDITING', 'Audit', 'Auditing - Webinar']
 #Auditing - Governmental
-auditing_governmental = ['Auditing - Governmental', 'Auditing Governmental']
+auditing_governmental = ['Auditing - Governmental', 'Auditing Governmental', 'Auditing (Governmental)']
 #Business Law
 business_law = ['Business Law', 'Laws & Rules Ethics', 'Fraud']
 #Management Advisory Services
@@ -57,7 +57,7 @@ no_match = ['Fraud']
 
 
 
-field_of_studies = [{'name': 'Administrative Practice', 'values': adminstrative_practice }, {'name': 'Business Management & Organization', 'values': business_managent_and_organization }, { 'name': 'Communications', 'values': communications}, {'name': 'Computer Science', 'values': computer_science}, {'name': 'Economics','values': economics}, {'name': 'Ethics - Behavioral', 'values': ethics_behavioral}, {'name': 'Ethics - Regulatory', 'values': ethics_regulatory}, {'name': 'Finance', 'values': finance}, {'name': 'Marketing', 'values': marketing}, {'name': 'Mathematics', 'values': mathematcis}, {'name': 'Personal Development', 'values': personal_development}, {'name': 'Personnel/Human Resources', 'values': personnel_human_resources}, {'name': 'Production', 'values': production}, {'name': 'Specialized Knowledge & Applications', 'values': specialized_knowledge_and_applications}, {'name': 'Social Environment of Business', 'values': social_env}, {'name': 'Statistics', 'values': stats}, {'name': 'Accounting - Governmental', 'values': accouting_governmental},  {'name': 'Accounting', 'values': accounting}, {'name': 'Auditing - Governmental', 'values': auditing_governmental}, {'name': 'Auditing', 'values': auditing}, {'name': 'Business Law', 'values': business_law}, {'name': 'Management Advisory Services', 'values': management_advisory_services}, {'name': 'Taxes', 'values': taxes}, {'name': 'Communications and Marketing', 'values': comm_and_marketing}, {'name': 'Specialized Knowledge', 'values': specialise_knowledge}, {'name': 'Information Technology', 'values': information_tech}, {'name': 'Computer Software & Applications', 'values': computer_software_app} ]
+field_of_studies = [{'name': 'Administrative Practice', 'values': adminstrative_practice }, {'name': 'Business Management & Organization', 'values': business_managent_and_organization }, {'name': 'Computer Science', 'values': computer_science}, {'name': 'Economics','values': economics}, {'name': 'Ethics - Behavioral', 'values': ethics_behavioral}, {'name': 'Ethics - Regulatory', 'values': ethics_regulatory}, {'name': 'Finance', 'values': finance}, {'name': 'Mathematics', 'values': mathematcis}, {'name': 'Personal Development', 'values': personal_development}, {'name': 'Personnel/Human Resources', 'values': personnel_human_resources}, {'name': 'Production', 'values': production}, {'name': 'Specialized Knowledge & Applications', 'values': specialized_knowledge_and_applications}, {'name': 'Social Environment of Business', 'values': social_env}, {'name': 'Statistics', 'values': stats}, {'name': 'Accounting - Governmental', 'values': accouting_governmental},  {'name': 'Accounting', 'values': accounting}, {'name': 'Auditing - Governmental', 'values': auditing_governmental}, {'name': 'Auditing', 'values': auditing}, {'name': 'Business Law', 'values': business_law}, {'name': 'Management Advisory Services', 'values': management_advisory_services}, {'name': 'Taxes', 'values': taxes}, {'name': 'Communications and Marketing', 'values': comm_and_marketing}, {'name': 'Specialized Knowledge', 'values': specialise_knowledge}, {'name': 'Information Technology', 'values': information_tech}, {'name': 'Computer Software & Applications', 'values': computer_software_app}, { 'name': 'Communications', 'values': communications}, {'name': 'Marketing', 'values': marketing} ]
 
 
 

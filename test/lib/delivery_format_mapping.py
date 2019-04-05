@@ -1,8 +1,8 @@
 group_live = ['Group live', 'Group-live', 'Group-Live', 'Live Presentation', 'Conferences', 'Group Lve', 'Virtual group live', 'GroupLive', 'Group/Live', 'Live']
 
-group_internet_based = ['Interactive Self Study', 'Group Internet based', 'Group Internet-Based', 'Group-Intemet Based', 'Group - Internet-Based', 'Group Internet', 'Webcast', 'Group Intemet Based', 'Group - Internet Based', 'Internet Based', 'Group [nternet- Based', 'Group Program', 'Group Study', 'Internet-Based', 'Group ‘rternet basea', 'Group-Internet', 'Webinar', 'Group - Live', 'Virtual Instructor-Led', 'GroupInternet', 'Internet Based Self-Study Program.', 'Group intemet-based','Intermet', 'intemet']
+group_internet_based = [ 'Group Internet based', 'Group Internet-Based', 'Group-Intemet Based', 'Group - Internet-Based', 'Group Internet', 'Webcast', 'Group Intemet Based', 'Group - Internet Based', 'Internet Based', 'Group [nternet- Based', 'Group Program', 'Group Study', 'Internet-Based', 'Group ‘rternet basea', 'Group-Internet', 'Webinar', 'Group - Live', 'Virtual Instructor-Led', 'GroupInternet', 'Group intemet-based','Intermet', 'Group-Internel Based', 'Group-Interet Based', 'intemet', 'internel', 'Interet', 'Group-Infernel Based', 'Infernel']
 
-qas_self_study = [ 'QAS Self study', 'Self-Study', 'Self Study', 'QAS Self Study.']
+qas_self_study = [ 'Internet Based Self-Study Program.', 'Interactive Self Study','QAS Self study', 'Self-Study', 'Self Study', 'QAS Self Study.', 'self']
 
 blendend_learning = ['Blended learning']
 
@@ -14,12 +14,12 @@ def map_with_given_list(delivery_method):
     for gl in group_live:
         if gl.lower() in delivery_method.lower():
             return 'Group live'
-    for gib in group_internet_based:
-        if gib.lower() in delivery_method.lower():
-            return 'Group Internet based'
     for qss in qas_self_study:
         if qss.lower() in delivery_method.lower():
             return 'QAS Self study'
+    for gib in group_internet_based:
+        if gib.lower() in delivery_method.lower():
+            return 'Group Internet based'
     for bl in blendend_learning:
         if bl.lower() in delivery_method.lower():
             return 'Blended learning'
