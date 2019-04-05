@@ -311,8 +311,10 @@ class ParseCredits():
 						print("====CREDITS===>1", self.fos)
 						try:
 								credit = float(self.find_credits(self.fos[0]))
+								credit = str(credit)
 								#self.field_of_study.append({"name": self.fos[0], "credits": str(credit), "score": ""})
-								self.field_of_study.append({"name": self.fos[0], "credits": credit, "score": ""})
+								#self.field_of_study.append({"name": self.fos[0], "credits": credit, "score": ""})
+								self.field_of_study.append({"name": self.fos[0], "value": credit, "score": ""})
 						except Exception as error:
 								print("2***CREDIT_ERROR*****", error)
 								#self.field_of_study.append({"name": self.fos[0], "credits": 0.0, "score": ""})
@@ -324,11 +326,12 @@ class ParseCredits():
 								if credits != "":
 										try:
 												credit = float(credits)
+												credit = str(credit)
 												print("1**CREDITS_INISIDE**", credit, "Assert---->", credit < float(self.max_credit_val))
 												if credit < float(self.max_credit_val):
 														#self.field_of_study.append({"name": fos, "credits": self.extract_credits(fos), "score":""})
 														#self.field_of_study.append({"name": fos, "credits": str(credit), "score":""})
-														self.field_of_study.append({"name": fos, "credits": credit, "score":""})
+														self.field_of_study.append({"name": fos, "value": credit, "score":""})
 										except:
 												print("1***CREDIT_ERROR*****")
 												#self.field_of_study.append({"name": fos, "credits": self.extract_credits(fos), "score":""})
