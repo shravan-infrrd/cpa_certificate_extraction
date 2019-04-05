@@ -51,17 +51,20 @@ class ParseSponsorId():
 																		return
 																		#continue
 										if self.sponsor_id == "":
-												values = remove_extra_spaces( self.contents[index+2].strip())
-												if len(values) > 0:
-														for val in values:
-																if ':' not in val:
-																		self.sponsor_id = val
-																		if self.validate_sponsor_id():
-																				self.sponsor_id = self.get_sponsor_id()
-																				#self.ids.append(self.sponsor_id)
-																				self.ids.append( {'name': 'NASBA', 'id': self.sponsor_id, 'score': '' } )
-																				return
-																				#continue
+												try:
+														values = remove_extra_spaces( self.contents[index+2].strip())
+														if len(values) > 0:
+																for val in values:
+																		if ':' not in val:
+																				self.sponsor_id = val
+																				if self.validate_sponsor_id():
+																						self.sponsor_id = self.get_sponsor_id()
+																						#self.ids.append(self.sponsor_id)
+																						self.ids.append( {'name': 'NASBA', 'id': self.sponsor_id, 'score': '' } )
+																						return
+																						#continue
+												except:
+														continue
 										"""
 										if ':' not in self.contents[index+1].strip():
 												self.sponsor_id = remove_extra_spaces( self.contents[index+1].strip())[0]
