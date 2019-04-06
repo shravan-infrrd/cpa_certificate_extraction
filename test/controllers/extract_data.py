@@ -107,12 +107,19 @@ class ExtractData(Resource):
 										print("***FIELD_OF_STUDY*** is valid")
 										return jsonify( {"data": result} )
 								else:
-										print("***FIELD_OF_STUDY*** is not valid")
+										print("***FIELD_OF_STUDY*** is not valid", max_try, index, "----")
 										if max_try == index:
-												if result['field_of_study'] is None:
+												print("=====LAST_ITERAION====", result['field_of_study'], "===", result['field_of_study'] is None)
+												if result['field_of_study']:
+														return jsonify( {'data': result} )
+												else:
+														print("***FIRST_RESULT***", first_result)
+														print("***END***")
 														return jsonify( {'data': first_result} )
-												return jsonify( {'data': result} )
-										continue
+														print("***END***")
+
+										else:
+												continue
 
 
 				except CustomClassifierException as e:

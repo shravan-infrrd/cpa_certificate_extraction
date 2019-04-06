@@ -2,12 +2,12 @@
 from lib.common_methods import remove_extra_spaces, validate_line, hasNumbers, find_pattern
 from lib.field_of_study_mapping import find_fos_match
 
-field_of_studies = [ 'Finance-Technical', 'Accounting & Auditing', 'Accounting and Auditing', 'Administrativei Practice', 'Business Management & Organization', 'Communications', 'Computer Science', 'Economics', 'Ethics - Behavioral', 'Ethics - Regulatory', 'Finance', 'Marketing', 'Mathematics', 'Personal Development', 'Personnel/Human Resources', 'Production', 'Specialized Knowledge and Applications', 'Specialized Knowledge & Applications', 'Social Environment of Business', 'Statistics', 'Accounting - Governmental', 'Auditing - Governmental', 'Business Law', 'Management Advisory Services', 'Taxes', 'Communications and Marketing', 'Information Technology', 'Computer Software & Applications', 'Business Management and Organization', 'SPECIALIZED KNOWLEDGE AND APPLICATIONS', 'Accounting (Governmental)', 'Auditing (Governmental)']
+field_of_studies = [ 'Finance-Technical', 'Accounting & Auditing', 'Accounting and Auditing', 'Administrativei Practice', 'Business Management & Organization', 'Communications', 'Computer Science', 'Economics', 'Ethics - Behavioral', 'Ethics - Regulatory', 'Finance', 'Marketing', 'Mathematics', 'Personal Development', 'Personnel/Human Resources', 'Production', 'Specialized Knowledge and Applications', 'Specialized Knowledge & Applications', 'Social Environment of Business', 'Statistics', 'Accounting - Governmental', 'Auditing - Governmental', 'Business Law', 'Management Advisory Services', 'Taxes', 'Communications and Marketing', 'Informational Technology - Technical', 'Information Technology', 'Computer Software & Applications', 'Business Management and Organization', 'SPECIALIZED KNOWLEDGE AND APPLICATIONS', 'Accounting (Governmental)', 'Auditing (Governmental)']
 
 
 special_list = ['Auditing', 'Accounting', 'Specialized Knowledge', 'ACCOUNTING', 'AUDITING', 'BUSINESS MAN AGEMENT', 'MAS', 'TAXES', 'Business Management', 'Tax', 'Audit']
 
-related_studies = ['Computer Software and Applications', 'Accounting & Auditing / Tax', 'Personnel/Human Resource', 'Personnel/HR', 'Regulatory Ethics', 'Professional Development', 'Behavioral Ethics', 'Management Services', 'A&A', 'Yellow Book', 'Professional Ethics', 'Fraud', 'Accounting Governmental', 'Auditing Governmental', 'Business Mgmt and Org', 'State Ethics', 'Cybersecurity Update', 'Taxation', 'Forensic Accounting', 'Forensic Accounting — Technical', 'Communications & Marketing', 'Management Advisory Services Basic Level', 'Ethics (Regulatory)', 'Computer Software & Applications — Non-Technical', 'Laws & Rules Ethics', 'Ethics/Regulatory Ethics', 'Taxes (in NY Taxation)', 'Governmental Accounting', 'Auditing - Webinar', 'Informational Technology - Technical','Ethics']
+related_studies = ['Computer Software and Applications', 'Accounting & Auditing / Tax', 'Personnel/Human Resource', 'Personnel/HR', 'Regulatory Ethics', 'Professional Development', 'Behavioral Ethics', 'Management Services', 'A&A', 'Yellow Book', 'Professional Ethics', 'Fraud', 'Accounting Governmental', 'Auditing Governmental', 'Business Mgmt and Org', 'State Ethics', 'Cybersecurity Update', 'Taxation', 'Forensic Accounting', 'Forensic Accounting — Technical', 'Communications & Marketing', 'Management Advisory Services Basic Level', 'Ethics (Regulatory)', 'Computer Software & Applications — Non-Technical', 'Laws & Rules Ethics', 'Ethics/Regulatory Ethics', 'Taxes (in NY Taxation)', 'Governmental Accounting', 'Auditing - Webinar','Ethics']
 
 
 field_of_studies = field_of_studies + related_studies + special_list
@@ -137,6 +137,9 @@ class ParseFos():
 				if fos in ['Business Management']:
 						if content in ['Business Management & Organization', 'Business Management and Organization', 'BUSINESS MAN AGEMENT', 'Business Mgmt and Org']:
 								return False
+				if fos in ['Information Technology']:
+						if content in ['Information Technology - Technical', 'Informational Technology - Technical']:
+								return False
 				return True
 			
  
@@ -155,7 +158,7 @@ class ParseFos():
 									if find_pattern(fos1.lower(), content.lower().strip() ):
 											#print(f"FOS**FIELF_OF_STUDY--->{fos}, --->CONTENT-->{content}<--")
 											#self.field_of_study.append({"name": fos })
-											#print("***FOS***###->1", fos)
+											print("***FOS***###->1", fos)
 											if fos in ['Accounting', 'accounting', 'Auditing', 'auditing', 'ACCOUNTING']:
 													if content in ['Accounting and Auditing', 'Accounting & Auditing / Tax', 'Accounting Governmental', 'Auditing Governmental', 'Accounting & Auditing', 'ACCOUNTING AND AUDITING', 'Auditing (Governmental)']:
 															continue
@@ -165,7 +168,13 @@ class ParseFos():
 											if fos in ['Business Management']:
 													if content in ['Business Management & Organization', 'Business Management and Organization', 'BUSINESS MAN AGEMENT', 'Business Mgmt and Org']:
 															continue
-											#print("***FOS***###->1", fos)
+											if fos in ['Information Technology']:
+													print("***FOS***###->2", fos)
+													print("***FOS***###->2.1", content.strip())
+													if content in ['Information Technology - Technical', 'Informational Technology - Technical']:
+															print("***FOS***###->3", fos)
+															continue
+											print("***FOS***###->4", fos)
 											if not self.check_if_present(fos):
 													self.field_of_study.append(fos)
 													continue
@@ -176,15 +185,15 @@ class ParseFos():
 				self.parse_within_lines()
 				print("FOS***1***", self.field_of_study)
 				if len(self.field_of_study) != 0:
-						self.field_of_study = list(set(self.field_of_study))
-						self.field_of_study = find_fos_match(self.field_of_study)
+						#self.field_of_study = list(set(self.field_of_study))
+						#self.field_of_study = find_fos_match(self.field_of_study)
 						return True
 
 				parsed_line = self.parse_between_lines()
 				print("FOS***2***", self.field_of_study)
 				if len(self.field_of_study) != 0:
-						self.field_of_study = list(set(self.field_of_study))
-						self.field_of_study = find_fos_match(self.field_of_study)
+						#self.field_of_study = list(set(self.field_of_study))
+						#self.field_of_study = find_fos_match(self.field_of_study)
 						if parsed_line == "previous_line":
 								return True
 				print("FOS***3***", self.field_of_study)
