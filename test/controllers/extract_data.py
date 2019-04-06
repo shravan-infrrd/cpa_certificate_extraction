@@ -110,7 +110,7 @@ class ExtractData(Resource):
 										print("***FIELD_OF_STUDY*** is not valid")
 										if max_try == index:
 												if result['field_of_study'] is None:
-														return jsonify( {'data': result} )
+														return jsonify( {'data': first_result} )
 												return jsonify( {'data': result} )
 										continue
 
