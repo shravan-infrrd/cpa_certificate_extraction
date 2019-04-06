@@ -55,7 +55,7 @@ def find_pattern(kw, content):
 						#print("FIND_PATTERN*****TRUE")
 						return True
 		except:
-				print("FindPattern Error--->")
+				#print("FindPattern Error--->")
 				return False
 		#return re.compile(r'\b({0})\b'.format(w), flags=re.IGNORECASE).search
 

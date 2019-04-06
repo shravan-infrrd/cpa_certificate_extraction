@@ -2,7 +2,7 @@
 from lib.common_methods import remove_extra_spaces, validate_line, hasNumbers, find_pattern
 from lib.field_of_study_mapping import find_fos_match
 
-field_of_studies = [ 'Finance-Technical', 'Accounting & Auditing', 'Accounting and Auditing', 'Administrativei Practice', 'Business Management & Organization', 'Communications', 'Computer Science', 'Economics', 'Ethics - Behavioral', 'Ethics - Regulatory', 'Finance', 'Marketing', 'Mathematics', 'Personal Development', 'Personnel/Human Resources', 'Production', 'Specialized Knowledge and Applications', 'Specialized Knowledge & Applications', 'Social Environment of Business', 'Statistics', 'Accounting - Governmental', 'Auditing - Governmental', 'Business Law', 'Management Advisory Services', 'Taxes', 'Communications and Marketing', 'Information Technology', 'Computer Software & Applications', 'Business Management and Organization', 'SPECIALIZED KNOWLEDGE AND APPLICATIONS']
+field_of_studies = [ 'Finance-Technical', 'Accounting & Auditing', 'Accounting and Auditing', 'Administrativei Practice', 'Business Management & Organization', 'Communications', 'Computer Science', 'Economics', 'Ethics - Behavioral', 'Ethics - Regulatory', 'Finance', 'Marketing', 'Mathematics', 'Personal Development', 'Personnel/Human Resources', 'Production', 'Specialized Knowledge and Applications', 'Specialized Knowledge & Applications', 'Social Environment of Business', 'Statistics', 'Accounting - Governmental', 'Auditing - Governmental', 'Business Law', 'Management Advisory Services', 'Taxes', 'Communications and Marketing', 'Information Technology', 'Computer Software & Applications', 'Business Management and Organization', 'SPECIALIZED KNOWLEDGE AND APPLICATIONS', 'Accounting (Governmental)', 'Auditing (Governmental)']
 
 
 special_list = ['Auditing', 'Accounting', 'Specialized Knowledge', 'ACCOUNTING', 'AUDITING', 'BUSINESS MAN AGEMENT', 'MAS', 'TAXES', 'Business Management', 'Tax', 'Audit']
@@ -69,7 +69,8 @@ class ParseFos():
 														if not self.check_if_present(values[0]):
 																print("FOUND----FOS-->", values[0])
 																self.field_of_study.append(values[0] )
-																continue
+																#continue
+																return "following_line"
 
 										values = remove_extra_spaces( self.contents[index+2].strip() )
 										print(f"values-->{values}, -->{len(values)}")
@@ -78,7 +79,8 @@ class ParseFos():
 												if self.validate_with_existing_list(values[0]): 
 														if not self.check_if_present(values[0]):
 																self.field_of_study.append( values[0])
-																continue
+																#continue
+																return "following_line"
 
 				if len(self.field_of_study) == 0:
 						for index, content in enumerate(self.contents):
@@ -93,7 +95,8 @@ class ParseFos():
 												if self.validate_with_existing_list(values[0]):
 														if not self.check_if_present(values[0]):
 																self.field_of_study.append(values[0])
-																continue
+																#continue
+																return "previous_line"
 														#return
 
 		def parse_within_lines(self): 
@@ -126,7 +129,7 @@ class ParseFos():
 		def fos_check(self, fos, content):	
 				print("FOS_CHECK---->", fos)
 				if fos in ['Accounting', 'accounting', 'Auditing', 'auditing', 'ACCOUNTING']:
-						if content in ['Accounting and Auditing', 'Accounting & Auditing / Tax', 'Accounting Governmental', 'Auditing Governmental', 'Accounting & Auditing', 'ACCOUNTING AND AUDITING']:
+						if content in ['Accounting and Auditing', 'Accounting & Auditing / Tax', 'Accounting Governmental', 'Auditing Governmental', 'Accounting & Auditing', 'ACCOUNTING AND AUDITING', 'Accounting (Governmental)']:
 								return False
 				if fos in ['Specialized Knowledge']:
 						if content in ['Specialized Knowledge and Applications', 'Specialized Knowledge & Applications', 'Specialized Knowledge and Applications', 'Specialized Knowledge & Applications', 'SPECIALIZED KNOWLEDGE AND APPLICATIONS' ]:
@@ -139,18 +142,22 @@ class ParseFos():
  
 		def extract_from_list(self):
 				for fos in field_of_studies:
+						#print(f"FOS--->{fos}")
 						for content in self.contents:
+									
 									if content.strip() == "":
 											continue
-									if self.program_name.lower() in content.strip().lower():
+									if (self.program_name.lower() in content.strip().lower()) or (content.strip().lower() in self.program_name.lower()):
 											continue
+									content = content.replace('(', '').replace(')', '')
+									fos1 = fos.replace('(', '').replace(')', '')
 									#if fos.lower() in content.lower():
-									if find_pattern(fos.lower(), content.lower().strip() ):
+									if find_pattern(fos1.lower(), content.lower().strip() ):
 											#print(f"FOS**FIELF_OF_STUDY--->{fos}, --->CONTENT-->{content}<--")
 											#self.field_of_study.append({"name": fos })
 											#print("***FOS***###->1", fos)
 											if fos in ['Accounting', 'accounting', 'Auditing', 'auditing', 'ACCOUNTING']:
-													if content in ['Accounting and Auditing', 'Accounting & Auditing / Tax', 'Accounting Governmental', 'Auditing Governmental', 'Accounting & Auditing', 'ACCOUNTING AND AUDITING']:
+													if content in ['Accounting and Auditing', 'Accounting & Auditing / Tax', 'Accounting Governmental', 'Auditing Governmental', 'Accounting & Auditing', 'ACCOUNTING AND AUDITING', 'Auditing (Governmental)']:
 															continue
 											if fos in ['Specialized Knowledge']:
 													if content in ['Specialized Knowledge and Applications', 'Specialized Knowledge & Applications', 'Specialized Knowledge and Applications', 'Specialized Knowledge & Applications', 'SPECIALIZED KNOWLEDGE AND APPLICATIONS' ]:
@@ -173,12 +180,13 @@ class ParseFos():
 						self.field_of_study = find_fos_match(self.field_of_study)
 						return True
 
-				self.parse_between_lines()
+				parsed_line = self.parse_between_lines()
 				print("FOS***2***", self.field_of_study)
 				if len(self.field_of_study) != 0:
 						self.field_of_study = list(set(self.field_of_study))
 						self.field_of_study = find_fos_match(self.field_of_study)
-						return True
+						if parsed_line == "previous_line":
+								return True
 				print("FOS***3***", self.field_of_study)
 				self.extract_from_list()
 				print("FOS***4***", self.field_of_study)

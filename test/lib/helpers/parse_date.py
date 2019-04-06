@@ -123,23 +123,37 @@ class ParseDate():
 						if content.strip() == "":
 								continue
 						#print(f"Date:------>{self.program_name.lower().strip()}") #===Content:-->{content.lower().strip()}")
-						#print(f"Content:--->{content.lower().strip()}")
+						print(f"Content:--->{content.lower().strip()}")
 						if self.program_name == "":
 								parse = True
 						#print("2***PARSE_Pattern***", str(parse))
-						print("FIND_PATTERN_RESULT--->", find_pattern(content.lower().strip(), self.program_name.lower().strip()))
-						if find_pattern(content.lower().strip(), self.program_name.lower().strip()):
-						#if self.name.lower() in content.lower().strip():
+						if len(content.lower().strip()) > len(self.program_name.lower().strip()):
+								first_arg = self.program_name.lower().strip()
+								second_arg = content.lower().strip()
+						else:
+								first_arg = content.lower().strip()
+								second_arg = self.program_name.lower().strip()
+						print("FIND_PATTERN_RESULT--->", find_pattern( first_arg, second_arg))
+						if find_pattern(first_arg, second_arg):
+								#if self.name.lower() in content.lower().strip():
 								parse = True
 								continue
-						print("3***PARSE_DATE***", str(parse))
+						numbers = sum(c.isdigit() for c in content.strip())
+						if numbers <2:
+								continue
+						print("3***PARSE_DATE***", str(parse), "\n")
 						if parse:
 								#if hasNumbers(content):
 								print("FINDING-DATE----->1", content)
 								content = self.make_corrections(content)
 
 								content = content.replace('.', ',')
-								print("FINDING-DATE----->2", content)
+								edate = re.findall(r"\d{1,2}-\d{1,2} \w+ \d{4}", content.strip().lower())
+								print("FINDING-DATE----->2-->", edate)
+								if edate:
+										content = edate[0].split('-')[-1]
+					
+								print("FINDING-DATE----->2-->", content)
 								dates = list(datefinder.find_dates(content))
 								print("Dates------------>3", dates)
 								if len(dates) > 0:
@@ -162,12 +176,16 @@ class ParseDate():
 				print("get_date_from_program_name************>GROK",date_obj)
 				if date_obj is None:
 						dates = list(datefinder.find_dates(self.program_name))
+						print("DATE--->", dates)
 						if len(dates) > 0:
-								if dates[-1].year > datetime.datetime.now().year or dates[-1].year < 2000:
-										return
-								self.date = str(dates[-1])
-								if self.validate_date():
-										return
+								dates = dates[::-1]
+								for date in dates:
+										if date.year > datetime.datetime.now().year or date.year < 2000:
+												continue
+												#return
+										self.date = str(date)
+										if self.validate_date():
+												return
 				else:
 						#{'month': 'January', 'day': '16', 'year': '2018'}
 						self.date = date_obj['month'] + " " + date_obj['day'] + ", " + date_obj['year']
@@ -189,8 +207,11 @@ class ParseDate():
 
 		def extract(self):
 				self.parse_within_lines()
+				print("Date Extraction Complete===>0", self.date) 
 				if self.date == "":
+						print("Date Extraction Complete===>0.1", self.date) 
 						self.parse_between_lines()
+				print("Date Extraction Complete===>0.2", self.date) 
 				
 				if self.date == "":
 						self.extract_without_keywords()
@@ -198,6 +219,7 @@ class ParseDate():
 
 				if self.date == "":
 						self.get_date_from_program_name()
+				print("Date Extraction Complete===>1.1", self.date) 
 
 				if self.date == "":
 						self.expection_case()

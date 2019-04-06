@@ -10,7 +10,7 @@ preceding_keywords = ['This certifies that you have successfully completed cours
 Is hereby awardedto (the institute of internal)
 """
 following_keywords = ['Course Name', 'a seminar presented by', 'and are awarded this Certificate on'] #, 'Is hereby awardedto', 'Is hereby awarded to']
-line_keywords = ['Program Name:', 'Course Tithe:', 'Course Title:', 'for successfully completing:', 'for successfully completing', 'Program Title:', 'PROGRAM TITLE:', 'For successful completion of', 'Title.', 'Title:', 'for success‘ully comp et ng', 'Course:', 'Event Title:', 'tor successfully completing', 'Course Title', 'Subject:', 'Event:', 'NAME OF COURSE:', 'Course', 'Title of Training:', 'For Attending', 'For successfully completing the', 'EVENT NAME:', 'has successfully completed:', 'TOPIC:', 'CourseTitle:', 'On Demand Video:', 'For successfully completing:', 'Attended Quarterly', 'For attending the Career Development Series:', 'ProgramTitle: ', "for'successiully�~@~Xcompleting" ]
+line_keywords = ['Program Name:', 'Course Tithe:', 'Course Title:', 'for successfully completing:', 'for successfully completing', 'Program Title:', 'PROGRAM TITLE:', "For successful completion of the", 'For successful completion of', 'Title.', 'Title:', 'for success‘ully comp et ng', 'Course:', 'Event Title:', 'tor successfully completing', 'Course Title', 'Subject:', 'Event:', 'NAME OF COURSE:', 'Course', 'Title of Training:', 'For Attending', 'For successfully completing the', 'EVENT NAME:', 'has successfully completed:', 'TOPIC:', 'CourseTitle:', 'On Demand Video:', 'For successfully completing:', 'Attended Quarterly', 'For attending the Career Development Series:', 'ProgramTitle: ']
 
 invalid_keywords = ['presented to', 'Awarded to', 'Date', 'Freserted to', 'granted', 'Association of Cortificd', 'Association of Certified', 'Field of Study', 'Please', 'Program Location', 'Credits', 'CTEC', 'Participant', 'Sent', 'This is to ceruty that', 'This is to certify that', 'This is to', 'awardedthis', 'awarded this', 'preserted to', 'success‘ully', '@', 'certify that', 'Instructional Delivery Method', 'Attendee', 'Attendee Name:', 'SPONSOR', 'sponsor', 'PROGRAM TITLE:', 'program title', 'Successfully', 'successfully', 'ACKNOWLEDGES', 'THIS CERTIFIES THAT', 'this certifies that', 'for participation in', 'This certificate is presentedto', 'This certificate is presented to', 'Author', 'Congratulations', 'Self-Study Programs', 'CourseTitle', 'Course Title', 'DELIVERY METHOD', 'awardedto', 'awarded to', 'Location', 'CPEcredits', 'CPE credits', 'Event Dates', 'OBJECTIVE', 'Units', 'Has Successtully Completed the', 'Course Freld of Study', 'Course Field of Study', 'Course Number', 'Delivery Method Used', 'Type of InstructionalDelivery', 'Type of Instructional Delivery', 'Completion Certificate', 'Dates', 'Street', 'Pittsburgh', 'Sponsored by', 'Inc', 'Presenter', 'Fleld of Study', 'Field of Study', 'Fields of Study', 'http', 'Format', 'has completed', 'Auburn Folsom Rd', 'Student', 'SHRM', 'Certificate of Attendance', 'Instructor', 'Naine', 'Name', 'In accordance with the standards for', 'Recommended Continuing Professional Education']
 
@@ -243,33 +243,40 @@ class ParseProgramName():
 				for index, content in enumerate(self.contents):
 						for kw in line_keywords:
 								if kw in content:
-										print(f"PROGRAM_NAME===>Content->{content}, KW-->{kw}")
-										valid_words = validate_line(content, kw)
-										print(f"PROGRAM_NAME===>VALID_WORDS->{valid_words}")
-                    
-										if valid_words is None:
-												continue
-										print("Program_NAME--->", valid_words)
-										pn_1, status = self.validate_each_value(remove_extra_spaces( self.contents[index + 1]) )
-										pn_2, status = self.validate_each_value(remove_extra_spaces( self.contents[index + 2]) )
-										print(f"pn_1--->{pn_1},--pn_2---->{pn_2}")
-										self.program_name = valid_words[0] + " " + self.get_progrma_name(pn_1, pn_2, [])
-										print("WITHIN_LINE========>", self.program_name)
-										"""
-										if pn:
-												self.program_name = valid_words[0] + " " + pn_1[0] + " " + pn_2[0]
-										else:
-												self.program_name = valid_words[0]
-										"""
-										print("WITHIN_LINE---pn_1__")
-										if self.program_name.strip() in ["Number:"]:
-												print("WITHIN_LINE---pn_2__")
-												self.program_name = ""
-												continue
-										if self.validate_program_name():
-												print("WITHIN_LINE---pn_3__")
-												return
-										print("WITHIN_LINE---pn_4__")
+										try:
+												print(f"PROGRAM_NAME===>Content->{content}, KW-->{kw}")
+												valid_words = validate_line(content, kw)
+												print(f"PROGRAM_NAME===>VALID_WORDS->{valid_words}")
+                        
+												if valid_words is None:
+														continue
+												print("Program_NAME--->", valid_words)
+												pn_1, status = self.validate_each_value(remove_extra_spaces( self.contents[index + 1]) )
+												try:
+														pn_2, status = self.validate_each_value(remove_extra_spaces( self.contents[index + 2]) )
+												except:
+														pn_2 = []
+												print(f"pn_1--->{pn_1},--pn_2---->{pn_2}")
+												self.program_name = valid_words[0] + " " + self.get_progrma_name(pn_1, pn_2, [])
+												print("WITHIN_LINE========>", self.program_name)
+												"""
+												if pn:
+														self.program_name = valid_words[0] + " " + pn_1[0] + " " + pn_2[0]
+												else:
+														self.program_name = valid_words[0]
+												"""
+												print("WITHIN_LINE---pn_1__")
+												if self.program_name.strip() in ["Number:"]:
+														print("WITHIN_LINE---pn_2__")
+														self.program_name = ""
+														continue
+												if self.validate_program_name():
+														print("WITHIN_LINE---pn_3__")
+														return
+												print("WITHIN_LINE---pn_4__")
+										except Exception as error:
+												print("parse_within_line---->", error)
+												pass
 
 		
 		def find_key_words(self):
