@@ -13,7 +13,7 @@ related_studies = ['Computer Software and Applications', 'Accounting & Auditing 
 field_of_studies = field_of_studies + related_studies + special_list
 #field_of_studies = list(set(field_of_studies))
 
-pre_keywords = [ 'field of study:', 'For the successful completion of', 'sponsored by YH Advisors, Inc.', 'FOR THE PROGRAM ENTITLED', 'Field of Study', 'for successfully completing', 'bicld of Study', 'Course', 'CPE Fueid of Study.', 'field of study', 'Field Of Study:']
+pre_keywords = [ 'field of study:', 'For the successful completion of', 'sponsored by YH Advisors, Inc.', 'FOR THE PROGRAM ENTITLED', 'Field of Study', 'for successfully completing', 'bicld of Study', 'Course', 'CPE Fueid of Study.', 'field of study', 'Field Of Study:', 'SUBJECT AREA']
 
 post_keywords = ['bicld of Study', 'bield of Study', 'Field of Study', 'Subject Area', 'Field ofStudy', 'NASBA Field of Study:', 'Curriculum:']
 
@@ -26,6 +26,7 @@ class ParseFos():
 				self.contents = contents
 				self.field_of_study = []
 				self.program_name = program_name
+				self.line_index = -1
 
 		def validate_with_existing_list(self, field):
 				print("validate_with_existing_list----->", field)
@@ -70,6 +71,7 @@ class ParseFos():
 																print("FOUND----FOS-->", values[0])
 																self.field_of_study.append(values[0] )
 																#continue
+																self.line_index = index
 																return "following_line"
 
 										values = remove_extra_spaces( self.contents[index+2].strip() )
@@ -80,6 +82,7 @@ class ParseFos():
 														if not self.check_if_present(values[0]):
 																self.field_of_study.append( values[0])
 																#continue
+																self.line_index = index
 																return "following_line"
 
 				if len(self.field_of_study) == 0:
@@ -96,6 +99,7 @@ class ParseFos():
 														if not self.check_if_present(values[0]):
 																self.field_of_study.append(values[0])
 																#continue
+																self.line_index = index
 																return "previous_line"
 														#return
 
@@ -119,6 +123,7 @@ class ParseFos():
 																print("FOS--FOS_HERE====>",val,  self.fos_check(val, content))
 																if self.fos_check(val, content):
 																		self.field_of_study.append(val)
+																		return
 										"""
 										if self.validate_with_existing_list(valid_words[0]):
 												if not self.check_if_present(valid_words[0]):  
@@ -146,7 +151,7 @@ class ParseFos():
 		def extract_from_list(self):
 				for fos in field_of_studies:
 						#print(f"FOS--->{fos}")
-						for content in self.contents:
+						for index, content in enumerate(self.contents):
 									
 									if content.strip() == "":
 											continue
@@ -175,6 +180,13 @@ class ParseFos():
 															print("***FOS***###->3", fos)
 															continue
 											print("***FOS***###->4", fos)
+											print("***FOS***###->4.1", fos)
+											print("***FOS***###->5", str(self.line_index))
+											print("***FOS***###->6", index)
+											if self.line_index != -1:
+													print("***FOS***###->7", index - self.line_index)
+													if (index - self.line_index ) > 2:
+															continue
 											if not self.check_if_present(fos):
 													self.field_of_study.append(fos)
 													continue

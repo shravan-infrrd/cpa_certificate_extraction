@@ -126,18 +126,20 @@ class ParseDate():
 						print(f"Content:--->{content.lower().strip()}")
 						if self.program_name == "":
 								parse = True
-						#print("2***PARSE_Pattern***", str(parse))
-						if len(content.lower().strip()) > len(self.program_name.lower().strip()):
-								first_arg = self.program_name.lower().strip()
-								second_arg = content.lower().strip()
+
 						else:
-								first_arg = content.lower().strip()
-								second_arg = self.program_name.lower().strip()
-						print("FIND_PATTERN_RESULT--->", find_pattern( first_arg, second_arg))
-						if find_pattern(first_arg, second_arg):
-								#if self.name.lower() in content.lower().strip():
-								parse = True
-								continue
+								if len(content.lower().strip()) > len(self.program_name.lower().strip()):
+										first_arg = self.program_name.lower().strip()
+										second_arg = content.lower().strip()
+								else:
+										first_arg = content.lower().strip()
+										second_arg = self.program_name.lower().strip()
+								print("FIND_PATTERN_RESULT--->", find_pattern( first_arg, second_arg))
+								if find_pattern(first_arg, second_arg):
+										#if self.name.lower() in content.lower().strip():
+										parse = True
+										continue
+						print("2***PARSE_Pattern***", str(parse))
 						numbers = sum(c.isdigit() for c in content.strip())
 						if numbers <2:
 								continue
@@ -200,9 +202,12 @@ class ParseDate():
 								print("DATE_EXCEPTION----->1", content)
 								dates = re.findall(r"Date: (\d+.\d+.\d+)", content)
 								print("DATE_EXCEPTION----->2", dates)
-								self.date = dates[0].replace('.', '/')
-								if self.validate_date():
-										return
+								try:
+										self.date = dates[0].replace('.', '/')
+										if self.validate_date():
+												return
+								except:
+										continue
 							
 
 		def extract(self):
