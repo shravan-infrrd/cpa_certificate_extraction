@@ -287,12 +287,15 @@ class ParseName():
 						if content.strip() == "":
 								continue
 						flag = False
+						#print("1_FLAG--->NAME", flag)
 						for kw in ["Presenters", "Author", 'Instructor']:
 								content = content.strip().replace("\\", "")
 								#print("VALIDATION===>", kw in content.strip())
+								#print("2_FLAG--->NAME", flag)
 								if kw in content.strip():
 										flag = True
 										break
+						#print("3_FLAG--->NAME", flag)
 						if flag:
 								continue
 						#print("NAME_Content---->", content.strip())
@@ -321,6 +324,7 @@ class ParseName():
 										#print(f"USERNAME---2--->{username}")
 										self.name = username.strip()
 										#print(f"USERNAME---3--->{self.name}")
+										#print(f"USERNAME---3.1--->{self.validate_name()}")
 										if self.validate_name():
 												#print(f"USERNAME---4--->{self.name}")
 												return

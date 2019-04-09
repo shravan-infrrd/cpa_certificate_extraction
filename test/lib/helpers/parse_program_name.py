@@ -189,15 +189,19 @@ class ParseProgramName():
 												if not status_3:
 														continue
 												"""
-												values_1, status = self.validate_each_value(remove_extra_spaces( self.contents[index + 1].strip() ) )
+												valid_index = 0
+												if self.contents[index+1].strip() == "":
+														valid_index = 1
+
+												values_1, status = self.validate_each_value(remove_extra_spaces( self.contents[valid_index + index + 1].strip() ) )
 												#values_1, status = self.validate_each_value( [self.contents[index + 1].strip() ])
 												if status:
-														values_2, status = self.validate_each_value(remove_extra_spaces(self.contents[index + 2].strip() ))
+														values_2, status = self.validate_each_value(remove_extra_spaces(self.contents[valid_index + index + 2].strip() ))
 												else:
 														#values_1 = []
 														values_2 = []
 												if status:
-														values_3, status = self.validate_each_value(remove_extra_spaces(self.contents[index + 3].strip() ))
+														values_3, status = self.validate_each_value(remove_extra_spaces(self.contents[valid_index + index + 3].strip() ))
 												else:
 														#values_1 = []
 														#values_2 = []

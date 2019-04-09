@@ -12,9 +12,19 @@ invalid_keywords = ['CPE']
 
 class ParseDeliveryMethod():
 
-		def __init__(self, contents):
+		def __init__(self, contents, sponsor):
 				self.contents = contents
 				self.delivery_method = ""
+				self.sponsor = sponsor
+
+		def delivery_method_for_ey(self, content):
+				methods = content.split('[]')
+				for method in methods:
+						if '[X]' in method:
+								print("***DELIVERY_METHOD_FOR_EY***", method.split('[X]')[-1])
+								data = method.split('[X]')[-1]
+								self.delivery_method = data
+								return
 
 		def validate_delivery_method(self):
 				if self.delivery_method is None:
@@ -97,9 +107,16 @@ class ParseDeliveryMethod():
 												return
 								
 		def extract_from_list(self):
+				print("***DELIVERY_METHOD***extract_from_list***")
 				for dm in delivery_method_lists:
 						for content in self.contents:
 									if dm.lower() in content.lower():
+											print("***>DM***>", dm)
+											if self.sponsor.strip() == "EY":
+													print("***DELIVERY_METHOD_FOR_EY***1")
+													self.delivery_method_for_ey(content)
+													if self.validate_delivery_method():
+															return
 											self.delivery_method = dm
 											return
 

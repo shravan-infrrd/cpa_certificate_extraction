@@ -35,7 +35,7 @@ def parse_all_fields( contents, result):
     pc = ParseCredits(contents, pfos.field_of_study)
     pc.extract()
 
-    pm = ParseDeliveryMethod(contents)
+    pm = ParseDeliveryMethod(contents, ps.sponsor)
     pm.extract()
 
     pi = ParseSponsorId(contents)

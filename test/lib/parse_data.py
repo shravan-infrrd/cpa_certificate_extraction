@@ -34,7 +34,7 @@ def parse_all_fields( contents, result):
     #pcod = ParseCompletionDate(contents)
     #pcod.extract()
 
-    pm = ParseDeliveryMethod(contents)
+    pm = ParseDeliveryMethod(contents, ps.sponsor)
     pm.extract()
 
 
