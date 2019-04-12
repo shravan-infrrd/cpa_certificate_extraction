@@ -122,6 +122,15 @@ class ParseDate():
 				for content in self.contents:
 						if content.strip() == "":
 								continue
+				
+						max_dig_count = 0
+						digits = re.findall(r"\d+", content.strip())
+						for dig in digits:
+								if len(str(dig)) >1:
+										max_dig_count = len(str(dig))
+										break
+						if max_dig_count <= 1:
+								continue
 						#print(f"Date:------>{self.program_name.lower().strip()}") #===Content:-->{content.lower().strip()}")
 						print(f"Content:--->{content.lower().strip()}")
 						if self.program_name == "":

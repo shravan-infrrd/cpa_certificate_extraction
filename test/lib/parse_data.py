@@ -29,15 +29,8 @@ def parse_all_fields( contents, result):
     pc = ParseCredits(contents, pfos.field_of_study)
     pc.extract()
 
-
-
-    #pcod = ParseCompletionDate(contents)
-    #pcod.extract()
-
     pm = ParseDeliveryMethod(contents, ps.sponsor)
     pm.extract()
-
-
 
     pi = ParseSponsorId(contents)
     pi.extract()

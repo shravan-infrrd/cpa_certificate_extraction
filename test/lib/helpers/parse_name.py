@@ -19,7 +19,7 @@ class ParseName():
 		def cross_check_name(self):
 				import probablepeople as pp
 				name = pp.parse(self.name)
-				#print("Cross Check Name ---->", name)
+				print("Cross Check Name ---->", name)
 				if len(self.name.strip().split(' ')) == 1 and len(name) >1:
 						self.name = ""
 						return False
@@ -45,6 +45,7 @@ class ParseName():
 						if count == 0:
 								self.name = ""
 								return False
+						return True
 				elif len(name) != 1:
 						return True
 				else:
@@ -101,7 +102,7 @@ class ParseName():
 						if content.strip() != "":
 								flag = False
 						for kw in preceding_keywords:
-								#print(f"START***NAME**content=={content},***kw=={kw}")
+								#print(f"START***NAME**content=={content.strip()},***kw=={kw}")
 								if kw.lower() in content.strip().lower():
 										#print("1*****************NAME*****************", kw)
 										values = remove_extra_spaces( self.contents[index + 1].strip() )
@@ -117,11 +118,11 @@ class ParseName():
 																		if len(self.name.split(' ')) > 4:
 																				self.name = ""
 																				continue
-																		#print("2.0*****************NAME*****************", self.name)
+																		print("2.0*****************NAME*****************", self.name)
 																		if self.validate_name():
-																				#print("2.01*****************NAME*****************", )
+																				print("2.01*****************NAME*****************", )
 																				if self.cross_check_name():
-																						#print("2.02*****************NAME*****************", self.name)
+																						print("2.02*****************NAME*****************", self.name)
 																						return
 																#print("2.1*****************NAME*****************", self.name)
 																self.name = ""
@@ -168,7 +169,7 @@ class ParseName():
 										except:
 													continue
 
-								#print("5*****************NAME*****************")
+								#print("5*****************NAME*****************", content.strip())
 								if self.name == "":
 
 										#Note: Parse Previous Line
@@ -176,39 +177,43 @@ class ParseName():
 												#print("5*****************NAME*****************", kw)
 												if kw in content.strip():
 												#if kw == content.strip():
-														#print(f"***NAME****content=={content}===kw{kw}")
+														print(f"***NAME****content=={content.strip()}===kw{kw}")
 														values = remove_extra_spaces(self.contents[index - 1].strip())
-														#print("values---->", values)
+														print("values---->1", values)
 														for val in values:
-																#print("NAME---val", val)
+																print("NAME---val-1", val)
 																if ':' in val:
 																		continue
 																self.name = val
+																print("NAME---val-2", self.name)
 																word = 'successfully completed'
 																if word.lower() in self.name.lower():
+																		print("NAME---val-3", self.name)
 																		self.name = self.name.split(word)[0]
+																print("NAME---val-4", self.name)
 																if self.validate_name():
+																		print("NAME---val-5", self.name)
 																		if self.cross_check_name():
-																				#print("4.02*****************NAME*****************", self.name)
+																				print("4.021*****************NAME*****************", self.name)
 																				return
 																		#return
 														values = remove_extra_spaces(self.contents[index - 2].strip())
-														#print("values---->", values)
+														print("values---->2", values)
 														for val in values:
-																#print("NAME---val", val)
+																print("NAME---val", val)
 																if ':' in val:
 																		continue
 																self.name = val
 																if self.validate_name():
 																		if self.cross_check_name():
-																				#print("4.02*****************NAME*****************", self.name)
+																				print("4.022*****************NAME*****************", self.name)
 																				return
 																		#return
 
 														values = remove_extra_spaces(self.contents[index - 3].strip())
-														#print("values---->", values)
+														print("values---->", values)
 														for val in values:
-																#print("NAME---val", val)
+																print("NAME---val", val)
 																if ':' in val:
 																		continue
 																self.name = val

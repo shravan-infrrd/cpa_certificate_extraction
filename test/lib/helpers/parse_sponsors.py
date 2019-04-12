@@ -115,6 +115,8 @@ class ParseSponsors():
 
 		def extract_from_list(self):
 				for content in self.contents:
+						if 'IRS CE'.lower() in content.strip().lower():
+								continue
 						if self.program_name.lower() not in content.strip().lower():
 								for sp in sponsor_list:
 
