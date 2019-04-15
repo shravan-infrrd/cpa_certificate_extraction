@@ -85,9 +85,9 @@ class Cpa(Resource):
 
 				for index, e_val in enumerate(erosion_val):
 						if extension in ['jpg', 'jpeg', 'png']:
-								result = read_scanned_image( file_location, doc_dir_location )
+								result = read_scanned_image( file_location, doc_dir_location, e_val )
 						else:
-								result = read_scanned_pdf( file_location, doc_dir_location )
+								result = read_scanned_pdf( file_location, doc_dir_location, e_val )
 
 
 						text_file_path = os.path.join(PDF_UPLOAD_DIRECTORY, file_name_without_ext, 'texts', 'stitched.txt')
