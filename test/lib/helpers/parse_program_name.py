@@ -25,6 +25,17 @@ class ParseProgramName():
 				self.name = name
 				self.program_name = ""
 
+		def handle_exception_case(self, keyword):
+				print("handle_exception_case****1")
+				keywords = ('QuickBooks', 'Introduction to')
+				for kw in keywords:
+						print("handle_exception_case****2")
+						if kw in keyword:
+								print("handle_exception_case****3")
+								self.program_name =  kw + " " + self.program_name
+								return
+				return
+
 		def validate_program_name(self):
 				print("ValidateProgramName**", self.program_name)
 				if self.program_name.strip() == "":
@@ -214,6 +225,7 @@ class ParseProgramName():
 												if self.program_name is not None:
 														print("***VALIDATING_PROGRAM_NAME***")
 														if self.validate_program_name():
+																self.handle_exception_case(kw)
 																print("***PROGRAM_NAME_FOUND***")
 																return
 										except Exception as error:
@@ -257,7 +269,7 @@ class ParseProgramName():
 												print(f"PROGRAM_NAME===>Content->{content}, KW-->{kw}")
 												valid_words = validate_line(content, kw)
 												print(f"PROGRAM_NAME===>VALID_WORDS->{valid_words}")
-                        
+												
 												if valid_words is None:
 														continue
 												print("Program_NAME--->", valid_words)
