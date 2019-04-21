@@ -15,7 +15,7 @@ import os
 import subprocess
 import copy
 
-
+from lib.common_methods import populate_missing
 from lib.parse_certificate import parse_all_fields
 from lib.empty_response_format import get_empty_response
 from openpyxl import Workbook
@@ -100,11 +100,14 @@ class Cpa(Resource):
 
 						if e_val == 0:
 								first_result = copy.deepcopy(result)
+
 						if result['field_of_study']:
+								populate_missing(first_result, result)
 								return result
 						else:
 								if index == max_try:
 										if result['field_of_study']:
+												populate_missing(first_result, result)
 												return result
 										else:
 												return first_result

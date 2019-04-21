@@ -80,6 +80,8 @@ class ParseCredits():
 										#valid_words = validate_line(content.strip(), kw) #remove_extra_spaces( content.split(kw)[0].strip() )
 
 										valid_words = remove_extra_spaces( content.split(kw)[0].strip() )
+										if len(valid_words) >= 2:
+												continue
 										for val in valid_words:
 												if hasNumbers( val ):
 														flag = False
@@ -224,7 +226,7 @@ class ParseCredits():
 						content = content.lower().strip()
 						if fos.lower() in content.strip().lower():
 								print(f"Content--->{content}, fos---->{fos}")
-								print("Credits*******>", content.split(fos.lower()))
+								#print("Credits*******>", content.split(fos.lower()))
 
 								credits = content.split(fos.lower())
 								print("SPLIT_CREDITS--->", credits)

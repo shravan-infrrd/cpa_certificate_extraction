@@ -3,7 +3,7 @@ adminstrative_practice = ['Administrativei Practice']
 #Business Management &amp; Organization
 business_managent_and_organization = ['Business Management & Organization', 'BUSINESS MAN AGEMENT', 'Business Management', 'Business Mgmt and Org']
 #Communications
-communications = ['Communications']
+communications = ['Communications', 'General Knowledge']
 #Computer Science
 computer_science = ['Computer Science', 'Cybersecurity Update']
 #Economics
@@ -33,11 +33,11 @@ stats = ['Statistics']
 #Accounting
 accounting = ['Accounting & Auditing', 'Accounting and Auditing', 'Accounting & Auditing / Tax', 'Accounting', 'ACCOUNTING', 'A&A']
 #Accounting - Governmental
-accouting_governmental = ['Accounting - Governmental', 'Accounting Governmental', 'Forensic Accounting', 'Forensic Accounting — Technical', 'Governmental Accounting', 'Accounting (Governmental)',]
+accouting_governmental = ['Accounting - Governmental', 'Accounting Governmental', 'Forensic Accounting', 'Forensic Accounting — Technical', 'Governmental Accounting', 'Accounting (Governmental)', 'Accounting (Govt)']
 #Auditing
 auditing = ['Auditing', 'AUDITING', 'Audit', 'Auditing - Webinar']
 #Auditing - Governmental
-auditing_governmental = ['Auditing - Governmental', 'Auditing Governmental', 'Auditing (Governmental)']
+auditing_governmental = ['Auditing - Governmental', 'Auditing Governmental', 'Auditing (Governmental)', 'Auditing (Govt)', 'Auditing (Govemmental)']
 #Business Law
 business_law = ['Business Law', 'Laws & Rules Ethics', 'Fraud']
 #Management Advisory Services

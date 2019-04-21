@@ -73,6 +73,9 @@ class ParseDate():
 												continue
 										for val in valid_words:
 												print("VALID_WORD----->", valid_words)
+												numbers = sum(c.isdigit() for c in val.strip())
+												if numbers <= 3:
+														continue
 												if hasNumbers(val):
 														val = val.replace('.', ',')
 														self.date = val #valid_words[0]
@@ -132,23 +135,34 @@ class ParseDate():
 												break
 								if max_dig_count <= 1:
 										continue
-						#print(f"Date:------>{self.program_name.lower().strip()}") #===Content:-->{content.lower().strip()}")
-						print(f"Content:--->{content.lower().strip()}")
-						if self.program_name == "":
-								parse = True
 
-						else:
 								if len(content.lower().strip()) > len(self.program_name.lower().strip()):
 										first_arg = self.program_name.lower().strip()
 										second_arg = content.lower().strip()
 								else:
 										first_arg = content.lower().strip()
 										second_arg = self.program_name.lower().strip()
-								print("FIND_PATTERN_RESULT--->", find_pattern( first_arg, second_arg))
+								print(f"first_arg**{first_arg}** second_arg-->**{second_arg}**--")
+								print("FIND_PATTERN_RESULT--->1", find_pattern( first_arg, second_arg))
 								if find_pattern(first_arg, second_arg):
-										#if self.name.lower() in content.lower().strip():
-										parse = True
 										continue
+						#print(f"Date:------>{self.program_name.lower().strip()}") #===Content:-->{content.lower().strip()}")
+						else:
+								print(f"Content:--->{content.lower().strip()}")
+								if self.program_name == "":
+										parse = True
+								else:
+										if len(content.lower().strip()) > len(self.program_name.lower().strip()):
+												first_arg = self.program_name.lower().strip()
+												second_arg = content.lower().strip()
+										else:
+												first_arg = content.lower().strip()
+												second_arg = self.program_name.lower().strip()
+										print("FIND_PATTERN_RESULT--->2", find_pattern( first_arg, second_arg))
+										if find_pattern(first_arg, second_arg):
+												#if self.name.lower() in content.lower().strip():
+												parse = True
+												continue
 						print("2***PARSE_Pattern***", str(parse))
 						numbers = sum(c.isdigit() for c in content.strip())
 						if numbers <2:

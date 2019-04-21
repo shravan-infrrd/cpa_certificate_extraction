@@ -4,6 +4,14 @@ import dateparser
 from dateutil.parser import parse
 import datefinder
 
+
+def populate_missing(r1, r2):
+    for k, v in r1.items():
+        if not v:
+            if r2[k]:
+                r1[k] = r2[k]
+
+
 def check_for_valid_string(s):
 	
 		print("CHECK_FOR_VALID_STRING---->", s)
@@ -45,6 +53,10 @@ def format_date(date):
 
 
 def find_pattern(kw, content):
+		kw = kw.replace('(', '').replace(')', '')
+		if not type(content) is list:
+				content = content.replace('(', '').replace(')', '')
+				content = content.replace('|', '')
 		kw = kw.replace('|', '')
 		try:
 				match = re.compile(r'\b({0})\b'.format(kw), flags=re.IGNORECASE).search(content)
@@ -68,7 +80,7 @@ def remove_extra_spaces( line ):
 		return valid_words
 
 def validate_line(content, keyword):
-		print(f"Content-->{content}, keyword-->{keyword}")
+		#print(f"Content-->{content}, keyword-->{keyword}")
 		words = content.split(keyword)
 		if len(words) == 1:
 				return None

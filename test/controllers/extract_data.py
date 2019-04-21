@@ -13,7 +13,7 @@ import os
 import subprocess
 import copy 
 
-
+from lib.common_methods import populate_missing
 from lib.parse_data import parse_all_fields
 #from openpyxl import Workbook
 #import openpyxl
@@ -113,6 +113,7 @@ class ExtractData(Resource):
 												if result['field_of_study']:
 														return jsonify( {'data': result} )
 												else:
+														populate_missing(first_result, result)
 														print("***FIRST_RESULT***", first_result)
 														print("***END***")
 														return jsonify( {'data': first_result} )
