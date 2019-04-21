@@ -354,15 +354,4 @@ class ParseCredits():
 												
 		def extract(self):
 				self.build_field_of_study()
-				"""
-				if len(self.fos) == 1:
-						self.parse_between_lines()
-						if self.credits != "":
-								return True
-						self.parse_within_lines()
-						fos = self.fos[0]
-						fod['credits'] = self.credits
-						self.fos = [fos]
-						return True
-				"""
 
