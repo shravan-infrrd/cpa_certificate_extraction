@@ -33,7 +33,7 @@ stats = ['Statistics']
 #Accounting
 accounting = ['Accounting & Auditing', 'Accounting and Auditing', 'Accounting & Auditing / Tax', 'Accounting', 'ACCOUNTING', 'A&A']
 #Accounting - Governmental
-accouting_governmental = ['Accounting - Governmental', 'Accounting Governmental', 'Forensic Accounting', 'Forensic Accounting — Technical', 'Governmental Accounting', 'Accounting (Governmental)', 'Accounting (Govt)']
+accouting_governmental = ['Accounting - Governmental', 'Accounting Governmental', 'Forensic Accounting', 'Forensic Accounting — Technical', 'Governmental Accounting', 'Accounting (Governmental)', 'Accounting (Govt)', 'Acounting (Governmental)']
 #Auditing
 auditing = ['Auditing', 'AUDITING', 'Audit', 'Auditing - Webinar']
 #Auditing - Governmental

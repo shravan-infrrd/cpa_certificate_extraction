@@ -53,11 +53,12 @@ def format_date(date):
 
 
 def find_pattern(kw, content):
-		kw = kw.replace('(', '').replace(')', '')
-		if not type(content) is list:
-				content = content.replace('(', '').replace(')', '')
-				content = content.replace('|', '')
-		kw = kw.replace('|', '')
+		invalid_char = ['(', ')', ',', '.', '|']
+		for inc in invalid_char:
+				kw = kw.replace(inc, '')
+				if not type(content) is list:
+						content = content.replace(inc, '')
+			
 		try:
 				match = re.compile(r'\b({0})\b'.format(kw), flags=re.IGNORECASE).search(content)
 				if match is None:

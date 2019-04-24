@@ -1,6 +1,6 @@
 group_live = ['Group live', 'Group-live', 'Group-Live', 'Live Presentation', 'Conferences', 'Group Lve', 'Virtual group live', 'GroupLive', 'Group/Live', 'Live', 'Live seminar']
 
-group_internet_based = [ 'Group Internet based', 'Group Internet-Based', 'Group-Intemet Based', 'Group - Internet-Based', 'Group Internet', 'Webcast', 'Group Intemet Based', 'Group - Internet Based', 'Internet Based', 'Group [nternet- Based', 'Group Program', 'Group Study', 'Internet-Based', 'Group ‘rternet basea', 'Group-Internet', 'Webinar', 'Group - Live', 'Virtual Instructor-Led', 'GroupInternet', 'Group intemet-based','Intermet', 'Group-Internel Based', 'Group-Interet Based', 'intemet', 'internel', 'Interet', 'Group-Infernel Based', 'Infernel', 'Groupod', 'Intemet-Bas']
+group_internet_based = [ 'Group Internet based', 'Group Internet-Based', 'Group-Intemet Based', 'Group - Internet-Based', 'Group Internet', 'Webcast', 'Group Intemet Based', 'Group - Internet Based', 'Internet Based', 'Group [nternet- Based', 'Group Program', 'Group Study', 'Internet-Based', 'Group ‘rternet basea', 'Group-Internet', 'Webinar', 'Group - Live', 'Virtual Instructor-Led', 'GroupInternet', 'Group intemet-based','Intermet', 'Group-Internel Based', 'Group-Interet Based', 'intemet', 'internel', 'Interet', 'Group-Infernel Based', 'Infernel', 'Groupod', 'Intemet-Bas', 'Internct-Based']
 
 qas_self_study = [ 'Internet Based Self-Study Program.', 'Interactive Self Study','QAS Self study', 'Self-Study', 'Self Study', 'QAS Self Study.', 'self']
 

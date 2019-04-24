@@ -5,9 +5,9 @@ preceding_keywords = ['This certifies that', 'certifies that', 'Attendee', 'Cert
 
 following_keywords = ['Has successfully completed the QuickBooks', "Participant's Name", 'for successfully completing', 'has successfully completed', 'Has Successfully Completed the Course:', 'Has successfully completed', 'UF,orattending', 'has completed the QASSelf-Study course', 'has completed the', 'FOR SUCCESSFUL COMPLETION OF', 'Participant Name', 'who haspursued studies and completed all the', 'who has pursued studies and completed all the']
 #name_keywords = ['Attendee’s Name:', '\ Attendee’s Name:', 'V Attendee’s Name:', 'Awardedto:', 'Participant Name:', 'This certificate is presented to', 'Awarded to:']
-line_keywords = ['Presents a Certification of Completion to:', 'Attendee’s Name:', '\ Attendee’s Name:', 'V Attendee’s Name:', 'Awardedto:', 'Participant Name:', 'This certificate is presented to', 'Awarded to:', 'This certifies that', 'Attendee:', 'NAME OF ATTENDEE.', 'Nameof Participant:', 'Name:', 'Attendee Name:', 'This certificate is presented to:', 'Name of Participant:', 'NAME OF PARTICIPANT:', 'Participant Name', 'Student', 'This certificate 1s presented to:', 'this certificate is presented to.', 'Name ofParticipant:', 'this certificate is presented to:', 'Congratulations,', 'Participant Name:', 'This to certify that', '[his certificate is presented to:', 'This certificate ts presented to', 'Th i s c e r t i f i e s t h a t', 'This c e r t i f i e s t h a t', 'c e r t i f i e s t h a t', 't h a t', 'to:']
+line_keywords = ['Presents a Certification of Completion to:', 'Attendee’s Name:', '\ Attendee’s Name:', 'V Attendee’s Name:', 'Awardedto:', 'Participant Name:', 'This certificate is presented to', 'Awarded to:', 'This certifies that', 'Attendee:', 'NAME OF ATTENDEE.', 'Nameof Participant:', 'Name:', 'Attendee Name:', 'This certificate is presented to:', 'Name of Participant:', 'NAME OF PARTICIPANT:', 'Participant Name', 'Student', 'This certificate 1s presented to:', 'this certificate is presented to.', 'Name ofParticipant:', 'this certificate is presented to:', 'Congratulations,', 'Participant Name:', 'This to certify that', '[his certificate is presented to:', 'This certificate ts presented to', 'Th i s c e r t i f i e s t h a t', 'This c e r t i f i e s t h a t', 'c e r t i f i e s t h a t', 't h a t', 'to:', 'Thiscertificate ispresentedto', 'presentedto']
 
-invalid_words = ['Freserted to', 'Presented to', 'this', 'that', 'Awarded to', 'Program', 'CPE', 'Firm:', 'Participant', 'Sent', 'CERTIFICATION', '@', 'Issue', 'Attendee Name:', 'Instructional Delivery Method', 'Successful completion of:', 'ATTENDED', 'attended', 'SPONSOR', 'sponsor', 'for successfully completing', 'Individual', 'DATE', 'TIME', 'Certificate ofCompletion', 'Certificate of Completion', 'Congratulations', 'awardedto', 'awarded to', 'For successtully completing', 'TSCPA', 'Credits', 'SCalCPA', 'Street', 'Application', 'PRESENTED BY', 'Pittsburgh', 'ws DEN', 'Location', 'Tithe', 'Middle', 'Certificate Logo', 'IRS Course', 'Successful campletion of', 'stitute', 'institute', 'Number', 'AUDITING', 'PLANS', 'CPA Crossing', 'minute hour', 'Partici', 'Participant', 'http', 'Details', 'Affirmation', 'COMPLIANCE AUDITS', 'EDITION', 'Risk', 'Fundamentals', 'Review by', 'Instructor', 'Quality', 'Scheme', 'to:', 'Arizona']
+invalid_words = ['Freserted to', 'Presented to', 'this', 'that', 'Awarded to', 'Program', 'CPE', 'Firm:', 'Participant', 'Sent', 'CERTIFICATION', '@', 'Issue', 'Attendee Name:', 'Instructional Delivery Method', 'Successful completion of:', 'ATTENDED', 'attended', 'SPONSOR', 'sponsor', 'for successfully completing', 'Individual', 'DATE', 'TIME', 'Certificate ofCompletion', 'Certificate of Completion', 'Congratulations', 'awardedto', 'awarded to', 'For successtully completing', 'TSCPA', 'Credits', 'SCalCPA', 'Street', 'Application', 'PRESENTED BY', 'Pittsburgh', 'ws DEN', 'Location', 'Tithe', 'Middle', 'Certificate Logo', 'IRS Course', 'Successful campletion of', 'stitute', 'institute', 'Number', 'AUDITING', 'PLANS', 'CPA Crossing', 'minute hour', 'Partici', 'Participant', 'http', 'Details', 'Affirmation', 'COMPLIANCE AUDITS', 'EDITION', 'Risk', 'Fundamentals', 'Review by', 'Instructor', 'Quality', 'Scheme', 'to:', 'Arizona', 'Internal Audit']
 invalid_names = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
 
 class ParseName():
@@ -89,7 +89,7 @@ class ParseName():
 								print("NAME--ERROR--2.1")
 								self.name = ""
 								return False
-				#print("NAMELENGTH---->", len(self.name))
+				print("NAMELENGTH---->", len(self.name))
 				if len(self.name.strip()) <= 4:
 						print("NAME-ERROR--3")
 						self.name = ""
@@ -232,29 +232,31 @@ class ParseName():
 				for content in self.contents:
 						for kw in line_keywords:
 								if kw in content:
-										#print(f"Content-->{content}, kw-->{kw}")
+										print(f"Content-->{content}, kw-->{kw}")
 
 										#print("1***START***NAME", content, "**kw**", kw)
 										valid_words = validate_line(content, kw)
-										#print("2***START***NAME", valid_words)
+										print("2***START***NAME", valid_words)
 										if valid_words is None:
 												continue
 										#print("3***START***NAME", valid_words)
 										#if ':' in valid_words[0]:
 										#		continue
-										#print("4***START***NAME", self.name)
+										print("4***START***NAME", self.name)
 										self.name = valid_words[0]
-										#print("5***START***NAME", self.name)
+										print("5***START***NAME", self.name)
 
 										for word in words:
-												#print("WORD---->", word)
+												print("WORD---->", word)
 												if word.lower() in self.name.lower():
-														#print("WORD_MATCH---->", word)
+														print("WORD_MATCH---->", word)
 														self.name = self.name.split(word)[0]
 														break
 				
-										
-										#print("6***START***NAME", self.name)
+										if '(' in self.name:
+												self.name = self.name.split('(')[0]
+	
+										print("6***START***NAME", self.name)
 										if self.validate_name():
 												#print("****END***NAME")
 												return

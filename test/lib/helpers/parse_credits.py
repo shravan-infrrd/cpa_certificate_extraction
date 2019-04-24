@@ -7,11 +7,11 @@ from lib.field_of_study_mapping import find_fos_match
 #line_keywords = ['ofContinuing ProfessionalEducation Credits:', 'CPE credit1', 'CPE Hours', 'Credit', 'hours of CPE', 'hours of Continuing', 'CPE credits']
 pre_line_keywords = ['ofContinuing ProfessionalEducation Credits:', 'CPE credit1', 'CPE Hours', 'Credit', 'hours of CPE', 'hours of Continuing', 'CPE credits', 'CPE is awarded', 'CPE Hour', 'CPE credit hours', 'Hour Continuing Education Credit']
 
-post_line_keywords = ['Recommended CPE Credits:', 'Interactive Credit in CPE Hours:', 'For a total of', 'Total CPF. Hours:', 'Total CPE Hours:', 'Total CPF. Hours:', 'Has Successfully Completed', 'Hours of Recommended CPE Credit:', 'CPE Credit Hours:', 'CPE Hours:', 'Number of CPE Credits', 'Total Credit Earned:', 'Duration:', 'CPE Credits:', 'Credit Hours:', 'CPE credit:', 'Credits:', 'CPE Credit Hours.', 'CPE Credits earned:', 'Recommendedfor', 'Recommended for', 'CPE credits:', 'Course Credit:', 'TSCPA Sponsor ID #', 'CPE:', 'Total Credits Earned:', 'Number of CPE credits', 'CPE Credit:', 'CPE Hours ', 'Approved CPE credit(s):', 'CPE Credits', 'Number of CPE credits', 'Recommended CPE credits for this course:', 'CPE Credits Received:', 'Recommended CPE credit', 'Total Hours:', 'CPE Credit Hours Awarded:']
+post_line_keywords = ['Recommended CPE Credits:', 'Interactive Credit in CPE Hours:', 'For a total of', 'Total CPF. Hours:', 'Total CPE Hours:', 'Total CPF. Hours:', 'Has Successfully Completed', 'Hours of Recommended CPE Credit:', 'CPE Credit Hours:', 'CPE Hours:', 'Number of CPE Credits', 'Total Credit Earned:', 'Duration:', 'CPE Credits:', 'Credit Hours:', 'CPE credit:', 'Credits:', 'CPE Credit Hours.', 'CPE Credits earned:', 'Recommendedfor', 'Recommended for', 'CPE credits:', 'Course Credit:', 'TSCPA Sponsor ID #', 'CPE:', 'Total Credits Earned:', 'Number of CPE credits', 'CPE Credit:', 'CPE Hours ', 'Approved CPE credit(s):', 'CPE Credits', 'Number of CPE credits', 'Recommended CPE credits for this course:', 'CPE Credits Received:', 'Recommended CPE credit', 'Total Hours:', 'CPE Credit Hours Awarded:', 'commended Number of CPE Credits:']
 
 keywords = ['Numberof CPE Credits', 'Earned CPE credit(s)', 'Awarded CPE Credit Hours', 'Earned CPE Credit(s)', 'Number of CPE Credits', 'Earned CPE credit(s)', 'CPE Credit Hours', 'CPE Credit']
 
-post_keywords = ['Recommended for:', 'CPE CREDIT EARNED', 'CPECredits', 'Credas', 'Recommendedfor:', 'CPE Credit', 'CPE Credits:'] 
+post_keywords = ['Recommended for:', 'CPE CREDIT EARNED', 'CPECredits', 'Credas', 'Recommendedfor:', 'CPE Credit', 'CPE Credits:', 'Credits'] 
 
 invalid_keywords = ['Completion Date:']
 
@@ -25,6 +25,16 @@ class ParseCredits():
 				self.max_credit_val = 40
 				print("***CREDIT_INIT***", self.fos)
 				self.field_of_study = []
+
+		def validate_vicinity_fo_credit(self, content, fos, credit):
+				fos_position = content.find(fos) + len(fos)
+				credit_position = content.find(credit)
+
+				if credit_position > fos_position:
+						if (credit_position - fos_position) > 7:
+								return False
+				return True
+
 
 		def validate_credits(self):
 				if self.credits == "":
@@ -295,6 +305,8 @@ class ParseCredits():
 						if fos.lower() in content:
 								print("CREDITS---CONTENT--->", content)
 								credit = re.findall('\d*\.?\d+', content)
+								#if not self.validate_vicinity_fo_credit(content, fos, credit):
+								#		continue
 								print("CREDITS---CONTENT--->", credit)
 								if len(credit) >= 3:
 										continue
