@@ -192,11 +192,14 @@ def check_for_rotated_image(image_path):
 
 		print("check_for_rotated_image********")
 		#command = ['tesseract', image_path, 'stdout', '-l', 'eng', '--psm', '0']
-		command = ['tesseract', image_path, 'stdout', '--psm', '0']
-		res = subprocess.check_output(command)
-		result = str(res)
-		print("check_for_rotated_image********", result, "********")
-		degree = re.findall(r"Rotate: (\d+)", result)[0]
+		try:
+				command = ['tesseract', image_path, 'stdout', '--psm', '0']
+				res = subprocess.check_output(command)
+				result = str(res)
+				print("check_for_rotated_image********", result, "********")
+				degree = re.findall(r"Rotate: (\d+)", result)[0]
+		except:
+				degree = '0'
 		print("check_for_rotated_image********", degree, "********")
 		img = cv.imread(image_path, 0)
 
@@ -246,7 +249,7 @@ def read_scanned_pdf1(pdf_path, output_dir_location, erosion_val=0):
 								pdf_split_with_pdfseparate(pdf_path, page_dir_location)
 								pages = natsorted(glob.glob(os.path.join(page_dir_location, "*.pdf")))
 								if len(pages) >= 3:
-										shravan.append("")
+										invalid_doc.append("")
 								#print("Initializing..")
 								for page in pages:
 										print(page)

@@ -51,7 +51,7 @@ specialise_knowledge = ['Specialized Knowledge', 'Specialized Knowledge']
 #Information Technology
 information_tech = ['Information Technology', 'Informational Technology', 'Information Technology', 'Information']
 #Computer Software &amp; Applications
-computer_software_app = ['Computer Software & Applications', 'Computer Software and Applications', 'Computer Software & Applications — Non-Technical']
+computer_software_app = ['Computer Software & Applications', 'Computer Software and Applications', 'Computer Software & Applications — Non-Technical', 'Computer Sofiware & Applications']
 #None
 no_match = ['Fraud']
 

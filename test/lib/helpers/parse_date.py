@@ -6,10 +6,15 @@ import datefinder
 import datetime
 import re
 from pygrok import Grok
-line_keywords = ['Date of Completion:', 'Date Issued:', 'End Date', 'End Date:', 'Date Completed:', 'Presentation Date:', 'Date Attended:', 'Completion Date:', 'Event Date:', 'Session End Date', 'Oate Attended:', 'Completion Date', 'Session End Date', 'awarded this certificate on', 'Date(s) Completed:', 'PROGRAM DATES:', 'Program Date:', 'Date Issued:', 'Class End Date', 'DATE ATTENDED:', 'Date:', 'Dated', 'Date.', 'Date', 'Awarded:', 'Completion date:', 'Seal of the Association this', 'Completed on', 'awardedthis certificate on', 'completed on']
-post_keywords = [ 'Completion Date:', 'Date Attended', 'Date of Completion', 'event on', 'awardedthis certificate on', 'awarded this certificate on']
-pre_keywords	= ['Date Certified', 'Date', 'Date of Course', 'Dace of Course', 'Program Date(s)', 'Course Date', 'pate', 'Date of Completion']
 
+
+#line_keywords = ['Date of Completion:', 'Date Issued:', 'End Date', 'End Date:', 'Date Completed:', 'Presentation Date:', 'Date Attended:', 'Completion Date:', 'Event Date:', 'Session End Date', 'Oate Attended:', 'Completion Date', 'Session End Date', 'awarded this certificate on', 'Date(s) Completed:', 'PROGRAM DATES:', 'Program Date:', 'Date Issued:', 'Class End Date', 'DATE ATTENDED:', 'Date:', 'Dated', 'Date.', 'Date', 'Awarded:', 'Completion date:', 'Seal of the Association this', 'Completed on', 'awardedthis certificate on', 'completed on']
+line_keywords = ['Date of Completion:', 'Date Issued:', 'End Date', 'End Date:', 'Date Completed:', 'Presentation Date:', 'Date Attended:', 'Completion Date:', 'Event Date:', 'Session End Date', 'Oate Attended:', 'Completion Date', 'Session End Date', 'awarded this certificate on', 'Date(s) Completed:', 'PROGRAM DATES:', 'Program Date:', 'Date Issued:', 'Class End Date', 'DATE ATTENDED:', 'Dated', 'Awarded:', 'Completion date:', 'Seal of the Association this', 'Completed on', 'awardedthis certificate on', 'completed on']
+
+post_keywords = [ 'Completion Date:', 'Date Attended', 'Date of Completion', 'event on', 'awardedthis certificate on', 'awarded this certificate on']
+pre_keywords	= ['Date Certified', 'Date of Course', 'Dace of Course', 'Program Date(s)', 'Course Date', 'pate', 'Date of Completion', 'Date']
+
+date_keywords = ["Date:", "Date.", "Date"]
 invalid_keywords = ['cpe', 'CPE', 'Location', 'of course', 'tatas8']
 
 class ParseDate():
@@ -82,6 +87,24 @@ class ParseDate():
 														if self.validate_date():
 																return
 
+		def parse_lines_for_date(self):
+				for content in self.contents:
+						for kw in date_keywords:
+								if kw in content:
+										print("WithINLINE----->", content, "---KEYWORD---", kw)
+										valid_words = validate_line(content, kw)
+										if valid_words is None:
+												continue
+										for val in valid_words:
+												print("VALID_WORD----->", valid_words)
+												numbers = sum(c.isdigit() for c in val.strip())
+												if numbers <= 3:
+														continue
+												if hasNumbers(val):
+														val = val.replace('.', ',')
+														self.date = val #valid_words[0]
+														if self.validate_date():
+																return
 
 		def parse_between_lines(self): 
 				for index, content in enumerate(self.contents):
@@ -118,8 +141,82 @@ class ParseDate():
 																if self.validate_date():
 																		return
 
+		def extract_without_keywords(self, name_keyword=""):
+				print("****WITHOUT_KEYWORD_EXTRACTION***")
+				parse = False
+				for content in self.contents:
+						if content.strip() == "":
+								continue
+			
+						if parse:	
+								max_dig_count = 0
+								digits = re.findall(r"\d+", content.strip())
+								for dig in digits:
+										if len(str(dig)) >1:
+												max_dig_count = len(str(dig))
+												break
+								if max_dig_count <= 1:
+										continue
 
-		def extract_without_keywords(self):
+								if len(content.lower().strip()) > len(name_keyword.lower().strip()):
+										first_arg = name_keyword.lower().strip()
+										second_arg = content.lower().strip()
+								else:
+										first_arg = content.lower().strip()
+										second_arg = name_keyword.lower().strip()
+								print(f"first_arg**{first_arg}** second_arg-->**{second_arg}**--")
+								print("FIND_PATTERN_RESULT--->1", find_pattern( first_arg, second_arg))
+								if find_pattern(first_arg, second_arg):
+										continue
+						#print(f"Date:------>{self.program_name.lower().strip()}") #===Content:-->{content.lower().strip()}")
+						else:
+								print(f"Content:--->{content.lower().strip()}")
+								if name_keyword == "":
+										parse = True
+								else:
+										if len(content.lower().strip()) > len(name_keyword.lower().strip()):
+												first_arg = name_keyword.lower().strip()
+												second_arg = content.lower().strip()
+										else:
+												first_arg = content.lower().strip()
+												second_arg = name_keyword.lower().strip()
+										print("FIND_PATTERN_RESULT--->2", find_pattern( first_arg, second_arg))
+										if find_pattern(first_arg, second_arg):
+												#if self.name.lower() in content.lower().strip():
+												parse = True
+												continue
+						print("2***PARSE_Pattern***", str(parse))
+						numbers = sum(c.isdigit() for c in content.strip())
+						if numbers <2:
+								continue
+						print("3***PARSE_DATE***", str(parse), "\n")
+						if parse:
+								#if hasNumbers(content):
+								print("FINDING-DATE----->1", content)
+								content = self.make_corrections(content)
+
+								content = content.replace('.', ',')
+								edate = re.findall(r"\d{1,2}-\d{1,2} \w+ \d{4}", content.strip().lower())
+								print("FINDING-DATE----->2-->", edate)
+								if edate:
+										content = edate[0].split('-')[-1]
+					
+								print("FINDING-DATE----->2-->", content)
+								dates = list(datefinder.find_dates(content))
+								print("Dates------------>3", dates)
+								if len(dates) > 0:
+										if dates[-1].year > datetime.datetime.now().year or dates[-1].year < 2000:
+												continue
+										self.date = str(dates[-1])
+										#print(f"CASE_ONE----->{dates[-1].year}")
+										#print(f"CASE_ONE----->{datetime.datetime.now().year}---type-->{type(datetime.datetime.now().year)}")
+										#print(f"CASE_ONE----->{dates[-1].year > datetime.datetime.now().year}")
+										#print(f"CASE_ONE----->{dates[-1].year < 2000}")
+										#print("DateExtracted---->4", self.date)
+										if self.validate_date():
+												return
+
+		def extract_without_keywords1(self, name_keyword=""):
 				print("****WITHOUT_KEYWORD_EXTRACTION***")
 				parse = False
 				for content in self.contents:
@@ -237,17 +334,23 @@ class ParseDate():
 		def extract(self):
 				self.parse_within_lines()
 				print("Date Extraction Complete===>0", self.date) 
+
+				if self.date == "":
+						self.parse_lines_for_date()
+
+				print("Date Extraction Complete===>0.05", self.date) 
+
 				if self.date == "":
 						print("Date Extraction Complete===>0.1", self.date) 
 						self.parse_between_lines()
 				print("Date Extraction Complete===>0.2", self.date) 
 				
 				if self.date == "":
-						self.extract_without_keywords()
+						self.extract_without_keywords(self.program_name)
 				print("Date Extraction Complete===>1", self.date) 
 
 				if self.date == "":
-						self.get_date_from_program_name()
+						self.extract_without_keywords(self.name)
 				print("Date Extraction Complete===>1.1", self.date) 
 
 				if self.date == "":

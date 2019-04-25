@@ -7,7 +7,7 @@ field_of_studies = [ 'Finance-Technical', 'Accounting & Auditing', 'Accounting a
 
 special_list = ['Auditing', 'Accounting', 'Specialized Knowledge', 'ACCOUNTING', 'AUDITING', 'BUSINESS MAN AGEMENT', 'MAS', 'TAXES', 'Business Management', 'Tax', 'Audit']
 
-related_studies = ['Computer Software and Applications', 'Accounting & Auditing / Tax', 'Personnel/Human Resource', 'Personnel/HR', 'Regulatory Ethics', 'Professional Development', 'Behavioral Ethics', 'Management Services', 'A&A', 'Yellow Book', 'Professional Ethics', 'Fraud', 'Accounting Governmental', 'Auditing Governmental', 'Business Mgmt and Org', 'State Ethics', 'Cybersecurity Update', 'Taxation', 'Forensic Accounting', 'Forensic Accounting — Technical', 'Communications & Marketing', 'Management Advisory Services Basic Level', 'Ethics (Regulatory)', 'Computer Software & Applications — Non-Technical', 'Laws & Rules Ethics', 'Ethics/Regulatory Ethics', 'Taxes (in NY Taxation)', 'Governmental Accounting', 'Auditing - Webinar','Ethics', 'General Knowledge']
+related_studies = ['Computer Software and Applications', 'Accounting & Auditing / Tax', 'Personnel/Human Resource', 'Personnel/HR', 'Regulatory Ethics', 'Professional Development', 'Behavioral Ethics', 'Management Services', 'A&A', 'Yellow Book', 'Professional Ethics', 'Fraud', 'Accounting Governmental', 'Auditing Governmental', 'Business Mgmt and Org', 'State Ethics', 'Cybersecurity Update', 'Taxation', 'Forensic Accounting', 'Forensic Accounting — Technical', 'Communications & Marketing', 'Management Advisory Services Basic Level', 'Ethics (Regulatory)', 'Computer Software & Applications — Non-Technical', 'Laws & Rules Ethics', 'Ethics/Regulatory Ethics', 'Taxes (in NY Taxation)', 'Governmental Accounting', 'Auditing - Webinar','Ethics', 'General Knowledge', 'Computer Sofiware & Applications']
 
 
 field_of_studies = field_of_studies + related_studies + special_list
@@ -153,11 +153,13 @@ class ParseFos():
 									
 									if content.strip() == "":
 											continue
-									if (self.program_name.lower() in content.strip().lower()) or (content.strip().lower() in self.program_name.lower()):
-											continue
+									if self.program_name != "":
+											if (self.program_name.lower() in content.strip().lower()) or (content.strip().lower() in self.program_name.lower()):
+													continue
 									content = content.replace('(', '').replace(')', '')
 									fos1 = fos.replace('(', '').replace(')', '')
 									#if fos.lower() in content.lower():
+									#print(f"FOS**FIELF_OF_STUDY--->{fos}, --->CONTENT-->{content.strip()}<--")
 									if find_pattern(fos1.lower(), content.lower().strip() ):
 											#print(f"FOS**FIELF_OF_STUDY--->{fos}, --->CONTENT-->{content.strip()}<--")
 											#self.field_of_study.append({"name": fos })

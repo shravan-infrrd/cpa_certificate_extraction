@@ -1,13 +1,15 @@
 #text_file = "./text_files/21.txt"
 from lib.common_methods import remove_extra_spaces, validate_line, hasNumbers, find_pattern
+import re
 
 preceding_keywords = ['This certifies that', 'certifies that', 'Attendee', 'Certifies That', 'Attendee Name:', 'This certificate is presented to', 'Presents this Certificate of Completion to', 'Gg CalCPA																		 GS FOUNDATION', 'This certificate is presentedto:', 'Certificate of Completion', 'This certificate is presented to:', 'PRESENTED TO', "Participant's Name", "FOUNDATION", 'presented to', 'Freserted to', 'granted to', 'This is to ceruty that', 'Is hereby awardedto', 'Is hereby awarded to', 'awarded to', 'awardedto', 'Certificate of C completion', 'This certificate is awarded to', 'grantedto', 'Is hereby.grantedto', 'CERTIFICATE OF ATTENDANCE']
 
 following_keywords = ['Has successfully completed the QuickBooks', "Participant's Name", 'for successfully completing', 'has successfully completed', 'Has Successfully Completed the Course:', 'Has successfully completed', 'UF,orattending', 'has completed the QASSelf-Study course', 'has completed the', 'FOR SUCCESSFUL COMPLETION OF', 'Participant Name', 'who haspursued studies and completed all the', 'who has pursued studies and completed all the']
 #name_keywords = ['Attendee’s Name:', '\ Attendee’s Name:', 'V Attendee’s Name:', 'Awardedto:', 'Participant Name:', 'This certificate is presented to', 'Awarded to:']
-line_keywords = ['Presents a Certification of Completion to:', 'Attendee’s Name:', '\ Attendee’s Name:', 'V Attendee’s Name:', 'Awardedto:', 'Participant Name:', 'This certificate is presented to', 'Awarded to:', 'This certifies that', 'Attendee:', 'NAME OF ATTENDEE.', 'Nameof Participant:', 'Name:', 'Attendee Name:', 'This certificate is presented to:', 'Name of Participant:', 'NAME OF PARTICIPANT:', 'Participant Name', 'Student', 'This certificate 1s presented to:', 'this certificate is presented to.', 'Name ofParticipant:', 'this certificate is presented to:', 'Congratulations,', 'Participant Name:', 'This to certify that', '[his certificate is presented to:', 'This certificate ts presented to', 'Th i s c e r t i f i e s t h a t', 'This c e r t i f i e s t h a t', 'c e r t i f i e s t h a t', 't h a t', 'to:', 'Thiscertificate ispresentedto', 'presentedto']
+line_keywords = ['Presents a Certification of Completion to:', 'Attendee’s Name:', '\ Attendee’s Name:', 'V Attendee’s Name:', 'Awardedto:', 'Participant Name:', 'This certificate is presented to', 'Awarded to:', 'This certifies that', 'Attendee:', 'NAME OF ATTENDEE.', 'Nameof Participant:', 'Name:', 'Attendee Name:', 'This certificate is presented to:', 'Name of Participant:', 'NAME OF PARTICIPANT:', 'Participant Name', 'Student', 'This certificate 1s presented to:', 'this certificate is presented to.', 'Name ofParticipant:', 'this certificate is presented to:', 'Congratulations,', 'Participant Name:', 'This to certify that', '[his certificate is presented to:', 'This certificate ts presented to', 'Th i s c e r t i f i e s t h a t', 'This c e r t i f i e s t h a t', 'c e r t i f i e s t h a t', 't h a t', 'to:', 'Thiscertificate ispresentedto', 'presentedto', 'To:']
 
-invalid_words = ['Freserted to', 'Presented to', 'this', 'that', 'Awarded to', 'Program', 'CPE', 'Firm:', 'Participant', 'Sent', 'CERTIFICATION', '@', 'Issue', 'Attendee Name:', 'Instructional Delivery Method', 'Successful completion of:', 'ATTENDED', 'attended', 'SPONSOR', 'sponsor', 'for successfully completing', 'Individual', 'DATE', 'TIME', 'Certificate ofCompletion', 'Certificate of Completion', 'Congratulations', 'awardedto', 'awarded to', 'For successtully completing', 'TSCPA', 'Credits', 'SCalCPA', 'Street', 'Application', 'PRESENTED BY', 'Pittsburgh', 'ws DEN', 'Location', 'Tithe', 'Middle', 'Certificate Logo', 'IRS Course', 'Successful campletion of', 'stitute', 'institute', 'Number', 'AUDITING', 'PLANS', 'CPA Crossing', 'minute hour', 'Partici', 'Participant', 'http', 'Details', 'Affirmation', 'COMPLIANCE AUDITS', 'EDITION', 'Risk', 'Fundamentals', 'Review by', 'Instructor', 'Quality', 'Scheme', 'to:', 'Arizona', 'Internal Audit']
+invalid_words = ['Freserted to', 'Presented to', 'this', 'that', 'Awarded to', 'Program', 'CPE', 'Firm:', 'Participant', 'Sent', 'CERTIFICATION', '@', 'Issue', 'Attendee Name:', 'Instructional Delivery Method', 'Successful completion of:', 'ATTENDED', 'attended', 'SPONSOR', 'sponsor', 'for successfully completing', 'Individual', 'DATE', 'TIME', 'Certificate ofCompletion', 'Certificate of Completion', 'Congratulations', 'awardedto', 'awarded to', 'For successtully completing', 'TSCPA', 'Credits', 'SCalCPA', 'Street', 'Application', 'PRESENTED BY', 'Pittsburgh', 'ws DEN', 'Location', 'Tithe', 'Middle', 'Certificate Logo', 'IRS Course', 'Successful campletion of', 'stitute', 'institute', 'Number', 'AUDITING', 'PLANS', 'CPA Crossing', 'minute hour', 'Partici', 'Participant', 'http', 'Details', 'Affirmation', 'COMPLIANCE AUDITS', 'EDITION', 'Risk', 'Fundamentals', 'Review by', 'Instructor', 'Quality', 'Scheme', 'to:', 'Arizona', 'Internal Audit', 'PROVIDER', 'Astute CPA', 'Author']
+
 invalid_names = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
 
 class ParseName():
@@ -77,9 +79,10 @@ class ParseName():
 						self.name = ""
 						return False
 				if len(self.name.split(' ')[0]) <= 2:
-						print("NAME-ERROR--1.5")
-						self.name = ""
-						return False
+						print("NAME-ERROR--1.5", self.name.split(' ')[0])
+						if "." not in self.name:
+								self.name = ""
+								return False
 				if hasNumbers(self.name):
 						print("NAME-ERROR--2")
 						if '(' in self.name or ')' in self.name or '-' in self.name:
@@ -200,9 +203,9 @@ class ParseName():
 																				return
 																		#return
 														values = remove_extra_spaces(self.contents[index - 2].strip())
-														print("values---->2", values)
+														#print("values---->2", values)
 														for val in values:
-																print("NAME---val", val)
+																#print("NAME---val", val)
 																if ':' in val:
 																		continue
 																self.name = val
@@ -269,7 +272,7 @@ class ParseName():
 				for content in self.contents:
 						for kw in keywords:
 								if kw in content:
-										if  content.lower() in ['instructor']:
+										if	content.lower() in ['instructor']:
 												continue
 										print("=========parse_line_without_keywords=====1", content.split(kw)[0])
 										self.name = content.split(kw)[0].strip()
@@ -291,16 +294,97 @@ class ParseName():
 														print("=======parse_line_without_keywords====6", self.name)
 
 
-		def parse_approx_name(self):
+		def parse_approx_name(self, exception=False):
 				print("***parse_approx_name***")
 				import probablepeople as pp
 				#print("***parse_approx_name***")
 				for content in self.contents:
-						#print("Content---->", content.strip())
+						print("Content---->", content.strip())
+						values = content.split("	")
+						for val in values:
+								#content = val
+								if val.strip() == "":
+										continue
+								flag = False
+								print("1_FLAG--->NAME", flag)
+								for kw in ["Presenters", "Author", 'Instructor', 'Presenter']:
+										val = val.strip().replace("\\", "")
+										print("VALIDATION===>", kw in val.strip())
+										#print("2_FLAG--->NAME", flag)
+										if kw in val.strip():
+												flag = True
+												break
+								print("3_FLAG--->NAME", flag)
+								if flag:
+										continue
+								print("****************START**********************")
+								print("NAME_Content---->", val.strip())
+								p = pp.parse(val)
+								print("NAME_Content---->", p)
+								username = ""
+								firstname = ""
+								surname		= ""
+								middlename = ""
+								#print(p)
+								for index, word in enumerate(p):
+							 
+										if word[1] == "GivenName":
+												firstname = firstname + word[0]
+												username = username + " " + firstname
+										if word[1] == "MiddleInitial":
+												middlename = middlename + word[0]
+												username = username + " " + middlename
+										if word[1] == "Surname":
+												surname = surname + word[0]
+												username = username + " " + surname
+								
+										if exception:
+												if len(p) > 3:
+														continue
+												if word[1] == "CorporationName":
+														username = username + " " + word[0]
+							 
+								
+										print(f"USERNAME---1--->{username}")
+										if firstname != "" and surname != "":
+												print(f"USERNAME---2--->{username}")
+												self.name = username.strip()
+												print(f"USERNAME---3--->{self.name}")
+												print(f"USERNAME---3.1--->{self.validate_name()}")
+												if self.validate_name():
+														print(f"USERNAME---4--->{self.name}")
+														return
+
+								print("USERNAME------<*", username) 
+								if	username:
+										u_names = username.split(' ')
+										u_names = list( filter( None, u_names ) )
+										print("USERNAME------<", u_names) 
+										if len(u_names) < 3 and len(u_names) > 1:
+												self.name = username.strip()
+												regex = re.compile('[:]') 
+												if (regex.search(username.strip()) == None):
+														if self.validate_name():
+																return username
+														else:	
+																self.name = ""
+												else:
+														self.name = ""
+								print("USERNAME------<*!", username) 
+								print("****************END**********************")
+
+
+		"""										
+		def parse_approx_name1(self, exception=False):
+				print("***parse_approx_name***")
+				import probablepeople as pp
+				#print("***parse_approx_name***")
+				for content in self.contents:
+						print("Content---->", content.strip())
 						if content.strip() == "":
 								continue
 						flag = False
-						#print("1_FLAG--->NAME", flag)
+						print("1_FLAG--->NAME", flag)
 						for kw in ["Presenters", "Author", 'Instructor']:
 								content = content.strip().replace("\\", "")
 								#print("VALIDATION===>", kw in content.strip())
@@ -311,9 +395,9 @@ class ParseName():
 						#print("3_FLAG--->NAME", flag)
 						if flag:
 								continue
-						#print("NAME_Content---->", content.strip())
+						print("NAME_Content---->", content.strip())
 						p = pp.parse(content)
-						#print("NAME_Content---->", p)
+						print("NAME_Content---->", p)
 						username = ""
 						firstname = ""
 						surname		= ""
@@ -330,20 +414,23 @@ class ParseName():
 								if word[1] == "Surname":
 										surname = surname + word[0]
 										username = username + " " + surname
+	
+								if exception:
+										if word[1] == "CorporationName":
+												username = username + " " + word[0]
 					 
 
-								#print(f"USERNAME---1--->{username}")
+								print(f"USERNAME---1--->{username}")
 								if firstname != "" and surname != "":
-										#print(f"USERNAME---2--->{username}")
+										print(f"USERNAME---2--->{username}")
 										self.name = username.strip()
-										#print(f"USERNAME---3--->{self.name}")
-										#print(f"USERNAME---3.1--->{self.validate_name()}")
+										print(f"USERNAME---3--->{self.name}")
+										print(f"USERNAME---3.1--->{self.validate_name()}")
 										if self.validate_name():
-												#print(f"USERNAME---4--->{self.name}")
+												print(f"USERNAME---4--->{self.name}")
 												return
-						#print("USERNAME------<", username) 
-										
-
+						print("USERNAME------<", username) 
+		"""
 
 		def extract(self):
 				self.parse_between_lines()
@@ -358,6 +445,8 @@ class ParseName():
 						print("***************************NAME******************************1", self.name)
 						self.parse_approx_name()
 						print("***************************NAME******************************2", self.name)
+				if self.name == "":
+						self.parse_approx_name(True)
 				print("***************************NAME******************************3", self.name)
 				return True
 
