@@ -44,6 +44,7 @@ class ParseDate():
 				date = date.lower().split(' to ')[-1]
 				date = date.lower().split(' at ')[0]
 				date = date.replace('virtue of the', '')
+				date = date.replace('location:', '')
 				#print("DATE---make_corrections--->2", date)
 				if 'Part'.lower() in date:
 						#print("DATE---make_corrections--->3", date)

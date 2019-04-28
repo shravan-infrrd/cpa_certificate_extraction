@@ -5,7 +5,7 @@ from lib.field_of_study_mapping import find_fos_match
 field_of_studies = [ 'Finance-Technical', 'Accounting & Auditing', 'Accounting and Auditing', 'Administrativei Practice', 'Business Management & Organization', 'Communications', 'Computer Science', 'Economics', 'Ethics - Behavioral', 'Ethics - Regulatory', 'Finance', 'Marketing', 'Mathematics', 'Personal Development', 'Personnel/Human Resources', 'Production', 'Specialized Knowledge and Applications', 'Specialized Knowledge & Applications', 'Social Environment of Business', 'Statistics', 'Accounting - Governmental', 'Auditing - Governmental', 'Business Law', 'Management Advisory Services', 'Taxes', 'Communications and Marketing', 'Informational Technology - Technical', 'Information Technology', 'Computer Software & Applications', 'Business Management and Organization', 'SPECIALIZED KNOWLEDGE AND APPLICATIONS', 'Accounting (Governmental)', 'Auditing (Governmental)', 'Auditing (Govemmental)', 'Acounting (Governmental)']
 
 
-special_list = ['Auditing', 'Accounting', 'Specialized Knowledge', 'ACCOUNTING', 'AUDITING', 'BUSINESS MAN AGEMENT', 'MAS', 'TAXES', 'Business Management', 'Tax', 'Audit']
+special_list = ['Auditing', 'Accounting', 'Specialized Knowledge', 'ACCOUNTING', 'AUDITING', 'BUSINESS MAN AGEMENT', 'MAS', 'TAXES', 'Business Management', 'Tax', 'Audit', 'Other']
 
 related_studies = ['Computer Software and Applications', 'Accounting & Auditing / Tax', 'Personnel/Human Resource', 'Personnel/HR', 'Regulatory Ethics', 'Professional Development', 'Behavioral Ethics', 'Management Services', 'A&A', 'Yellow Book', 'Professional Ethics', 'Fraud', 'Accounting Governmental', 'Auditing Governmental', 'Business Mgmt and Org', 'State Ethics', 'Cybersecurity Update', 'Taxation', 'Forensic Accounting', 'Forensic Accounting — Technical', 'Communications & Marketing', 'Management Advisory Services Basic Level', 'Ethics (Regulatory)', 'Computer Software & Applications — Non-Technical', 'Laws & Rules Ethics', 'Ethics/Regulatory Ethics', 'Taxes (in NY Taxation)', 'Governmental Accounting', 'Auditing - Webinar','Ethics', 'General Knowledge', 'Computer Sofiware & Applications']
 
@@ -58,32 +58,35 @@ class ParseFos():
 		def parse_between_lines(self):
 				for index, content in enumerate( self.contents ):
 						for kw in pre_keywords:
-								if kw in content.strip():
-										#print(f"FOS0. Keyword--->{kw}, Content---->{content}")
-										#if ':' not in self.contents[index+1].strip():	
-										values = remove_extra_spaces( self.contents[index+1].strip())
-										#print("parse_between_lines====>", values)
-										if len(values) > 0:
-												print("FOS1. FieldOfStudy---->", values)
-												if self.validate_with_existing_list(values[0]):
-														print("FOS1. FieldOfStudy---->", values[0]) 
-														if not self.check_if_present(values[0]):
-																print("FOUND----FOS-->", values[0])
-																self.field_of_study.append(values[0] )
-																#continue
-																self.line_index = index
-																return "following_line"
-
-										values = remove_extra_spaces( self.contents[index+2].strip() )
-										#print(f"values-->{values}, -->{len(values)}")
-										if len(values) > 0 and len(values) < 5:
-												#print("FOS2. FieldOfStudy---->", values)
-												if self.validate_with_existing_list(values[0]): 
-														if not self.check_if_present(values[0]):
-																self.field_of_study.append( values[0])
-																#continue
-																self.line_index = index
-																return "following_line"
+								try:
+										if kw in content.strip():
+												#print(f"FOS0. Keyword--->{kw}, Content---->{content}")
+												#if ':' not in self.contents[index+1].strip():	
+												values = remove_extra_spaces( self.contents[index+1].strip())
+												#print("parse_between_lines====>", values)
+												if len(values) > 0:
+														print("FOS1. FieldOfStudy---->", values)
+														if self.validate_with_existing_list(values[0]):
+																print("FOS1. FieldOfStudy---->", values[0]) 
+																if not self.check_if_present(values[0]):
+																		print("FOUND----FOS-->", values[0])
+																		self.field_of_study.append(values[0] )
+																		#continue
+																		self.line_index = index
+																		return "following_line"
+                    
+												values = remove_extra_spaces( self.contents[index+2].strip() )
+												#print(f"values-->{values}, -->{len(values)}")
+												if len(values) > 0 and len(values) < 5:
+														#print("FOS2. FieldOfStudy---->", values)
+														if self.validate_with_existing_list(values[0]): 
+																if not self.check_if_present(values[0]):
+																		self.field_of_study.append( values[0])
+																		#continue
+																		self.line_index = index
+																		return "following_line"
+								except:
+										continue
 
 				if len(self.field_of_study) == 0:
 						for index, content in enumerate(self.contents):

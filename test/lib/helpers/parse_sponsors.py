@@ -118,6 +118,12 @@ class ParseSponsors():
 				for content in self.contents:
 						if 'IRS CE'.lower() in content.strip().lower():
 								continue
+						if self.program_name == "":
+								for sp in sponsor_list:
+										if find_pattern(sp.lower(), content.lower()):
+												self.sponsor = sp
+												return
+
 						if self.program_name.lower() not in content.strip().lower():
 								for sp in sponsor_list:
 
@@ -138,6 +144,10 @@ class ParseSponsors():
 						print("***SPONSORS***4", self.sponsor)
 						self.extract_from_list()
 				print("***SPONSORS***5", self.sponsor)
+				if self.sponsor == "RS M":
+						self.sponsor = "RSM"
+				if self.sponsor == "Western CPEs":
+						self.sponsor = "Western CPE"
 				return True
 
 

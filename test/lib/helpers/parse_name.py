@@ -6,7 +6,7 @@ preceding_keywords = ['This certifies that', 'certifies that', 'Attendee', 'Cert
 
 following_keywords = ['Has successfully completed the QuickBooks', "Participant's Name", 'for successfully completing', 'has successfully completed', 'Has Successfully Completed the Course:', 'Has successfully completed', 'UF,orattending', 'has completed the QASSelf-Study course', 'has completed the', 'FOR SUCCESSFUL COMPLETION OF', 'Participant Name', 'who haspursued studies and completed all the', 'who has pursued studies and completed all the']
 #name_keywords = ['Attendee’s Name:', '\ Attendee’s Name:', 'V Attendee’s Name:', 'Awardedto:', 'Participant Name:', 'This certificate is presented to', 'Awarded to:']
-line_keywords = ['Presents a Certification of Completion to:', 'Attendee’s Name:', '\ Attendee’s Name:', 'V Attendee’s Name:', 'Awardedto:', 'Participant Name:', 'This certificate is presented to', 'Awarded to:', 'This certifies that', 'Attendee:', 'NAME OF ATTENDEE.', 'Nameof Participant:', 'Name:', 'Attendee Name:', 'This certificate is presented to:', 'Name of Participant:', 'NAME OF PARTICIPANT:', 'Participant Name', 'Student', 'This certificate 1s presented to:', 'this certificate is presented to.', 'Name ofParticipant:', 'this certificate is presented to:', 'Congratulations,', 'Participant Name:', 'This to certify that', '[his certificate is presented to:', 'This certificate ts presented to', 'Th i s c e r t i f i e s t h a t', 'This c e r t i f i e s t h a t', 'c e r t i f i e s t h a t', 't h a t', 'to:', 'Thiscertificate ispresentedto', 'presentedto', 'To:']
+line_keywords = ['Presents a Certification of Completion to:', 'Attendee’s Name:', '\ Attendee’s Name:', 'V Attendee’s Name:', 'Awardedto:', 'Participant Name:', 'This certificate is presented to', 'Awarded to:', 'This certifies that', 'Attendee:', 'NAME OF ATTENDEE.', 'Nameof Participant:', 'Name:', 'Attendee Name:', 'This certificate is presented to:', 'Name of Participant:', 'NAME OF PARTICIPANT:', 'Participant Name', 'Student', 'This certificate 1s presented to:', 'this certificate is presented to.', 'Name ofParticipant:', 'this certificate is presented to:', 'Congratulations,', 'Participant Name:', 'This to certify that', '[his certificate is presented to:', 'This certificate ts presented to', 'Th i s c e r t i f i e s t h a t', 'This c e r t i f i e s t h a t', 'c e r t i f i e s t h a t', 't h a t', 'to:', 'Thiscertificate ispresentedto', 'presentedto', 'To:', 'This      certifies that', 'certifies that']
 
 invalid_words = ['Freserted to', 'Presented to', 'this', 'that', 'Awarded to', 'Program', 'CPE', 'Firm:', 'Participant', 'Sent', 'CERTIFICATION', '@', 'Issue', 'Attendee Name:', 'Instructional Delivery Method', 'Successful completion of:', 'ATTENDED', 'attended', 'SPONSOR', 'sponsor', 'for successfully completing', 'Individual', 'DATE', 'TIME', 'Certificate ofCompletion', 'Certificate of Completion', 'Congratulations', 'awardedto', 'awarded to', 'For successtully completing', 'TSCPA', 'Credits', 'SCalCPA', 'Street', 'Application', 'PRESENTED BY', 'Pittsburgh', 'ws DEN', 'Location', 'Tithe', 'Middle', 'Certificate Logo', 'IRS Course', 'Successful campletion of', 'stitute', 'institute', 'Number', 'AUDITING', 'PLANS', 'CPA Crossing', 'minute hour', 'Partici', 'Participant', 'http', 'Details', 'Affirmation', 'COMPLIANCE AUDITS', 'EDITION', 'Risk', 'Fundamentals', 'Review by', 'Instructor', 'Quality', 'Scheme', 'to:', 'Arizona', 'Internal Audit', 'PROVIDER', 'Astute CPA', 'Author']
 
@@ -111,6 +111,9 @@ class ParseName():
 								if kw.lower() in content.strip().lower():
 										#print("1*****************NAME*****************", kw)
 										values = remove_extra_spaces( self.contents[index + 1].strip() )
+										if not values:
+												values = remove_extra_spaces( self.contents[index + 2].strip() )
+	
 										#print("2*****************NAME*****************", values)
 										for val in values:
 												#print("NAME_VALIDATION=========>", val) 
@@ -341,21 +344,23 @@ class ParseName():
 										if exception:
 												if len(p) > 3:
 														continue
+												if any(char.isdigit() for char in word[0]):
+														continue
 												if word[1] == "CorporationName":
 														username = username + " " + word[0]
 							 
 								
-										print(f"USERNAME---1--->{username}")
+										#print(f"USERNAME---1--->{username}")
 										if firstname != "" and surname != "":
-												print(f"USERNAME---2--->{username}")
+												#print(f"USERNAME---2--->{username}")
 												self.name = username.strip()
-												print(f"USERNAME---3--->{self.name}")
-												print(f"USERNAME---3.1--->{self.validate_name()}")
+												#print(f"USERNAME---3--->{self.name}")
+												#print(f"USERNAME---3.1--->{self.validate_name()}")
 												if self.validate_name():
-														print(f"USERNAME---4--->{self.name}")
+														#print(f"USERNAME---4--->{self.name}")
 														return
 
-								print("USERNAME------<*", username) 
+								#print("USERNAME------<*", username) 
 								if	username:
 										u_names = username.split(' ')
 										u_names = list( filter( None, u_names ) )
