@@ -40,11 +40,15 @@ class ParseDate():
 				return True
 
 		def make_corrections(self, date):
-				#print("DATE---make_corrections--->1", date)
+				print("DATE---make_corrections--->1", date)
+				date = date.replace('.', ',')
 				date = date.lower().split(' to ')[-1]
 				date = date.lower().split(' at ')[0]
 				date = date.replace('virtue of the', '')
 				date = date.replace('location:', '')
+				if 'Scptember'.lower() in date.lower():
+						print("Date modification")
+						date = date.replace('scptember', 'September')
 				#print("DATE---make_corrections--->2", date)
 				if 'Part'.lower() in date:
 						#print("DATE---make_corrections--->3", date)
@@ -60,6 +64,9 @@ class ParseDate():
 				dates = re.findall(r"\d{2},\d{4}", date)
 				if len(dates) > 0:
 						date = date.replace(',', ', ')
+			
+
+				print("DATE---make_corrections--->2", date)
 
 				"""
 				date = date.lower().replace('october', 'octaber')
@@ -336,8 +343,8 @@ class ParseDate():
 				self.parse_within_lines()
 				print("Date Extraction Complete===>0", self.date) 
 
-				if self.date == "":
-						self.parse_lines_for_date()
+				#if self.date == "":
+				#		self.parse_lines_for_date()
 
 				print("Date Extraction Complete===>0.05", self.date) 
 
@@ -353,6 +360,9 @@ class ParseDate():
 				if self.date == "":
 						self.extract_without_keywords(self.name)
 				print("Date Extraction Complete===>1.1", self.date) 
+
+				if self.date == "":
+						self.parse_lines_for_date()
 
 				if self.date == "":
 						self.expection_case()

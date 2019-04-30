@@ -303,7 +303,9 @@ class ParseName():
 				#print("***parse_approx_name***")
 				for content in self.contents:
 						print("Content---->", content.strip())
-						values = content.split("	")
+						values = remove_extra_spaces(content)
+						#values = content.split("	")
+						print("Content---->", values)
 						for val in values:
 								#content = val
 								if val.strip() == "":
@@ -320,7 +322,7 @@ class ParseName():
 								print("3_FLAG--->NAME", flag)
 								if flag:
 										continue
-								print("****************START**********************")
+								print("****************START**********************", val)
 								print("NAME_Content---->", val.strip())
 								p = pp.parse(val)
 								print("NAME_Content---->", p)
@@ -330,11 +332,11 @@ class ParseName():
 								middlename = ""
 								#print(p)
 								for index, word in enumerate(p):
-							 
+										print("WORD--->", word) 
 										if word[1] == "GivenName":
 												firstname = firstname + word[0]
 												username = username + " " + firstname
-										if word[1] == "MiddleInitial":
+										if word[1] == "MiddleInitial" or word[1] == "MiddleName":
 												middlename = middlename + word[0]
 												username = username + " " + middlename
 										if word[1] == "Surname":
@@ -346,7 +348,8 @@ class ParseName():
 														continue
 												if any(char.isdigit() for char in word[0]):
 														continue
-												if word[1] == "CorporationName":
+												if word[1] == "CorporationName": 
+												#if word[1] in ["CorporationName", "GivenName", "MiddleInitial", "MiddleName", "Surname"]:
 														username = username + " " + word[0]
 							 
 								
@@ -375,7 +378,7 @@ class ParseName():
 																self.name = ""
 												else:
 														self.name = ""
-								print("USERNAME------<*!", username) 
+								#print("USERNAME------<*!", username) 
 								print("****************END**********************")
 
 
