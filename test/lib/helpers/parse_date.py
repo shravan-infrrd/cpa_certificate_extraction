@@ -33,6 +33,9 @@ class ParseDate():
 				print("DATE_VALIDATION________", self.date, "***")
 				if self.date == "":
 						return False
+				if len(self.date) > 20:
+						self.date = ""
+						return False
 				for kw in invalid_keywords:
 						if kw.lower() in self.date.lower():
 								self.date = ""
@@ -130,6 +133,13 @@ class ParseDate():
 														self.date = val
 														print("val--->2", self.date)
 														print("val--->3", self.validate_date())
+														date_format = format_date(self.date, True)
+														print("VALIDATE_FORMAT_DATE*****2", date_format)
+														if date_format == "":
+																self.date = ""
+																continue
+														if self.validate_date():
+																return
 														if self.validate_date():
 																return
 
@@ -148,6 +158,11 @@ class ParseDate():
 												for val in values:
 														if hasNumbers(val) and len(val) > 4:
 																self.date = val.strip()
+																date_format = format_date(self.date, True)
+																print("VALIDATE_FORMAT_DATE*****2", date_format)
+																if date_format == "":
+																		self.date = ""
+																		continue
 																if self.validate_date():
 																		return
 

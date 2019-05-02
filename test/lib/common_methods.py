@@ -31,7 +31,7 @@ def format_date_with_input(date):
 		require_date = date[1] + '-' + date[2] + '-' + date[0]
 		return require_date
 
-def format_date(date):
+def format_date(date, validate=False):
 		print(f"FORMAT_DATE----->", date)
 		date = date.replace('.', ',')
 		print(f"FORMAT_DATE----->", date)
@@ -49,7 +49,10 @@ def format_date(date):
 						date = date.replace('-', '/')
 						return date
 		except:
-				return date
+				if validate:
+						return ""
+				else:
+						return date
 
 
 def find_pattern(kw, content):

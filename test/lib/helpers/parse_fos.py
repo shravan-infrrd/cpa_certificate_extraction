@@ -17,7 +17,7 @@ pre_keywords = [ 'field of study:', 'For the successful completion of', 'sponsor
 
 post_keywords = ['Ficld of Study', 'bicld of Study', 'bield of Study', 'Field of Study', 'Subject Area', 'Field ofStudy', 'NASBA Field of Study:', 'Curriculum:', 'Curriculum']
 
-line_keywords = ['Field of Study:', 'Best Practices in', 'FieldofStudy:', 'Course Field of Study:', 'for successfully completing', 'Fieldof Study:', 'Recommended Field of Study:', 'in the subject area of', 'RecommendedField of Study:', 'Field ofStudy:', 'Ficld of Study:', 'NASBAField of Study:', 'Course Freld of Study:', 'NASBAField of Study', 'NASBA Recognized Field of Study:', 'NASBAField of Study: ', 'Fleld of Study Associated with Credit:', 'Number of CPE Credits']
+line_keywords = ['Field of Study:', 'Best Practices in', 'FieldofStudy:', 'Course Field of Study:', 'for successfully completing', 'Fieldof Study:', 'Recommended Field of Study:', 'in the subject area of', 'RecommendedField of Study:', 'Field ofStudy:', 'Ficld of Study:', 'NASBAField of Study:', 'Course Freld of Study:', 'NASBAField of Study', 'NASBA Recognized Field of Study:', 'NASBAField of Study: ', 'Fleld of Study Associated with Credit:', 'Number of CPE Credits', 'd of Study:']
 
 
 class ParseFos():
