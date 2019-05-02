@@ -15,7 +15,7 @@ post_keywords = [ 'Completion Date:', 'Date Attended', 'Date of Completion', 'ev
 pre_keywords	= ['Date Certified', 'Date of Course', 'Dace of Course', 'Program Date(s)', 'Course Date', 'pate', 'Date of Completion', 'Date']
 
 date_keywords = ["Date:", "Date.", "Date"]
-invalid_keywords = ['cpe', 'CPE', 'Location', 'of course', 'tatas8']
+invalid_keywords = ['cpe', 'CPE', 'Location', 'of course', 'tatas8', 'Title', 'Time']
 
 class ParseDate():
 
@@ -46,6 +46,8 @@ class ParseDate():
 				date = date.lower().split(' at ')[0]
 				date = date.replace('virtue of the', '')
 				date = date.replace('location:', '')
+				date = date.replace('date:', '')
+				date = date.replace('Date:', '')
 				if 'Scptember'.lower() in date.lower():
 						print("Date modification")
 						date = date.replace('scptember', 'September')
@@ -204,6 +206,7 @@ class ParseDate():
 								content = self.make_corrections(content)
 
 								content = content.replace('.', ',')
+
 								edate = re.findall(r"\d{1,2}-\d{1,2} \w+ \d{4}", content.strip().lower())
 								print("FINDING-DATE----->2-->", edate)
 								if edate:
@@ -223,7 +226,7 @@ class ParseDate():
 										#print("DateExtracted---->4", self.date)
 										if self.validate_date():
 												return
-
+		"""
 		def extract_without_keywords1(self, name_keyword=""):
 				print("****WITHOUT_KEYWORD_EXTRACTION***")
 				parse = False
@@ -298,6 +301,8 @@ class ParseDate():
 										#print("DateExtracted---->4", self.date)
 										if self.validate_date():
 												return
+
+		"""
 
 		def get_date_from_program_name(self):
 				print("get_date_from_program_name************>GROK", self.program_name)
