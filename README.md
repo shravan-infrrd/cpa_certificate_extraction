@@ -1,6 +1,5 @@
 # cpa_certificate_extraction
 
-# cpa_certificate_extraction
 Developer: Shravan C <shravan@infrrd.ai>
 Project invloves Extraction of various fields in CPA certificates. Steps is as below:
 1. API except a certificate file to be sent.
