@@ -8,12 +8,14 @@ from flask import jsonify
 from flask_cors import CORS
 from flask_restful import Api
 from healthcheck import HealthCheck
+from flask import make_response
 
 import timeit
 import constant
 from constant import DE_APPLICATION_NAME, PDF_UPLOAD_DIRECTORY
 from controllers.extract_data import ExtractData
 from controllers.cpa import Cpa
+from service.extract_fields import fetch_data_from_mongo
 # from exceptions.exception_logger import create_logger
 # from log import configure_logger, DE_LOG_FILE_PATH
 
@@ -23,14 +25,14 @@ import copy
 
 
 class DataExtractorJSONEncoder(json.JSONEncoder):
-    def default(self, o):
-        if isinstance(o, Decimal):
-            return float(o)
-        return json.JSONEncoder.default(self, o)
+		def default(self, o):
+				if isinstance(o, Decimal):
+						return float(o)
+				return json.JSONEncoder.default(self, o)
 
 
 class DEConfig:
-    RESTFUL_JSON = {"cls": DataExtractorJSONEncoder}
+		RESTFUL_JSON = {"cls": DataExtractorJSONEncoder}
 
 de_health = HealthCheck()
 
@@ -43,48 +45,61 @@ CORS(app)
 
 api = Api(app, catch_all_404s=True)
 
+
+@app.route('/results', methods=['GET'])
+def fetch_all_transactions():
+		data = fetch_data_from_mongo()
+		return jsonify(data)
+
+@app.route('/results/<doc_id>', methods=['GET'])
+def fetch_latest_transactions(doc_id):
+		data = fetch_data_from_mongo(doc_id=doc_id)
+		response = make_response(data)
+		response.headers['content-type'] = 'application/json'
+		return response
+
 # Extract data API for Machines and Scanned PDF.
 @app.route('/', methods=["GET"])
 def home_page_route():
-    resp = send_from_directory("static", "index.html")
-    return resp
+		resp = send_from_directory("static", "index.html")
+		return resp
 
 @app.route('/pdf_file/<file_name>', methods=['GET'])
 def render_pdf_file(file_name):
-    base_path = "uploads/" + file_name + '/pages'
-    file_name = 'stitched.pdf'
-    print('BASE_PATH-', base_path, "File_name->", file_name)
-    return send_from_directory(base_path, file_name)
+		base_path = "uploads/" + file_name + '/pages'
+		file_name = 'stitched.pdf'
+		print('BASE_PATH-', base_path, "File_name->", file_name)
+		return send_from_directory(base_path, file_name)
 
 @app.route('/text_file/<file_name>', methods=['GET'])
 def render_text_file(file_name):
-    base_path = "uploads/" + file_name + '/texts'
-    file_name = 'stitched.txt'
-    print('BASE_PATH-', base_path, "File_name->", file_name)
-    return send_from_directory(base_path, file_name)
+		base_path = "uploads/" + file_name + '/texts'
+		file_name = 'stitched.txt'
+		print('BASE_PATH-', base_path, "File_name->", file_name)
+		return send_from_directory(base_path, file_name)
 
 def build_data(doc):
-    return {
-        'name': doc['name'],
-        'program_name': doc['program_name'],
-        'delivery_method': doc['delivery_method']
-    }
+		return {
+				'name': doc['name'],
+				'program_name': doc['program_name'],
+				'delivery_method': doc['delivery_method']
+		}
 
 @app.route('/list', methods=['GET'])
 def list_data():
-    docs = mongo.db.certificates.find()
-    lists = []
-    for doc in docs:
-        lists.append( build_data(doc) )
-        """
-        lists.append({"id": "hello",
-                      'program_name': doc['program_name'],
-                      'delivery_method': doc['delivery_method'],
-                      'name': doc['name']
-        })
-        """
-    data = {"data": lists}
-    return jsonify(data)
+		docs = mongo.db.certificates.find()
+		lists = []
+		for doc in docs:
+				lists.append( build_data(doc) )
+				"""
+				lists.append({"id": "hello",
+											'program_name': doc['program_name'],
+											'delivery_method': doc['delivery_method'],
+											'name': doc['name']
+				})
+				"""
+		data = {"data": lists}
+		return jsonify(data)
 
 
 
@@ -98,14 +113,14 @@ app.add_url_rule("/healthcheck", "healthcheck", view_func=lambda: de_health.run(
 
 @app.before_request
 def log_request():
-    app.logger.info("Request:\n{}".format(request.get_json()))
+		app.logger.info("Request:\n{}".format(request.get_json()))
 
 
 @app.after_request
 def log_response(response):
-    #app.logger.info("Response:\n{}".format(response.data.decode()))
-    return response
+		#app.logger.info("Response:\n{}".format(response.data.decode()))
+		return response
 
 
 if __name__ == "__main__":
-    app.run(debug=False, host=constant.HOST, port=constant.PORT_NUMBER)
+		app.run(debug=False, host=constant.HOST, port=constant.PORT_NUMBER)

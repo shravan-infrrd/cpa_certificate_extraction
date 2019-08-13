@@ -25,7 +25,6 @@ from spacy import displacy
 import en_core_web_sm
 """
 
-"""
 import json
 from flask_pymongo import PyMongo
 import copy
@@ -36,7 +35,6 @@ app.config['MONGO_DBNAME'] = 'cpa_database'
 app.config['MONGO_URI'] = 'mongodb://localhost:27017/cpa_database'
 
 mongo = PyMongo(app)
-"""
 class ExtractData(Resource):
 
 		def save_in_db(self, data):
@@ -93,7 +91,11 @@ class ExtractData(Resource):
                 
 								#self.parse_data(contents, result)
 								parse_all_fields(contents, result) 
-								#self.save_in_db(result)
+								try:
+										self.save_in_db(result)	
+								except:
+										print("===Mongodb=Failed===")
+
 								#update_excel_sheet(result, file.filename.replace(' ', '_'))
 								te = time.time()
 								logging.info('%r %2.2f sec' % ("Time---->", te - ts))

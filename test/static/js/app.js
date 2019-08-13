@@ -1,7 +1,10 @@
 var app=angular.module('docketly-app', []);
 //var UI_URL = "http:///54.245.29.69:6789/extract";
 //var UI_URL = "http:///localhost:6789/extract";
-var UI_URL ="https://cpa-certificates.infrrdapis.com/find";
+//var UI_URL ="https://cpa-certificates.infrrdapis.com/find";
+//var UI_URL ="http://q.cpa-certificates.infrrdapis.com:4000/find";
+//var UI_URL ="http://35.161.218.84:4000/find";
+var UI_URL ="http://q.cpa-certificates.infrrdapis.com:4000/find"
 //var UI_URL = "http:///localhost:4000/find";
 
 app.controller('DocketlyHomeController', ['$scope','$http',function($scope, $http){

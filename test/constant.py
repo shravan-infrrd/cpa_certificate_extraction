@@ -13,7 +13,7 @@ TEMPORARY_DOWNLOAD_PATH = os.path.join(PROJECT_ROOT, 'temporary')
 REFERENCE_FILE = os.path.join(PROJECT_ROOT, 'reference_file.xlsx')
 TEST_PDF_PATH  = os.path.join(PROJECT_ROOT, 'test_pdf_paths' )
 
-
+MONGO_URI = "mongodb://localhost:27017/"
 PDF_UPLOAD_DIRECTORY = os.path.join(PROJECT_ROOT, "uploads")
 FILE_ERRORS = 404
 FILE_ERRORS_DESC = "File Not Found Error"

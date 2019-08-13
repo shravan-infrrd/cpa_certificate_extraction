@@ -25,6 +25,13 @@ class ParseProgramName():
 				self.name = name
 				self.program_name = ""
 
+		def handle_excpetion_phrase( self, program_name ):
+				print(f"-----handle_excpetion_phrase---->{program_name}")
+				for exception in ['Plan Sponsor Update']:
+						if find_pattern(exception.lower(), program_name.lower()):
+								return True
+				return False
+
 		def handle_exception_case(self, keyword):
 				print("handle_exception_case****1")
 				keywords = ('QuickBooks', 'Introduction to')
@@ -43,11 +50,14 @@ class ParseProgramName():
 						return False
 				#print(f"InvalidKEYWORDS---->{invalid_keywords}--->program_name---->{self.program_name}")
 				for kw in invalid_keywords:
-						#print(f"===>INKW-->{kw}=====>pn==>{self.program_name}")
+						print(f"===>INKW-->{kw}=====>pn==>{self.program_name}====>content===>{content}")
 						if find_pattern(kw, self.program_name.lower()):
 						#if kw.lower() in self.program_name.lower():
+								if self.handle_excpetion_phrase(self.program_name):
+										continue
 								if content != "":
 										if kw.lower() == "student":
+	
 												if "Course Title".lower() in content.strip().lower():
 														continue
 								print("Error--->1", kw, "pn", self.program_name)
@@ -95,6 +105,8 @@ class ParseProgramName():
 				for kw in invalid_keywords:
 						#print(f"keyword--->{kw}----word---{word}---")
 						if find_pattern(kw.lower(), word.lower()):
+								if self.handle_excpetion_phrase(word):
+										return True
 								print("VALIDATION----->", kw, "Content--->", word, "---end")
 								return False
 				return True
@@ -109,14 +121,14 @@ class ParseProgramName():
 						return [], True
 				#try:
 				if values[0] != "":
-						#print("***VALiDATE***1", self.check_invalid_keywords(values[0]))
+						print("***VALiDATE***1", self.check_invalid_keywords(values[0]))
 						if not self.check_invalid_keywords(values[0]):
 								return [], status
-						#print("***VALiDATE***2")
+						print("***VALiDATE***2")
 						if self.name != "":
 								if find_pattern(self.name.lower(), values[0]):
 										return [], True
-						#print("***VALiDATE***3")
+						print("***VALiDATE***3")
 						"""
 						if ':' in values[0]:
 								for k in ['ethics']:
@@ -125,7 +137,7 @@ class ParseProgramName():
 												pass
 												#return [], status
 						"""
-						#print("***VALiDATE***4", check_for_valid_string(values[0]))
+						print("***VALiDATE***4", check_for_valid_string(values[0]))
 						if not check_for_valid_string(values[0]):
 								return [], True
 
@@ -138,7 +150,7 @@ class ParseProgramName():
 										except:
 												pass
 
-						#print("***VALiDATE***5")
+						print("***VALiDATE***5")
 						return values, True
 				#except Exception as error:
 						#print("ERROR IN VALIDATE_EACH_VALUE----->", values, "Error--->", error)
