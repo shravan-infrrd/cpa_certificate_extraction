@@ -22,7 +22,7 @@ six==1.11.0
 unicodecsv==0.14.1
 urllib3==1.22
 Wand==0.4.4
-Werkzeug==0.12.2
+Werkzeug==0.15.3
 natsort
 opencv-python
 pandas
