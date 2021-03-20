@@ -9,7 +9,7 @@ Flask-RESTful==0.3.6
 py-healthcheck
 idna==2.6
 itsdangerous==0.24
-Jinja2==2.9.6
+Jinja2==2.11.3
 MarkupSafe==1.0
 pdfminer.six==20170720
 pdfplumber==0.5.8
